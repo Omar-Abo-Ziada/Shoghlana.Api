@@ -9,7 +9,7 @@ namespace Shoghlana.Core.Models
 {
     public class JobSkills
     {
-        public int Id { get; set; }
+       // public int Id { get; set; }
 
         //----------------------------
 

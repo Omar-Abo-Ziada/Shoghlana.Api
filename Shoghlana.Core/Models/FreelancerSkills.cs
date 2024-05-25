@@ -9,7 +9,7 @@ namespace Shoghlana.Core.Models
 {
     public class FreelancerSkills
     {
-        public int Id { get; set; }
+      //  public int Id { get; set; }
 
         //----------------------------
 
@@ -21,6 +21,6 @@ namespace Shoghlana.Core.Models
         [ForeignKey("Skill")]
         public int? SkillId { get; set; }
 
-        public Skill Skill { get; set; }
+        public Skill Skill { get; set; } 
     }
 }
