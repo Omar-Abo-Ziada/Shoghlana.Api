@@ -9,11 +9,12 @@ namespace Shoghlana.Core.Models
 {
     public class Client
     {
-        [Key]
+      //  [Key]
         public int Id { get; set; }
 
         public string Name { get; set; }
 
         public List<Job>? Jobs { get; set; }
+        public List<Notification>? notifications { get; set; }
     }
 }

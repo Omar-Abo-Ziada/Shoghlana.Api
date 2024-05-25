@@ -10,17 +10,18 @@ namespace Shoghlana.Core.Models
 {
     public class Rate
     {
-        [Key]
+       // [Key]
         public int Id { get; set; }
 
-        public string Feedback { get; set; }
+        // saeed : make feedback nullable
+        public string? Feedback { get; set; }
 
-        [Range(1 , 5)]
+     //   [Range(1 , 5)]
         public int? Value { get; set; }
 
         //--------------------------------------
 
-        [ForeignKey("Job")]
+      //  [ForeignKey("Job")]
         public int? JobId { get; set; }
 
         public Job Job { get; set; }

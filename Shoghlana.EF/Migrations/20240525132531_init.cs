@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace Shoghlana.EF.Migrations
 {
     /// <inheritdoc />
-    public partial class Init : Migration
+    public partial class init : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -81,7 +81,7 @@ namespace Shoghlana.EF.Migrations
                     MinBudget = table.Column<decimal>(type: "Money", nullable: false),
                     MaxBudget = table.Column<decimal>(type: "Money", nullable: false),
                     ExperienceLevel = table.Column<int>(type: "int", nullable: false),
-                    Status = table.Column<int>(type: "int", nullable: false),
+                    Status = table.Column<int>(type: "int", nullable: false, defaultValue: 0),
                     ClientId = table.Column<int>(type: "int", nullable: true),
                     FreelancerId = table.Column<int>(type: "int", nullable: true),
                     CategoryId = table.Column<int>(type: "int", nullable: true)
@@ -129,51 +129,51 @@ namespace Shoghlana.EF.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "FreelancerSkills",
+                name: "freelancerSkills",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    FreelancerId = table.Column<int>(type: "int", nullable: true),
-                    SkillId = table.Column<int>(type: "int", nullable: true)
+                    FreelancerId = table.Column<int>(type: "int", nullable: false),
+                    SkillId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_FreelancerSkills", x => x.Id);
+                    table.PrimaryKey("PK_freelancerSkills", x => new { x.FreelancerId, x.SkillId });
                     table.ForeignKey(
-                        name: "FK_FreelancerSkills_Freelancers_FreelancerId",
+                        name: "FK_freelancerSkills_Freelancers_FreelancerId",
                         column: x => x.FreelancerId,
                         principalTable: "Freelancers",
-                        principalColumn: "Id");
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.NoAction);
                     table.ForeignKey(
-                        name: "FK_FreelancerSkills_Skills_SkillId",
+                        name: "FK_freelancerSkills_Skills_SkillId",
                         column: x => x.SkillId,
                         principalTable: "Skills",
-                        principalColumn: "Id");
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.NoAction);
                 });
 
             migrationBuilder.CreateTable(
-                name: "JobSkills",
+                name: "jobSkills",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    JobId = table.Column<int>(type: "int", nullable: true),
-                    SkillId = table.Column<int>(type: "int", nullable: true)
+                    JobId = table.Column<int>(type: "int", nullable: false),
+                    SkillId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_JobSkills", x => x.Id);
+                    table.PrimaryKey("PK_jobSkills", x => new { x.JobId, x.SkillId });
                     table.ForeignKey(
-                        name: "FK_JobSkills_Jobs_JobId",
+                        name: "FK_jobSkills_Jobs_JobId",
                         column: x => x.JobId,
                         principalTable: "Jobs",
-                        principalColumn: "Id");
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.NoAction);
                     table.ForeignKey(
-                        name: "FK_JobSkills_Skills_SkillId",
+                        name: "FK_jobSkills_Skills_SkillId",
                         column: x => x.SkillId,
                         principalTable: "Skills",
-                        principalColumn: "Id");
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.NoAction);
                 });
 
             migrationBuilder.CreateTable(
@@ -185,7 +185,7 @@ namespace Shoghlana.EF.Migrations
                     Title = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Description = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Price = table.Column<decimal>(type: "Money", nullable: false),
-                    Status = table.Column<int>(type: "int", nullable: false),
+                    Status = table.Column<int>(type: "int", nullable: false, defaultValue: 1),
                     FreelancerId = table.Column<int>(type: "int", nullable: true),
                     JobId = table.Column<int>(type: "int", nullable: true)
                 },
@@ -210,13 +210,14 @@ namespace Shoghlana.EF.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Feedback = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Feedback = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Value = table.Column<int>(type: "int", nullable: true),
                     JobId = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Rates", x => x.Id);
+                    table.CheckConstraint("CK_VALUE_RANGE", "[Value] BETWEEN 1 AND 5");
                     table.ForeignKey(
                         name: "FK_Rates_Jobs_JobId",
                         column: x => x.JobId,
@@ -244,37 +245,32 @@ namespace Shoghlana.EF.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "ProjectSkills",
+                name: "projectSkills",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    ProjectId = table.Column<int>(type: "int", nullable: true),
-                    SkillId = table.Column<int>(type: "int", nullable: true)
+                    ProjectId = table.Column<int>(type: "int", nullable: false),
+                    SkillId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_ProjectSkills", x => x.Id);
+                    table.PrimaryKey("PK_projectSkills", x => new { x.ProjectId, x.SkillId });
                     table.ForeignKey(
-                        name: "FK_ProjectSkills_Projects_ProjectId",
+                        name: "FK_projectSkills_Projects_ProjectId",
                         column: x => x.ProjectId,
                         principalTable: "Projects",
-                        principalColumn: "Id");
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.NoAction);
                     table.ForeignKey(
-                        name: "FK_ProjectSkills_Skills_SkillId",
+                        name: "FK_projectSkills_Skills_SkillId",
                         column: x => x.SkillId,
                         principalTable: "Skills",
-                        principalColumn: "Id");
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.NoAction);
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_FreelancerSkills_FreelancerId",
-                table: "FreelancerSkills",
-                column: "FreelancerId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_FreelancerSkills_SkillId",
-                table: "FreelancerSkills",
+                name: "IX_freelancerSkills_SkillId",
+                table: "freelancerSkills",
                 column: "SkillId");
 
             migrationBuilder.CreateIndex(
@@ -293,13 +289,8 @@ namespace Shoghlana.EF.Migrations
                 column: "FreelancerId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_JobSkills_JobId",
-                table: "JobSkills",
-                column: "JobId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_JobSkills_SkillId",
-                table: "JobSkills",
+                name: "IX_jobSkills_SkillId",
+                table: "jobSkills",
                 column: "SkillId");
 
             migrationBuilder.CreateIndex(
@@ -313,13 +304,8 @@ namespace Shoghlana.EF.Migrations
                 column: "FreelancerId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_ProjectSkills_ProjectId",
-                table: "ProjectSkills",
-                column: "ProjectId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_ProjectSkills_SkillId",
-                table: "ProjectSkills",
+                name: "IX_projectSkills_SkillId",
+                table: "projectSkills",
                 column: "SkillId");
 
             migrationBuilder.CreateIndex(
@@ -344,16 +330,16 @@ namespace Shoghlana.EF.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "FreelancerSkills");
+                name: "freelancerSkills");
 
             migrationBuilder.DropTable(
-                name: "JobSkills");
+                name: "jobSkills");
 
             migrationBuilder.DropTable(
                 name: "ProjectImages");
 
             migrationBuilder.DropTable(
-                name: "ProjectSkills");
+                name: "projectSkills");
 
             migrationBuilder.DropTable(
                 name: "Proposals");
