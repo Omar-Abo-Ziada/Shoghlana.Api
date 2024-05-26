@@ -39,12 +39,15 @@ namespace Shoghlana.EF.Repositories
             jobSkills = new JobSkillsRepository(context);
         }
 
-        public int save() 
+        // returns num of affected entities in db
+        public int Save() 
         {
-           return context.SaveChanges();        // num of affected entities in db
+           return context.SaveChanges();      
         }
 
-        public void Dispose()  // as destructor >> called automatic when this request connection ends "if registered using addscoped" >> release unmanaged resources like connection with db "like garbage collector but for unmanaged resources"
+        // as destructor >> called automatic when this request connection ends "if registered using addscoped"
+        // >> release unmanaged resources like connection with db "like garbage collector but for unmanaged resources"
+        public void Dispose()  
         {
             context.Dispose();
         }

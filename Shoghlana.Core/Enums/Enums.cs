@@ -34,6 +34,7 @@ namespace Shoghlana.Core.Enums
     public enum OrderWay
     {
         Ascending = 1,
+
         Descending = 2,
     }
 }
