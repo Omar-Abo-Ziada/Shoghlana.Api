@@ -11,7 +11,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Shoghlana.EF", "Shoghlana.E
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Diagrams", "Diagrams", "{67199022-5520-4572-B274-52670755EBE5}"
 	ProjectSection(SolutionItems) = preProject
-		Diagrams\Class diagram.png = Diagrams\Class diagram.png
+		C:\Users\oahme\OneDrive\Documents\class dia.png = C:\Users\oahme\OneDrive\Documents\class dia.png
 	EndProjectSection
 EndProject
 Global

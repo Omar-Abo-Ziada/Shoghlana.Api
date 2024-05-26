@@ -17,7 +17,10 @@ namespace Shoghlana.Api.Controllers
             unitOfWork = _unitOfWork;
         }
 
-
-       
+        [HttpGet]
+        public IActionResult GetById(int id)
+        {
+            return Ok(unitOfWork.category.GetById(id));
+        }
     }
 }
