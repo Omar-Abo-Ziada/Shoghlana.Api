@@ -73,7 +73,7 @@ namespace Shoghlana.EF.Repository
 
             return query.Where(criteria).ToList();
         }
-
+       
         public IEnumerable<T> FindAll(Expression<Func<T, bool>> criteria, int skip, int take) 
         {
             return Context.Set<T>().Where(criteria).Skip(skip).Take(take).ToList();
