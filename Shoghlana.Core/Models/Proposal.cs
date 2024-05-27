@@ -38,5 +38,3 @@ namespace Shoghlana.Core.Models
         public Job Job { get; set; }
     }
 }
-//sdasd
-//asdasds
