@@ -43,8 +43,6 @@ namespace Shoghlana.EF
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
 
-
-
             modelBuilder.Entity<Category>(entity =>
             {
                 entity.HasKey(c => c.Id);
