@@ -15,6 +15,7 @@ namespace Shoghlana.Core.Models
         public string Name { get; set; }
 
         public List<Job>? Jobs { get; set; }
+
         public List<Notification>? notifications { get; set; }
     }
 }

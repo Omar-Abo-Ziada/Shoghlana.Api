@@ -29,6 +29,7 @@ namespace Shoghlana.Core.Models
         public List<Proposal>? Proposals { get; set; }
 
         public List<Skill>? skills { get; set; }
+
         public List<Notification>? notifications { get; set; } 
 
         // list<Notification> notifications {get; set;}  >> time , desc "url" navigate to dif pages
