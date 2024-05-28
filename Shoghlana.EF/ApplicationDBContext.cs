@@ -21,11 +21,11 @@ namespace Shoghlana.EF
 
         public DbSet<Skill> Skills { get; set; }
 
-     //   public DbSet<FreelancerSkills> FreelancerSkills { get; set; }
+        //   public DbSet<FreelancerSkills> FreelancerSkills { get; set; }
 
-     //   public DbSet<JobSkills> JobSkills { get; set; }
+        //   public DbSet<JobSkills> JobSkills { get; set; }
 
- //        public DbSet<ProjectSkills> ProjectSkills { get; set; }
+        //        public DbSet<ProjectSkills> ProjectSkills { get; set; }
 
         public DbSet<Proposal> Proposals { get; set; }
 
@@ -37,7 +37,7 @@ namespace Shoghlana.EF
 
         public ApplicationDBContext(DbContextOptions<ApplicationDBContext> options) : base(options)
         {
-            
+
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -58,11 +58,13 @@ namespace Shoghlana.EF
             {
                 entity.HasKey(f => f.Id);
 
+                entity.Property(f => f.Name).HasMaxLength(50);
+
                 // map relation with skills >> M:M
-                entity.HasMany(f => f.skills) 
+                entity.HasMany(f => f.skills)
                       .WithMany(s => s.freelancers)
                       .UsingEntity<Dictionary<string, object>>("freelancerSkills",  // j 
-                    j => j.HasOne<Skill>() 
+                    j => j.HasOne<Skill>()
                           .WithMany()
                           .HasForeignKey("SkillId"),
                     j => j.HasOne<Freelancer>()
@@ -189,9 +191,18 @@ namespace Shoghlana.EF
             //   .HasKey(pS => new { pS.ProjectId, pS.SkillId });
 
 
+            #region Initial Data
+
+            modelBuilder.Entity<Freelancer>().HasData
+            (
+                new Freelancer() { Id = 1, Name = "أحمد محمد", Title = "مطور الواجهة الخلفية" },
+                new Freelancer() { Id = 2, Name = "علي سليمان", Title = "مطور الواجهة الأمامية" },
+                new Freelancer() { Id = 3, Name = "وائل عبد الرحيم", Title = "مطور الواجهة الخلفية" }
+            );
+
+            #endregion
+
             base.OnModelCreating(modelBuilder);
-
-
         }
     }
 }

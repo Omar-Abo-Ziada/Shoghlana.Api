@@ -23,7 +23,14 @@ namespace Shoghlana.Api
             options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection") ,
             b => b.MigrationsAssembly(typeof(ApplicationDBContext).Assembly.FullName)));
 
-            builder.Services.AddScoped<IUnitOfWork, UnitOfWork>(); 
+            builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
+
+            builder.Services.AddAutoMapper(typeof(Program));
+
+            builder.Services.AddCors();
+
+            //************************************************************************
+
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.
@@ -33,8 +40,9 @@ namespace Shoghlana.Api
                 app.UseSwaggerUI();
             }
 
-            app.UseAuthorization();
+            app.UseCors(c => c.AllowAnyHeader().AllowAnyMethod().AllowAnyOrigin());
 
+            app.UseAuthorization();
 
             app.MapControllers();
 
