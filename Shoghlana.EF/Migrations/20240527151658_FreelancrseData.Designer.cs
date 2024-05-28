@@ -12,8 +12,8 @@ using Shoghlana.EF;
 namespace Shoghlana.EF.Migrations
 {
     [DbContext(typeof(ApplicationDBContext))]
-    [Migration("20240525132531_init")]
-    partial class init
+    [Migration("20240527151658_FreelancrseData")]
+    partial class FreelancrseData
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -74,6 +74,7 @@ namespace Shoghlana.EF.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Name")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Overview")
@@ -83,11 +84,32 @@ namespace Shoghlana.EF.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Title")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
                     b.ToTable("Freelancers");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Name = "أحمد محمد",
+                            Title = "مطور الواجهة الخلفية"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Name = "علي سليمان",
+                            Title = "مطور الواجهة الأمامية"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            Name = "وائل عبد الرحيم",
+                            Title = "مطور الواجهة الخلفية"
+                        });
                 });
 
             modelBuilder.Entity("Shoghlana.Core.Models.Job", b =>
@@ -141,6 +163,36 @@ namespace Shoghlana.EF.Migrations
                     b.HasIndex("FreelancerId");
 
                     b.ToTable("Jobs");
+                });
+
+            modelBuilder.Entity("Shoghlana.Core.Models.Notification", b =>
+                {
+                    b.Property<int>("ID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ID"));
+
+                    b.Property<int?>("ClientId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("FreelancerId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("description")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("sentTime")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("ID");
+
+                    b.HasIndex("ClientId");
+
+                    b.HasIndex("FreelancerId");
+
+                    b.ToTable("Notification");
                 });
 
             modelBuilder.Entity("Shoghlana.Core.Models.Project", b =>
@@ -349,6 +401,17 @@ namespace Shoghlana.EF.Migrations
                     b.Navigation("Freelancer");
                 });
 
+            modelBuilder.Entity("Shoghlana.Core.Models.Notification", b =>
+                {
+                    b.HasOne("Shoghlana.Core.Models.Client", null)
+                        .WithMany("notifications")
+                        .HasForeignKey("ClientId");
+
+                    b.HasOne("Shoghlana.Core.Models.Freelancer", null)
+                        .WithMany("notifications")
+                        .HasForeignKey("FreelancerId");
+                });
+
             modelBuilder.Entity("Shoghlana.Core.Models.Project", b =>
                 {
                     b.HasOne("Shoghlana.Core.Models.Freelancer", "Freelancer")
@@ -444,6 +507,8 @@ namespace Shoghlana.EF.Migrations
             modelBuilder.Entity("Shoghlana.Core.Models.Client", b =>
                 {
                     b.Navigation("Jobs");
+
+                    b.Navigation("notifications");
                 });
 
             modelBuilder.Entity("Shoghlana.Core.Models.Freelancer", b =>
@@ -453,6 +518,8 @@ namespace Shoghlana.EF.Migrations
                     b.Navigation("Proposals");
 
                     b.Navigation("WorkingHistory");
+
+                    b.Navigation("notifications");
                 });
 
             modelBuilder.Entity("Shoghlana.Core.Models.Job", b =>

@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace Shoghlana.EF.Migrations
 {
     /// <inheritdoc />
-    public partial class init : Migration
+    public partial class Init : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -101,6 +101,32 @@ namespace Shoghlana.EF.Migrations
                         principalColumn: "Id");
                     table.ForeignKey(
                         name: "FK_Jobs_Freelancers_FreelancerId",
+                        column: x => x.FreelancerId,
+                        principalTable: "Freelancers",
+                        principalColumn: "Id");
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Notification",
+                columns: table => new
+                {
+                    ID = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    sentTime = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    description = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    ClientId = table.Column<int>(type: "int", nullable: true),
+                    FreelancerId = table.Column<int>(type: "int", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Notification", x => x.ID);
+                    table.ForeignKey(
+                        name: "FK_Notification_Clients_ClientId",
+                        column: x => x.ClientId,
+                        principalTable: "Clients",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_Notification_Freelancers_FreelancerId",
                         column: x => x.FreelancerId,
                         principalTable: "Freelancers",
                         principalColumn: "Id");
@@ -294,6 +320,16 @@ namespace Shoghlana.EF.Migrations
                 column: "SkillId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Notification_ClientId",
+                table: "Notification",
+                column: "ClientId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Notification_FreelancerId",
+                table: "Notification",
+                column: "FreelancerId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_ProjectImages_ProjectId",
                 table: "ProjectImages",
                 column: "ProjectId");
@@ -334,6 +370,9 @@ namespace Shoghlana.EF.Migrations
 
             migrationBuilder.DropTable(
                 name: "jobSkills");
+
+            migrationBuilder.DropTable(
+                name: "Notification");
 
             migrationBuilder.DropTable(
                 name: "ProjectImages");
