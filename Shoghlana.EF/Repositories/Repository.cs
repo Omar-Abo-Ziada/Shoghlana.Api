@@ -67,7 +67,7 @@ namespace Shoghlana.EF.Repository
             return await query.FirstOrDefaultAsync(criteria);
         }
 
-        public IEnumerable<T> FindAll(Expression<Func<T, bool>> criteria, string[] includes = null)
+        public IEnumerable<T> FindAll(Expression<Func<T, bool>> criteria, string[] includes = null) 
         {
             IQueryable<T> query = Context.Set<T>();
 
