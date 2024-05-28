@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Shoghlana.EF;
 
@@ -11,9 +12,11 @@ using Shoghlana.EF;
 namespace Shoghlana.EF.Migrations
 {
     [DbContext(typeof(ApplicationDBContext))]
-    partial class ApplicationDBContextModelSnapshot : ModelSnapshot
+    [Migration("20240528184114_tryData")]
+    partial class tryData
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -190,21 +193,9 @@ namespace Shoghlana.EF.Migrations
                             ExperienceLevel = 1,
                             MaxBudget = 2000m,
                             MinBudget = 1000m,
-                            PostTime = new DateTime(2024, 5, 28, 22, 19, 57, 579, DateTimeKind.Local).AddTicks(9943),
+                            PostTime = new DateTime(2024, 5, 28, 21, 41, 11, 565, DateTimeKind.Local).AddTicks(2382),
                             Status = 0,
                             Title = "Software Developer"
-                        },
-                        new
-                        {
-                            Id = 2,
-                            ClientId = 1,
-                            Description = "Develop software applications",
-                            ExperienceLevel = 1,
-                            MaxBudget = 2000m,
-                            MinBudget = 1000m,
-                            PostTime = new DateTime(2024, 5, 28, 22, 19, 57, 580, DateTimeKind.Local).AddTicks(3),
-                            Status = 0,
-                            Title = "BackEnd Developer"
                         });
                 });
 
