@@ -5,7 +5,7 @@ using Shoghlana.Core.DTO;
 using Shoghlana.Core.Interfaces;
 using Shoghlana.Core.Models;
 using Shoghlana.EF.Repositories;
-using Shoghlana.Api.Response; 
+using Shoghlana.Api.Response;
 
 namespace Shoghlana.Api.Controllers
 {
@@ -24,26 +24,26 @@ namespace Shoghlana.Api.Controllers
         public IActionResult GetAll()
         {
             IEnumerable<Client> clients = unitOfWork.client.GetAll();
-           
-          
+
+
             if (clients != null)
             {
-             
-               List<GetClientDTO> clientsDTO = new List<GetClientDTO>();
-                
-                
+
+                List<GetClientDTO> clientsDTO = new List<GetClientDTO>();
+
+
                 foreach (Client client in clients)
                 {
-                    GetClientDTO clientDTO = new  GetClientDTO();
-                  
+                    GetClientDTO clientDTO = new GetClientDTO();
+
                     clientDTO.Name = client.Name;
                     clientDTO.Image = client.Image;
-                    clientDTO.Description= client.Description;
-                    clientDTO.Phone= client.Phone;
-                    clientDTO.Country= client.Country;
+                    clientDTO.Description = client.Description;
+                    clientDTO.Phone = client.Phone;
+                    clientDTO.Country = client.Country;
 
                     clientsDTO.Add(clientDTO);
-                    
+
                 }
                 return Ok(new GeneralResponse
                 {
@@ -62,16 +62,17 @@ namespace Shoghlana.Api.Controllers
         public IActionResult GetById(int id)
         {
             Client client = unitOfWork.client.GetById(id);
-          
+
             if (client != null)
             {
-             
-                  GetClientDTO clientsDTO = new GetClientDTO();
-                  clientsDTO.Name = client.Name;
-                  clientsDTO.Image = client.Image;
-                  clientsDTO.Phone= client.Phone;
-                  clientsDTO.Description= client.Description;
-                clientsDTO.Country= client.Country;
+
+                GetClientDTO clientsDTO = new GetClientDTO();
+                clientsDTO.Name = client.Name;
+                clientsDTO.Image = client.Image;
+                clientsDTO.Phone = client.Phone;
+                clientsDTO.Description = client.Description;
+                clientsDTO.Country = client.Country;
+
                 return Ok(new GeneralResponse
                 {
                     IsSuccess = true,
@@ -87,10 +88,10 @@ namespace Shoghlana.Api.Controllers
         [HttpGet("jobs/{id}")]
         public IActionResult GetJobsByClientId(int id)
         {
-            Client client = unitOfWork.client.GetClientWithJobs(id);
+            Client? client = unitOfWork.client.GetClientWithJobs(id);
             if (client != null)
             {
-                ClientWithJobsDTO clientWithJobs = new  ClientWithJobsDTO();
+                ClientWithJobsDTO clientWithJobs = new ClientWithJobsDTO();
                 clientWithJobs.Name = client.Name;
                 clientWithJobs.Image = client.Image;
                 clientWithJobs.Jobs = client.Jobs.Select(job => new JobDTO
@@ -118,7 +119,7 @@ namespace Shoghlana.Api.Controllers
         }
 
         [HttpPost]
-        public IActionResult CreateClient( [FromForm]ClientDTO clientDTO)
+        public IActionResult CreateClient([FromForm] ClientDTO clientDTO)
         {
             using var dataStream = new MemoryStream();
             clientDTO.Image.CopyTo(dataStream);
@@ -127,7 +128,7 @@ namespace Shoghlana.Api.Controllers
             {
                 Client client = new Client();
                 client.Name = clientDTO.Name;
-                client.Image=dataStream.ToArray();
+                client.Image = dataStream.ToArray();
                 client.Description = clientDTO.Description;
                 client.Country = clientDTO.Country;
                 client.Phone = clientDTO.Phone;
@@ -197,7 +198,7 @@ namespace Shoghlana.Api.Controllers
                 Message = "Client deleted"
             });
         }
-       
+
 
     }
 }
