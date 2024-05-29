@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Shoghlana.EF;
 
@@ -11,9 +12,11 @@ using Shoghlana.EF;
 namespace Shoghlana.EF.Migrations
 {
     [DbContext(typeof(ApplicationDBContext))]
-    partial class ApplicationDBContextModelSnapshot : ModelSnapshot
+    [Migration("20240528184114_tryData")]
+    partial class tryData
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -113,43 +116,20 @@ namespace Shoghlana.EF.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Name")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Overview")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<byte[]>("PersonalImageBytes")
-                        .HasColumnType("varbinary(max)");
+                    b.Property<string>("PersonalImage")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Title")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
                     b.ToTable("Freelancers");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            Name = "أحمد محمد",
-                            Title = "مطور الواجهة الخلفية"
-                        },
-                        new
-                        {
-                            Id = 2,
-                            Name = "علي سليمان",
-                            Title = "مطور الواجهة الأمامية"
-                        },
-                        new
-                        {
-                            Id = 3,
-                            Name = "وائل عبد الرحيم",
-                            Title = "مطور الواجهة الخلفية"
-                        });
                 });
 
             modelBuilder.Entity("Shoghlana.Core.Models.Job", b =>
@@ -213,21 +193,9 @@ namespace Shoghlana.EF.Migrations
                             ExperienceLevel = 1,
                             MaxBudget = 2000m,
                             MinBudget = 1000m,
-                            PostTime = new DateTime(2024, 5, 28, 22, 19, 57, 579, DateTimeKind.Local).AddTicks(9943),
+                            PostTime = new DateTime(2024, 5, 28, 21, 41, 11, 565, DateTimeKind.Local).AddTicks(2382),
                             Status = 0,
                             Title = "Software Developer"
-                        },
-                        new
-                        {
-                            Id = 2,
-                            ClientId = 1,
-                            Description = "Develop software applications",
-                            ExperienceLevel = 1,
-                            MaxBudget = 2000m,
-                            MinBudget = 1000m,
-                            PostTime = new DateTime(2024, 5, 28, 22, 19, 57, 580, DateTimeKind.Local).AddTicks(3),
-                            Status = 0,
-                            Title = "BackEnd Developer"
                         });
                 });
 
@@ -253,36 +221,6 @@ namespace Shoghlana.EF.Migrations
                         .HasColumnType("datetime2");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("ClientId");
-
-                    b.HasIndex("FreelancerId");
-
-                    b.ToTable("Notification");
-                });
-
-            modelBuilder.Entity("Shoghlana.Core.Models.Notification", b =>
-                {
-                    b.Property<int>("ID")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ID"));
-
-                    b.Property<int?>("ClientId")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("FreelancerId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("description")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("sentTime")
-                        .HasColumnType("datetime2");
-
-                    b.HasKey("ID");
 
                     b.HasIndex("ClientId");
 

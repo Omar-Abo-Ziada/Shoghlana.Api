@@ -9,5 +9,6 @@ namespace Shoghlana.Core.Interfaces
 {
     public interface IClientRepository : IRepository<Client>
     {
+        Client? GetClientWithJobs(int id);
     }
 }
