@@ -125,7 +125,7 @@ namespace Shoghlana.Api.Controllers
             clientDTO.Image.CopyTo(dataStream);
 
             if (ModelState.IsValid)
-            {
+            {//sd
                 Client client = new Client();
                 client.Name = clientDTO.Name;
                 client.Image = dataStream.ToArray();
