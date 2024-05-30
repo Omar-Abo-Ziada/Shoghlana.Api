@@ -16,6 +16,13 @@ namespace Shoghlana.EF
         public DbSet<Project> Projects { get; set; }
         public DbSet<Job> Jobs { get; set; }
         public DbSet<Skill> Skills { get; set; }
+
+        //   public DbSet<FreelancerSkills> FreelancerSkills { get; set; }
+
+        //   public DbSet<JobSkills> JobSkills { get; set; }
+
+        //        public DbSet<ProjectSkills> ProjectSkills { get; set; }
+
         public DbSet<Proposal> Proposals { get; set; }
         public DbSet<ProjectImages> ProjectImages { get; set; }
         public DbSet<Category> Categories { get; set; }
@@ -37,6 +44,27 @@ namespace Shoghlana.EF
             {
                 entity.HasKey(c => c.Id);
             });
+
+
+            modelBuilder.Entity<Freelancer>(entity =>
+            {
+                entity.HasKey(f => f.Id);
+
+                entity.Property(f => f.Name).HasMaxLength(50);
+
+                // map relation with skills >> M:M
+                entity.HasMany(f => f.skills)
+                      .WithMany(s => s.freelancers)
+                      .UsingEntity<Dictionary<string, object>>("freelancerSkills",  // j 
+                    j => j.HasOne<Skill>()
+                          .WithMany()
+                          .HasForeignKey("SkillId"),
+                    j => j.HasOne<Freelancer>()
+                          .WithMany()
+                          .HasForeignKey("FreelancerId"));
+            });
+
+
 
             modelBuilder.Entity<Job>(entity =>
             {
@@ -82,6 +110,17 @@ namespace Shoghlana.EF
             });
 
             // Other entity configurations...
+
+            #region Initial Data
+
+            modelBuilder.Entity<Freelancer>().HasData
+            (
+                new Freelancer() { Id = 1, Name = "أحمد محمد", Title = "مطور الواجهة الخلفية" },
+                new Freelancer() { Id = 2, Name = "علي سليمان", Title = "مطور الواجهة الأمامية" },
+                new Freelancer() { Id = 3, Name = "وائل عبد الرحيم", Title = "مطور الواجهة الخلفية" }
+            );
+
+            #endregion
 
             base.OnModelCreating(modelBuilder);
         }

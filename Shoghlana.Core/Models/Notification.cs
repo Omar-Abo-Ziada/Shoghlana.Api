@@ -8,7 +8,11 @@ namespace Shoghlana.Core.Models
 {
     public class Notification
     {
+
         public int Id { get; set; }
+
+        public int ID { get; set; }
+
         public DateTime sentTime { get; set; }
          
         public string description { get; set; }
