@@ -11,28 +11,26 @@ namespace Shoghlana.Core.Models
 {
     public class Proposal
     {
-      //  [Key]
         public int Id { get; set; }
 
-        public string Title { get; set; }
+        //public string Title { get; set; }
+
+        //TODO duration / deadline 
 
         public string? Description { get; set; }
 
-     //   [Column(TypeName = "Money")]
         public decimal Price { get; set; }
 
-       // public ProposalStatus Status { get; set; } = ProposalStatus.Waiting;
-        public ProposalStatus Status { get; set; }
+        public ProposalStatus Status { get; set; } // not in the DTO
+
+        //TODO list of linke of the repo + list of images
 
         //---------------------------------
 
-      //  [ForeignKey("Freelancer")]
         public int? FreelancerId { get; set; }
 
         public Freelancer Freelancer { get; set; }
 
-
-      //  [ForeignKey("Job")]
         public int? JobId { get; set; }
 
         public Job Job { get; set; }

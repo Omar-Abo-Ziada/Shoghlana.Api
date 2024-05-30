@@ -9,8 +9,13 @@ namespace Shoghlana.Api.Helpers
         public MappingProfile()
         {
             CreateMap<Freelancer, FreelancerDTO>();
-
             CreateMap<FreelancerDTO, Freelancer>();
+
+            CreateMap<ProposalDTO, Proposal>();
+            CreateMap<Freelancer, ProposalDTO>();
+
+            CreateMap<SkillsDTO, Skill>();
+            CreateMap<Skill, SkillsDTO>();
         }
     }
 }

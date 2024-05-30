@@ -30,22 +30,12 @@ namespace Shoghlana.Api.Controllers
         [HttpGet]
         public ActionResult<GeneralResponse> GetAll()
         {
-            List<Freelancer> freelancers = unitOfWork.freelancer.GetAll().ToList();
+            List<Freelancer> freelancers = unitOfWork.freelancer.FindAll(includes: ["Skills"]).ToList();
 
             List<FreelancerDTO> freelancerDTOs = new List<FreelancerDTO>(freelancers.Count);
 
             foreach (Freelancer freelancer in freelancers)
             {
-                //FreelancerDTO freelancerDTO = new FreelancerDTO()
-                //{
-                //    Name = freelancer.Name,
-                //    Title = freelancer.Title,
-                //    Overview = freelancer.Overview,
-                //    Address = freelancer.Address,
-
-                //    PersonalImageBytes = freelancer.PersonalImageBytes,
-                //};
-
                 FreelancerDTO freelancerDTO = mapper.Map<Freelancer, FreelancerDTO>(freelancer);
 
                 freelancerDTOs.Add(freelancerDTO);
@@ -62,7 +52,7 @@ namespace Shoghlana.Api.Controllers
         [HttpGet("{id:int}")]
         public ActionResult<GeneralResponse> GetById(int id)
         {
-            Freelancer? freelancer = unitOfWork.freelancer.GetById(id);
+            Freelancer? freelancer = unitOfWork.freelancer.Find(includes: ["Skills"]);
 
             if (freelancer is null)
             {
@@ -178,7 +168,7 @@ namespace Shoghlana.Api.Controllers
                 return new GeneralResponse()
                 {
                     IsSuccess = false,
-                    Status = 400,
+                    Status = 404,
                     Message = "There is no Freelancer found with this ID !"
                 };
             }
@@ -212,7 +202,12 @@ namespace Shoghlana.Api.Controllers
                 freelancer.PersonalImageBytes = dataStream.ToArray();
             }
 
-            freelancer.Name = addedFreelancerDTO.Name;
+            #region Don't use Automapper here
+            // can't use update here because the same instance is already tracked when I got him by Id
+            // so I just map with my self and save changes => also cant use automapper because it creates a new instance and doesn't modify the existed one 
+            // so SaveChanges won't take effect unless I Mapped manually 
+            #endregion
+
             freelancer.Title = addedFreelancerDTO.Title;
             freelancer.Overview = addedFreelancerDTO.Overview;
             freelancer.Address = addedFreelancerDTO.Address;
