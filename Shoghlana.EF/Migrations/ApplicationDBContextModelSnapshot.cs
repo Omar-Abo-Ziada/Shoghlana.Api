@@ -205,36 +205,6 @@ namespace Shoghlana.EF.Migrations
                     b.ToTable("Notification");
                 });
 
-            modelBuilder.Entity("Shoghlana.Core.Models.Notification", b =>
-                {
-                    b.Property<int>("ID")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ID"));
-
-                    b.Property<int?>("ClientId")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("FreelancerId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("description")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("sentTime")
-                        .HasColumnType("datetime2");
-
-                    b.HasKey("ID");
-
-                    b.HasIndex("ClientId");
-
-                    b.HasIndex("FreelancerId");
-
-                    b.ToTable("Notification");
-                });
-
             modelBuilder.Entity("Shoghlana.Core.Models.Project", b =>
                 {
                     b.Property<int>("Id")
