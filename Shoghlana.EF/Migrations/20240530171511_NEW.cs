@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace Shoghlana.EF.Migrations
 {
     /// <inheritdoc />
-    public partial class Init : Migration
+    public partial class NEW : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -59,6 +59,20 @@ namespace Shoghlana.EF.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Freelancers", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Notification",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    sentTime = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    description = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Notification", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -113,32 +127,6 @@ namespace Shoghlana.EF.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Notification",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    sentTime = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    description = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    ClientId = table.Column<int>(type: "int", nullable: true),
-                    FreelancerId = table.Column<int>(type: "int", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Notification", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Notification_Clients_ClientId",
-                        column: x => x.ClientId,
-                        principalTable: "Clients",
-                        principalColumn: "Id");
-                    table.ForeignKey(
-                        name: "FK_Notification_Freelancers_FreelancerId",
-                        column: x => x.FreelancerId,
-                        principalTable: "Freelancers",
-                        principalColumn: "Id");
-                });
-
-            migrationBuilder.CreateTable(
                 name: "Projects",
                 columns: table => new
                 {
@@ -158,6 +146,54 @@ namespace Shoghlana.EF.Migrations
                         column: x => x.FreelancerId,
                         principalTable: "Freelancers",
                         principalColumn: "Id");
+                });
+
+            migrationBuilder.CreateTable(
+                name: "ClientNotifications",
+                columns: table => new
+                {
+                    ClientId = table.Column<int>(type: "int", nullable: false),
+                    NotificationId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ClientNotifications", x => new { x.ClientId, x.NotificationId });
+                    table.ForeignKey(
+                        name: "FK_ClientNotifications_Clients_ClientId",
+                        column: x => x.ClientId,
+                        principalTable: "Clients",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.NoAction);
+                    table.ForeignKey(
+                        name: "FK_ClientNotifications_Notification_NotificationId",
+                        column: x => x.NotificationId,
+                        principalTable: "Notification",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.NoAction);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "FreelancerNotifications",
+                columns: table => new
+                {
+                    FreelancerId = table.Column<int>(type: "int", nullable: false),
+                    NotificationId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_FreelancerNotifications", x => new { x.FreelancerId, x.NotificationId });
+                    table.ForeignKey(
+                        name: "FK_FreelancerNotifications_Freelancers_FreelancerId",
+                        column: x => x.FreelancerId,
+                        principalTable: "Freelancers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.NoAction);
+                    table.ForeignKey(
+                        name: "FK_FreelancerNotifications_Notification_NotificationId",
+                        column: x => x.NotificationId,
+                        principalTable: "Notification",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.NoAction);
                 });
 
             migrationBuilder.CreateTable(
@@ -214,9 +250,13 @@ namespace Shoghlana.EF.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
+                    DeadLine = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    ApprovedTime = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    Duration = table.Column<double>(type: "float", nullable: false),
                     Description = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Price = table.Column<decimal>(type: "Money", nullable: false),
                     Status = table.Column<int>(type: "int", nullable: false, defaultValue: 1),
+                    ReposLinks = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     FreelancerId = table.Column<int>(type: "int", nullable: true),
                     JobId = table.Column<int>(type: "int", nullable: true)
                 },
@@ -263,7 +303,7 @@ namespace Shoghlana.EF.Migrations
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     ProjectId = table.Column<int>(type: "int", nullable: true),
-                    Image = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    Image = table.Column<byte[]>(type: "varbinary(max)", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -299,6 +339,26 @@ namespace Shoghlana.EF.Migrations
                         onDelete: ReferentialAction.NoAction);
                 });
 
+            migrationBuilder.CreateTable(
+                name: "ProposalImages",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    ProposalId = table.Column<int>(type: "int", nullable: false),
+                    Image = table.Column<byte[]>(type: "varbinary(max)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ProposalImages", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_ProposalImages_Proposals_ProposalId",
+                        column: x => x.ProposalId,
+                        principalTable: "Proposals",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.NoAction);
+                });
+
             migrationBuilder.InsertData(
                 table: "Freelancers",
                 columns: new[] { "Id", "Address", "Name", "Overview", "PersonalImageBytes", "Title" },
@@ -321,6 +381,16 @@ namespace Shoghlana.EF.Migrations
                     { 5, null, "Agile" },
                     { 6, null, "Blazor" }
                 });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ClientNotifications_NotificationId",
+                table: "ClientNotifications",
+                column: "NotificationId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_FreelancerNotifications_NotificationId",
+                table: "FreelancerNotifications",
+                column: "NotificationId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_freelancerSkills_SkillId",
@@ -348,16 +418,6 @@ namespace Shoghlana.EF.Migrations
                 column: "SkillId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Notification_ClientId",
-                table: "Notification",
-                column: "ClientId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Notification_FreelancerId",
-                table: "Notification",
-                column: "FreelancerId");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_ProjectImages_ProjectId",
                 table: "ProjectImages",
                 column: "ProjectId");
@@ -371,6 +431,11 @@ namespace Shoghlana.EF.Migrations
                 name: "IX_projectSkills_SkillId",
                 table: "projectSkills",
                 column: "SkillId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ProposalImages_ProposalId",
+                table: "ProposalImages",
+                column: "ProposalId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Proposals_FreelancerId",
@@ -394,13 +459,16 @@ namespace Shoghlana.EF.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
+                name: "ClientNotifications");
+
+            migrationBuilder.DropTable(
+                name: "FreelancerNotifications");
+
+            migrationBuilder.DropTable(
                 name: "freelancerSkills");
 
             migrationBuilder.DropTable(
                 name: "jobSkills");
-
-            migrationBuilder.DropTable(
-                name: "Notification");
 
             migrationBuilder.DropTable(
                 name: "ProjectImages");
@@ -409,16 +477,22 @@ namespace Shoghlana.EF.Migrations
                 name: "projectSkills");
 
             migrationBuilder.DropTable(
-                name: "Proposals");
+                name: "ProposalImages");
 
             migrationBuilder.DropTable(
                 name: "Rates");
+
+            migrationBuilder.DropTable(
+                name: "Notification");
 
             migrationBuilder.DropTable(
                 name: "Projects");
 
             migrationBuilder.DropTable(
                 name: "Skills");
+
+            migrationBuilder.DropTable(
+                name: "Proposals");
 
             migrationBuilder.DropTable(
                 name: "Jobs");

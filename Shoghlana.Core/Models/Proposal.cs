@@ -13,9 +13,11 @@ namespace Shoghlana.Core.Models
     {
         public int Id { get; set; }
 
-        //public string Title { get; set; }
+        public DateTime DeadLine { get; set; } // calulated after approve
 
-        //TODO duration / deadline 
+        public DateTime ApprovedTime { get; set; } // known when the client approves
+
+        public double Duration { get; set; } // given from the freelancer
 
         public string? Description { get; set; }
 
@@ -23,9 +25,11 @@ namespace Shoghlana.Core.Models
 
         public ProposalStatus Status { get; set; } // not in the DTO
 
-        //TODO list of linke of the repo + list of images
+        public List<string>? ReposLinks { get; set; }
 
         //---------------------------------
+
+        public List<ProposalImages>? Images { get; set; }
 
         public int? FreelancerId { get; set; }
 
@@ -34,5 +38,6 @@ namespace Shoghlana.Core.Models
         public int? JobId { get; set; }
 
         public Job Job { get; set; }
+
     }
 }

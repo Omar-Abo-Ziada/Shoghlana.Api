@@ -23,7 +23,7 @@ namespace Shoghlana.Core.Models
 
         public string? Overview { get; set; }
 
-        public List<Project>? Portfolio { get; set; }
+        public List<Project>? Portfolio { get; set; }   
 
         public List<Job>? WorkingHistory { get; set; }
 
@@ -31,7 +31,7 @@ namespace Shoghlana.Core.Models
 
         public List<Skill>? Skills { get; set; }
 
-        public List<Notification>? notifications { get; set; }
+        public List<FreelancerNotification>? Notifications { get; set; }
 
         ///TODO : add service from freelancer
 
