@@ -3,6 +3,8 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
+#pragma warning disable CA1814 // Prefer jagged arrays over multidimensional
+
 namespace Shoghlana.EF.Migrations
 {
     /// <inheritdoc />
@@ -31,7 +33,11 @@ namespace Shoghlana.EF.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Description = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Image = table.Column<byte[]>(type: "varbinary(max)", nullable: true),
+                    Country = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Phone = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -44,9 +50,9 @@ namespace Shoghlana.EF.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    PersonalImage = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Name = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Title = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    PersonalImageBytes = table.Column<byte[]>(type: "varbinary(max)", nullable: true),
+                    Name = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
+                    Title = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Address = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Overview = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
@@ -110,7 +116,7 @@ namespace Shoghlana.EF.Migrations
                 name: "Notification",
                 columns: table => new
                 {
-                    ID = table.Column<int>(type: "int", nullable: false)
+                    Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     sentTime = table.Column<DateTime>(type: "datetime2", nullable: false),
                     description = table.Column<string>(type: "nvarchar(max)", nullable: false),
@@ -119,7 +125,7 @@ namespace Shoghlana.EF.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Notification", x => x.ID);
+                    table.PrimaryKey("PK_Notification", x => x.Id);
                     table.ForeignKey(
                         name: "FK_Notification_Clients_ClientId",
                         column: x => x.ClientId,
@@ -208,7 +214,6 @@ namespace Shoghlana.EF.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Title = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Description = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Price = table.Column<decimal>(type: "Money", nullable: false),
                     Status = table.Column<int>(type: "int", nullable: false, defaultValue: 1),
@@ -292,6 +297,29 @@ namespace Shoghlana.EF.Migrations
                         principalTable: "Skills",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.NoAction);
+                });
+
+            migrationBuilder.InsertData(
+                table: "Freelancers",
+                columns: new[] { "Id", "Address", "Name", "Overview", "PersonalImageBytes", "Title" },
+                values: new object[,]
+                {
+                    { 1, null, "أحمد محمد", null, null, "مطور الواجهة الخلفية" },
+                    { 2, null, "علي سليمان", null, null, "مطور الواجهة الأمامية" },
+                    { 3, null, "وائل عبد الرحيم", null, null, "مطور الواجهة الخلفية" }
+                });
+
+            migrationBuilder.InsertData(
+                table: "Skills",
+                columns: new[] { "Id", "Description", "Title" },
+                values: new object[,]
+                {
+                    { 1, null, "C#" },
+                    { 2, null, "LINQ" },
+                    { 3, null, "EF" },
+                    { 4, null, "OOP" },
+                    { 5, null, "Agile" },
+                    { 6, null, "Blazor" }
                 });
 
             migrationBuilder.CreateIndex(
