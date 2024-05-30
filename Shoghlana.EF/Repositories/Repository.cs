@@ -39,7 +39,7 @@ namespace Shoghlana.EF.Repository
             return await Context.Set<T>().FindAsync(id);
         }
 
-        public T Find(Expression<Func<T, bool>> criteria, string[] includes = null)
+        public T Find(string[] includes = null, Expression<Func<T, bool>> criteria = null)
         {
             IQueryable<T> query = Context.Set<T>();
 
@@ -50,7 +50,13 @@ namespace Shoghlana.EF.Repository
                     query = query.Include(include);
                 }
             }
-            return query.FirstOrDefault(criteria);
+
+            if (criteria is not null)
+            {
+                query = query.Where(criteria);
+            }
+
+            return query.FirstOrDefault();
         }
 
         public async Task<T> FindAsync(Expression<Func<T, bool>> criteria, string[] includes = null)
@@ -67,7 +73,7 @@ namespace Shoghlana.EF.Repository
             return await query.FirstOrDefaultAsync(criteria);
         }
 
-        public IEnumerable<T> FindAll(Expression<Func<T, bool>> criteria, string[] includes = null)
+        public IEnumerable<T> FindAll(string[] includes = null , Expression < Func<T, bool>> criteria = null )
         {
             IQueryable<T> query = Context.Set<T>();
 
@@ -78,7 +84,13 @@ namespace Shoghlana.EF.Repository
                     query = query.Include(include);
                 }
             }
-            return query.Where(criteria).ToList();
+
+            if (criteria is not null)
+            {
+                query = query.Where(criteria);
+            }
+
+            return query.ToList();
         }
 
         public IEnumerable<T> FindAll(Expression<Func<T, bool>> criteria, int skip, int take)

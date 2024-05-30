@@ -23,13 +23,12 @@ namespace Shoghlana.Api
             options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection") ,
             b => b.MigrationsAssembly(typeof(ApplicationDBContext).Assembly.FullName)));
 
-            builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 
-            builder.Services.AddScoped<IClientRepository, ClientRepository>();
+            builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();// Update-ClientControlller
+
+          builder.Services.AddScoped<IClientRepository, ClientRepository>();
             builder.Services.AddScoped<IJobRepository, JobRepository>();
             
-
-
             builder.Services.AddAutoMapper(typeof(Program));
 
             builder.Services.AddCors();

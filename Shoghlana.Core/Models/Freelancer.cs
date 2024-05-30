@@ -29,9 +29,11 @@ namespace Shoghlana.Core.Models
 
         public List<Proposal>? Proposals { get; set; }
 
-        public List<Skill>? skills { get; set; }
+        public List<Skill>? Skills { get; set; }
 
-        public List<Notification>? notifications { get; set; } 
+        public List<Notification>? notifications { get; set; }
+
+        ///TODO : add service from freelancer
 
         // list<Notification> notifications {get; set;}  >> time , desc "url" navigate to dif pages
         // ai guide client how write requirements , recommend freelancers  

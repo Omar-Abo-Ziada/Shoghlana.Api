@@ -12,8 +12,8 @@ using Shoghlana.EF;
 namespace Shoghlana.EF.Migrations
 {
     [DbContext(typeof(ApplicationDBContext))]
-    [Migration("20240528131539_client1")]
-    partial class client1
+    [Migration("20240530083422_Init")]
+    partial class Init
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -86,20 +86,43 @@ namespace Shoghlana.EF.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Name")
-                        .HasColumnType("nvarchar(max)");
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
                     b.Property<string>("Overview")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("PersonalImage")
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<byte[]>("PersonalImageBytes")
+                        .HasColumnType("varbinary(max)");
 
                     b.Property<string>("Title")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
                     b.ToTable("Freelancers");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Name = "أحمد محمد",
+                            Title = "مطور الواجهة الخلفية"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Name = "علي سليمان",
+                            Title = "مطور الواجهة الأمامية"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            Name = "وائل عبد الرحيم",
+                            Title = "مطور الواجهة الخلفية"
+                        });
                 });
 
             modelBuilder.Entity("Shoghlana.Core.Models.Job", b =>
@@ -263,10 +286,6 @@ namespace Shoghlana.EF.Migrations
                         .HasColumnType("int")
                         .HasDefaultValue(1);
 
-                    b.Property<string>("Title")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.HasKey("Id");
 
                     b.HasIndex("FreelancerId");
@@ -323,6 +342,38 @@ namespace Shoghlana.EF.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Skills");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Title = "C#"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Title = "LINQ"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            Title = "EF"
+                        },
+                        new
+                        {
+                            Id = 4,
+                            Title = "OOP"
+                        },
+                        new
+                        {
+                            Id = 5,
+                            Title = "Agile"
+                        },
+                        new
+                        {
+                            Id = 6,
+                            Title = "Blazor"
+                        });
                 });
 
             modelBuilder.Entity("freelancerSkills", b =>
