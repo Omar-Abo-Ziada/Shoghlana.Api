@@ -27,9 +27,15 @@ namespace Shoghlana.EF
 
         //        public DbSet<ProjectSkills> ProjectSkills { get; set; }
 
+        public DbSet<FreelancerNotification> FreelancerNotifications { get; set; }
+
+        public DbSet<ClientNotification> ClientNotifications { get; set; }
+
         public DbSet<Proposal> Proposals { get; set; }
 
         public DbSet<ProjectImages> ProjectImages { get; set; }
+
+        public DbSet<ProposalImages> ProposalImages { get; set; }
 
         public DbSet<Category> Categories { get; set; }
 
@@ -53,6 +59,33 @@ namespace Shoghlana.EF
                 entity.HasKey(c => c.Id);
             });
 
+            // Freelancer-Notification relationship
+            modelBuilder.Entity<FreelancerNotification>()
+                .HasKey(fn => new { fn.FreelancerId, fn.NotificationId });
+
+            modelBuilder.Entity<FreelancerNotification>()
+                .HasOne(fn => fn.Freelancer)
+                .WithMany(f => f.Notifications)
+                .HasForeignKey(fn => fn.FreelancerId);
+
+            modelBuilder.Entity<FreelancerNotification>()
+                .HasOne(fn => fn.Notification)
+                .WithMany(n => n.FreelancerNotifications)
+                .HasForeignKey(fn => fn.NotificationId);
+
+            // Client-Notification relationship
+            modelBuilder.Entity<ClientNotification>()
+                .HasKey(cn => new { cn.ClientId, cn.NotificationId });
+
+            modelBuilder.Entity<ClientNotification>()
+                .HasOne(cn => cn.Client)
+                .WithMany(c => c.Notifications)
+                .HasForeignKey(cn => cn.ClientId);
+
+            modelBuilder.Entity<ClientNotification>()
+                .HasOne(cn => cn.Notification)
+                .WithMany(n => n.ClientNotifications)
+                .HasForeignKey(cn => cn.NotificationId);
 
             modelBuilder.Entity<Freelancer>(entity =>
             {
@@ -71,7 +104,6 @@ namespace Shoghlana.EF
                           .WithMany()
                           .HasForeignKey("FreelancerId"));
             });
-
 
             modelBuilder.Entity<Job>(entity =>
             {
@@ -138,6 +170,7 @@ namespace Shoghlana.EF
                      .WithMany(p => p.Images)
                      .HasForeignKey(pI => pI.ProjectId);
             });
+
 
             modelBuilder.Entity<Proposal>(entity =>
             {
