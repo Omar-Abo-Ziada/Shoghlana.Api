@@ -14,6 +14,9 @@ namespace Shoghlana.Api.Controllers
     public class ClientController : ControllerBase
     {
         private readonly IUnitOfWork unitOfWork;
+        private List<string> allowedExtensions = new List<string>() { ".jpg", ".png" };
+
+        private long maxAllowedImageSize = 1_048_576;
 
         public ClientController(IUnitOfWork unitOfWork)
         {
@@ -21,7 +24,7 @@ namespace Shoghlana.Api.Controllers
         }
 
         [HttpGet]
-        public IActionResult GetAll()
+        public ActionResult<GeneralResponse> GetAll()
         {
             IEnumerable<Client> clients = unitOfWork.client.GetAll();
 
@@ -45,21 +48,23 @@ namespace Shoghlana.Api.Controllers
                     clientsDTO.Add(clientDTO);
 
                 }
-                return Ok(new GeneralResponse
+                return new GeneralResponse()
                 {
                     IsSuccess = true,
-                    Data = clientsDTO
-                });
+                    Status = 200,
+                    Data = clientsDTO,
+                };
             }
-            return NotFound(new GeneralResponse
+            return new GeneralResponse()
             {
                 IsSuccess = false,
+                Status = 400,
                 Message = "There is no Clients"
-            });
+            };
         }
 
         [HttpGet("{id}")]
-        public IActionResult GetById(int id)
+        public ActionResult<GeneralResponse> GetById(int id)
         {
             Client client = unitOfWork.client.GetById(id);
 
@@ -72,23 +77,24 @@ namespace Shoghlana.Api.Controllers
                 clientsDTO.Phone = client.Phone;
                 clientsDTO.Description = client.Description;
                 clientsDTO.Country = client.Country;
-
-                return Ok(new GeneralResponse
+                return new GeneralResponse()
                 {
                     IsSuccess = true,
+                    Status = 200,
                     Data = clientsDTO
-                });
+                };
             }
-            return NotFound(new GeneralResponse
+            return new GeneralResponse()
             {
                 IsSuccess = false,
-                Message = "Client Not Found"
-            });
+                Status = 400,
+                Message = "Client Not Found !"
+            };
         }
         [HttpGet("jobs/{id}")]
-        public IActionResult GetJobsByClientId(int id)
+        public ActionResult<GeneralResponse> GetJobsByClientId(int id)
         {
-            Client? client = unitOfWork.client.GetClientWithJobs(id);
+            Client client = unitOfWork.client.GetClientWithJobs(id);
             if (client != null)
             {
                 ClientWithJobsDTO clientWithJobs = new ClientWithJobsDTO();
@@ -103,100 +109,187 @@ namespace Shoghlana.Api.Controllers
                     MinBudget = job.MinBudget,
                 }).ToList();
 
-                return Ok(new GeneralResponse
+                return new GeneralResponse()
                 {
                     IsSuccess = true,
+                    Status = 200,
                     Data = clientWithJobs
-                });
+                };
 
             }
-            return NotFound(new GeneralResponse
+            return new GeneralResponse()
             {
                 IsSuccess = false,
-                Message = "Client not found"
-            });
+                Status = 400,
+                Message = "Client Not Found !"
+            };
 
         }
 
         [HttpPost]
-        public IActionResult CreateClient([FromForm] ClientDTO clientDTO)
+        public async Task<ActionResult<GeneralResponse>> CreateClient([FromForm] ClientDTO clientDTO)
         {
+
+            if (!ModelState.IsValid)
+            {
+                return new GeneralResponse()
+                {
+                    IsSuccess = false,
+                    Status = 400,
+                    Data = ModelState,
+                    Message = "Invalid Model State !"
+                };
+            }
+
+            if (clientDTO.Image is null)
+            {
+                return new GeneralResponse()
+                {
+                    IsSuccess = false,
+                    Status = 400,
+                    Message = "Image is required"
+                };
+            }
+
+            if (!allowedExtensions.Contains(Path.GetExtension(clientDTO.Image.FileName).ToLower()))
+            {
+                return new GeneralResponse()
+                {
+                    IsSuccess = false,
+                    Status = 400,
+                    Message = "The allowed  Image Extensions => {jpg , png}",
+                };
+            }
+
+            if (clientDTO.Image.Length > maxAllowedImageSize)
+            {
+                return new GeneralResponse()
+                {
+                    IsSuccess = false,
+                    Status = 400,
+                    Message = "The max Allowed Image Size => 1 MB ",
+                };
+            }
             using var dataStream = new MemoryStream();
             clientDTO.Image.CopyTo(dataStream);
 
-            if (ModelState.IsValid)
+            Client client = new Client();
+            client.Name = clientDTO.Name;
+            client.Image = dataStream.ToArray();
+            client.Description = clientDTO.Description;
+            client.Country = clientDTO.Country;
+            client.Phone = clientDTO.Phone;
+            unitOfWork.client.Add(client);
+            unitOfWork.Save();
+            return new GeneralResponse()
             {
-                Client client = new Client();
-                client.Name = clientDTO.Name;
-                client.Image = dataStream.ToArray();
-                client.Description = clientDTO.Description;
-                client.Country = clientDTO.Country;
-                client.Phone = clientDTO.Phone;
-                unitOfWork.client.Add(client);
-                unitOfWork.Save();
-                return Ok(new GeneralResponse
-                {
-                    IsSuccess = true,
-                    Message = "Client added successfully",
-                    Data = clientDTO
-                });
-            }
-            return BadRequest(new GeneralResponse
-            {
-                IsSuccess = false,
-                Message = "Invalid client data"
-            });
+                IsSuccess = true,
+                Status = 201,
+                Data = client,
+                Message = " Client Added Successfully"
+            };
+
+
         }
 
         [HttpPut("{id}")]
-        public IActionResult UpdateClient(int id, [FromForm] ClientDTO clientDTO)
+        public async Task<ActionResult<GeneralResponse>> UpdateClient(int id, [FromForm] ClientDTO clientDTO)
         {
+            if (!ModelState.IsValid)
+            {
+                return new GeneralResponse()
+                {
+                    IsSuccess = false,
+                    Status = 400,
+                    Data = ModelState,
+                    Message = "Invalid Model State !"
+                };
+            }
+
+            if (clientDTO.Image is null)
+            {
+                return new GeneralResponse()
+                {
+                    IsSuccess = false,
+                    Status = 400,
+                    Message = "Image is required"
+                };
+            }
+
+            if (!allowedExtensions.Contains(Path.GetExtension(clientDTO.Image.FileName).ToLower()))
+            {
+                return new GeneralResponse()
+                {
+                    IsSuccess = false,
+                    Status = 400,
+                    Message = "The allowed Image Extensions => {jpg , png}",
+                };
+            }
+
+            if (clientDTO.Image.Length > maxAllowedImageSize)
+            {
+                return new GeneralResponse()
+                {
+                    IsSuccess = false,
+                    Status = 400,
+                    Message = "The max Allowed Image Size => 1 MB ",
+                };
+            }
+
             using var dataStream = new MemoryStream();
             clientDTO.Image.CopyTo(dataStream);
+
             Client existingClient = unitOfWork.client.GetById(id);
             if (existingClient == null)
             {
-                return NotFound(new GeneralResponse
+                return new GeneralResponse()
                 {
                     IsSuccess = false,
-                    Message = "Client Not found"
-                });
+                    Status = 400,
+                    Message = "Client Not Found"
+                };
             }
+
             existingClient.Name = clientDTO.Name;
             existingClient.Description = clientDTO.Description;
             existingClient.Country = clientDTO.Country;
             existingClient.Phone = clientDTO.Phone;
             existingClient.Image = dataStream.ToArray();
+
             unitOfWork.client.Update(existingClient);
             unitOfWork.Save();
-            return Ok(new GeneralResponse
+
+            return new GeneralResponse()
             {
                 IsSuccess = true,
-                Message = "Client updated",
+                Status = 200,
                 Data = clientDTO
-            });
+            };
         }
 
+
         [HttpDelete("{id}")]
-        public IActionResult DeleteClient(int id)
+        public ActionResult<GeneralResponse> DeleteClient(int id)
         {
             Client existingClient = unitOfWork.client.GetById(id);
             if (existingClient == null)
             {
-                return NotFound(new GeneralResponse
+                return new GeneralResponse()
                 {
                     IsSuccess = false,
-                    Message = "Client Not found"
-                });
+                    Status = 400,
+                    Message = "Client Not Found"
+                };
             }
 
             unitOfWork.client.Delete(existingClient);
             unitOfWork.Save();
-            return Ok(new GeneralResponse
+            return new GeneralResponse()
             {
                 IsSuccess = true,
-                Message = "Client deleted"
-            });
+                Status = 204,
+                Message = $"Client is deleted successfully !"
+            };
         }
 
 
