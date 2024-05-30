@@ -61,6 +61,7 @@ namespace Shoghlana.EF
                 entity.Property(f => f.Name).HasMaxLength(50);
 
                 // map relation with skills >> M:M
+
                 entity.HasMany(f => f.Skills)
                       .WithMany(s => s.freelancers)
                       .UsingEntity<Dictionary<string, object>>("freelancerSkills",  // j 
@@ -212,6 +213,17 @@ namespace Shoghlana.EF
                  new Skill() { Id = 6, Title = "Blazor" },
              }
          );
+
+            #endregion
+
+            #region Initial Data
+
+            modelBuilder.Entity<Freelancer>().HasData
+            (
+                new Freelancer() { Id = 1, Name = "أحمد محمد", Title = "مطور الواجهة الخلفية" },
+                new Freelancer() { Id = 2, Name = "علي سليمان", Title = "مطور الواجهة الأمامية" },
+                new Freelancer() { Id = 3, Name = "وائل عبد الرحيم", Title = "مطور الواجهة الخلفية" }
+            );
 
             #endregion
 

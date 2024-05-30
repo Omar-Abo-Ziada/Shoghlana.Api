@@ -30,12 +30,14 @@ namespace Shoghlana.Api.Controllers
         [HttpGet]
         public ActionResult<GeneralResponse> GetAll()
         {
+
             List<Freelancer> freelancers = unitOfWork.freelancer.FindAll(includes: ["Skills"]).ToList();
 
             List<FreelancerDTO> freelancerDTOs = new List<FreelancerDTO>(freelancers.Count);
 
             foreach (Freelancer freelancer in freelancers)
             {
+
                 FreelancerDTO freelancerDTO = mapper.Map<Freelancer, FreelancerDTO>(freelancer);
 
                 freelancerDTOs.Add(freelancerDTO);
@@ -52,6 +54,7 @@ namespace Shoghlana.Api.Controllers
         [HttpGet("{id:int}")]
         public ActionResult<GeneralResponse> GetById(int id)
         {
+
             Freelancer? freelancer = unitOfWork.freelancer.Find(includes: ["Skills"]);
 
             if (freelancer is null)
@@ -168,7 +171,9 @@ namespace Shoghlana.Api.Controllers
                 return new GeneralResponse()
                 {
                     IsSuccess = false,
+
                     Status = 404,
+
                     Message = "There is no Freelancer found with this ID !"
                 };
             }
@@ -208,6 +213,7 @@ namespace Shoghlana.Api.Controllers
             // so SaveChanges won't take effect unless I Mapped manually 
             #endregion
 
+            freelancer.Name = addedFreelancerDTO.Name;
             freelancer.Title = addedFreelancerDTO.Title;
             freelancer.Overview = addedFreelancerDTO.Overview;
             freelancer.Address = addedFreelancerDTO.Address;

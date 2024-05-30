@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Shoghlana.EF;
 
@@ -11,9 +12,11 @@ using Shoghlana.EF;
 namespace Shoghlana.EF.Migrations
 {
     [DbContext(typeof(ApplicationDBContext))]
-    partial class ApplicationDBContextModelSnapshot : ModelSnapshot
+    [Migration("20240528105923_FreelancerImageBytes")]
+    partial class FreelancerImageBytes
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -50,20 +53,8 @@ namespace Shoghlana.EF.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<string>("Country")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Description")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<byte[]>("Image")
-                        .HasColumnType("varbinary(max)");
-
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Phone")
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
@@ -177,36 +168,6 @@ namespace Shoghlana.EF.Migrations
 
             modelBuilder.Entity("Shoghlana.Core.Models.Notification", b =>
                 {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<int?>("ClientId")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("FreelancerId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("description")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("sentTime")
-                        .HasColumnType("datetime2");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ClientId");
-
-                    b.HasIndex("FreelancerId");
-
-                    b.ToTable("Notification");
-                });
-
-            modelBuilder.Entity("Shoghlana.Core.Models.Notification", b =>
-                {
                     b.Property<int>("ID")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
@@ -313,6 +274,10 @@ namespace Shoghlana.EF.Migrations
                         .HasColumnType("int")
                         .HasDefaultValue(1);
 
+                    b.Property<string>("Title")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.HasKey("Id");
 
                     b.HasIndex("FreelancerId");
@@ -369,38 +334,6 @@ namespace Shoghlana.EF.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Skills");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            Title = "C#"
-                        },
-                        new
-                        {
-                            Id = 2,
-                            Title = "LINQ"
-                        },
-                        new
-                        {
-                            Id = 3,
-                            Title = "EF"
-                        },
-                        new
-                        {
-                            Id = 4,
-                            Title = "OOP"
-                        },
-                        new
-                        {
-                            Id = 5,
-                            Title = "Agile"
-                        },
-                        new
-                        {
-                            Id = 6,
-                            Title = "Blazor"
-                        });
                 });
 
             modelBuilder.Entity("freelancerSkills", b =>
