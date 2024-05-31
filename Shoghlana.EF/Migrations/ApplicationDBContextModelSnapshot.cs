@@ -15,7 +15,6 @@ namespace Shoghlana.EF.Migrations
     {
         protected override void BuildModel(ModelBuilder modelBuilder)
         {
-#pragma warning disable 612, 618
             modelBuilder
                 .HasAnnotation("ProductVersion", "8.0.5")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
@@ -759,227 +758,227 @@ namespace Shoghlana.EF.Migrations
 
                     b.Navigation("Freelancer");
 
-            modelBuilder.Entity("Shoghlana.Core.Models.ClientNotification", b =>
-                {
-                    b.HasOne("Shoghlana.Core.Models.Client", "Client")
-                        .WithMany("Notifications")
-                        .HasForeignKey("ClientId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                    modelBuilder.Entity("Shoghlana.Core.Models.ClientNotification", b =>
+                        {
+                            b.HasOne("Shoghlana.Core.Models.Client", "Client")
+                                .WithMany("Notifications")
+                                .HasForeignKey("ClientId")
+                                .OnDelete(DeleteBehavior.Cascade)
+                                .IsRequired();
 
-                    b.HasOne("Shoghlana.Core.Models.Notification", "Notification")
-                        .WithMany("ClientNotifications")
-                        .HasForeignKey("NotificationId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                            b.HasOne("Shoghlana.Core.Models.Notification", "Notification")
+                                .WithMany("ClientNotifications")
+                                .HasForeignKey("NotificationId")
+                                .OnDelete(DeleteBehavior.Cascade)
+                                .IsRequired();
 
-                    b.Navigation("Client");
+                            b.Navigation("Client");
 
-                    b.Navigation("Notification");
+                            b.Navigation("Notification");
+                        });
+
+                    modelBuilder.Entity("Shoghlana.Core.Models.FreelancerNotification", b =>
+                        {
+                            b.HasOne("Shoghlana.Core.Models.Freelancer", "Freelancer")
+                                .WithMany("Notifications")
+                                .HasForeignKey("FreelancerId")
+                                .OnDelete(DeleteBehavior.Cascade)
+                                .IsRequired();
+
+                            b.HasOne("Shoghlana.Core.Models.Notification", "Notification")
+                                .WithMany("FreelancerNotifications")
+                                .HasForeignKey("NotificationId")
+                                .OnDelete(DeleteBehavior.Cascade)
+                                .IsRequired();
+
+                            b.Navigation("Freelancer");
+
+                            b.Navigation("Notification");
+                        });
+
+                    modelBuilder.Entity("Shoghlana.Core.Models.Job", b =>
+                        {
+                            b.HasOne("Shoghlana.Core.Models.Category", "Category")
+                                .WithMany("Jobs")
+                                .HasForeignKey("CategoryId");
+
+                            b.HasOne("Shoghlana.Core.Models.Client", "Client")
+                                .WithMany("Jobs")
+                                .HasForeignKey("ClientId");
+
+                            b.HasOne("Shoghlana.Core.Models.Freelancer", "Freelancer")
+                                .WithMany("WorkingHistory")
+                                .HasForeignKey("FreelancerId");
+
+                            b.Navigation("Category");
+
+                            b.Navigation("Client");
+
+                            b.Navigation("Freelancer");
+                        });
+
+                    modelBuilder.Entity("Shoghlana.Core.Models.Notification", b =>
+                        {
+                            b.HasOne("Shoghlana.Core.Models.Client", null)
+                                .WithMany("notifications")
+                                .HasForeignKey("ClientId");
+
+                            b.HasOne("Shoghlana.Core.Models.Freelancer", null)
+                                .WithMany("notifications")
+                                .HasForeignKey("FreelancerId");
+                        });
+
+                    modelBuilder.Entity("Shoghlana.Core.Models.Project", b =>
+                        {
+                            b.HasOne("Shoghlana.Core.Models.Freelancer", "Freelancer")
+                                .WithMany("Portfolio")
+                                .HasForeignKey("FreelancerId");
+
+                            b.Navigation("Freelancer");
+                        });
+
+                    modelBuilder.Entity("Shoghlana.Core.Models.ProjectImages", b =>
+                        {
+                            b.HasOne("Shoghlana.Core.Models.Project", "Project")
+                                .WithMany("Images")
+                                .HasForeignKey("ProjectId");
+
+                            b.Navigation("Project");
+                        });
+
+                    modelBuilder.Entity("Shoghlana.Core.Models.Proposal", b =>
+                        {
+                            b.HasOne("Shoghlana.Core.Models.Freelancer", "Freelancer")
+                                .WithMany("Proposals")
+                                .HasForeignKey("FreelancerId");
+
+                            b.HasOne("Shoghlana.Core.Models.Job", "Job")
+                                .WithMany("Proposals")
+                                .HasForeignKey("JobId");
+
+                            b.Navigation("Freelancer");
+
+                            b.Navigation("Job");
+                        });
+
+                    modelBuilder.Entity("Shoghlana.Core.Models.ProposalImages", b =>
+                        {
+                            b.HasOne("Shoghlana.Core.Models.Proposal", "Proposal")
+                                .WithMany("Images")
+                                .HasForeignKey("ProposalId")
+                                .OnDelete(DeleteBehavior.Cascade)
+                                .IsRequired();
+
+                            b.Navigation("Proposal");
+                        });
+
+                    modelBuilder.Entity("Shoghlana.Core.Models.Rate", b =>
+                        {
+                            b.HasOne("Shoghlana.Core.Models.Job", "Job")
+                                .WithOne("Rate")
+                                .HasForeignKey("Shoghlana.Core.Models.Rate", "JobId");
+
+                            b.Navigation("Job");
+                        });
+
+                    modelBuilder.Entity("freelancerSkills", b =>
+                        {
+                            b.HasOne("Shoghlana.Core.Models.Freelancer", null)
+                                .WithMany()
+                                .HasForeignKey("FreelancerId")
+                                .OnDelete(DeleteBehavior.Cascade)
+                                .IsRequired();
+
+                            b.HasOne("Shoghlana.Core.Models.Skill", null)
+                                .WithMany()
+                                .HasForeignKey("SkillId")
+                                .OnDelete(DeleteBehavior.Cascade)
+                                .IsRequired();
+                        });
+
+                    modelBuilder.Entity("jobSkills", b =>
+                        {
+                            b.HasOne("Shoghlana.Core.Models.Job", null)
+                                .WithMany()
+                                .HasForeignKey("JobId")
+                                .OnDelete(DeleteBehavior.Cascade)
+                                .IsRequired();
+
+                            b.HasOne("Shoghlana.Core.Models.Skill", null)
+                                .WithMany()
+                                .HasForeignKey("SkillId")
+                                .OnDelete(DeleteBehavior.Cascade)
+                                .IsRequired();
+                        });
+
+                    modelBuilder.Entity("projectSkills", b =>
+                        {
+                            b.HasOne("Shoghlana.Core.Models.Project", null)
+                                .WithMany()
+                                .HasForeignKey("ProjectId")
+                                .OnDelete(DeleteBehavior.Cascade)
+                                .IsRequired();
+
+                            b.HasOne("Shoghlana.Core.Models.Skill", null)
+                                .WithMany()
+                                .HasForeignKey("SkillId")
+                                .OnDelete(DeleteBehavior.Cascade)
+                                .IsRequired();
+                        });
+
+                    modelBuilder.Entity("Shoghlana.Core.Models.Category", b =>
+                        {
+                            b.Navigation("Jobs");
+                        });
+
+                    modelBuilder.Entity("Shoghlana.Core.Models.Client", b =>
+                        {
+                            b.Navigation("Jobs");
+
+                            b.Navigation("User");
+
+                            b.Navigation("Notifications");
+                        });
+
+                    modelBuilder.Entity("Shoghlana.Core.Models.Freelancer", b =>
+                        {
+                            b.Navigation("Notifications");
+
+                            b.Navigation("Portfolio");
+
+                            b.Navigation("Proposals");
+
+                            b.Navigation("User");
+
+                            b.Navigation("WorkingHistory");
+
+                            b.Navigation("notifications");
+                        });
+
+                    modelBuilder.Entity("Shoghlana.Core.Models.Job", b =>
+                        {
+                            b.Navigation("Proposals");
+
+                            b.Navigation("Rate");
+                        });
+
+                    modelBuilder.Entity("Shoghlana.Core.Models.Notification", b =>
+                        {
+                            b.Navigation("ClientNotifications");
+
+                            b.Navigation("FreelancerNotifications");
+                        });
+
+                    modelBuilder.Entity("Shoghlana.Core.Models.Project", b =>
+                        {
+                            b.Navigation("Images");
+                        });
+
+                    modelBuilder.Entity("Shoghlana.Core.Models.Proposal", b =>
+                        {
+                            b.Navigation("Images");
+                        });
                 });
-
-            modelBuilder.Entity("Shoghlana.Core.Models.FreelancerNotification", b =>
-                {
-                    b.HasOne("Shoghlana.Core.Models.Freelancer", "Freelancer")
-                        .WithMany("Notifications")
-                        .HasForeignKey("FreelancerId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Shoghlana.Core.Models.Notification", "Notification")
-                        .WithMany("FreelancerNotifications")
-                        .HasForeignKey("NotificationId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Freelancer");
-
-                    b.Navigation("Notification");
-                });
-
-            modelBuilder.Entity("Shoghlana.Core.Models.Job", b =>
-                {
-                    b.HasOne("Shoghlana.Core.Models.Category", "Category")
-                        .WithMany("Jobs")
-                        .HasForeignKey("CategoryId");
-
-                    b.HasOne("Shoghlana.Core.Models.Client", "Client")
-                        .WithMany("Jobs")
-                        .HasForeignKey("ClientId");
-
-                    b.HasOne("Shoghlana.Core.Models.Freelancer", "Freelancer")
-                        .WithMany("WorkingHistory")
-                        .HasForeignKey("FreelancerId");
-
-                    b.Navigation("Category");
-
-                    b.Navigation("Client");
-
-                    b.Navigation("Freelancer");
-                });
-
-            modelBuilder.Entity("Shoghlana.Core.Models.Notification", b =>
-                {
-                    b.HasOne("Shoghlana.Core.Models.Client", null)
-                        .WithMany("notifications")
-                        .HasForeignKey("ClientId");
-
-                    b.HasOne("Shoghlana.Core.Models.Freelancer", null)
-                        .WithMany("notifications")
-                        .HasForeignKey("FreelancerId");
-                });
-
-            modelBuilder.Entity("Shoghlana.Core.Models.Project", b =>
-                {
-                    b.HasOne("Shoghlana.Core.Models.Freelancer", "Freelancer")
-                        .WithMany("Portfolio")
-                        .HasForeignKey("FreelancerId");
-
-                    b.Navigation("Freelancer");
-                });
-
-            modelBuilder.Entity("Shoghlana.Core.Models.ProjectImages", b =>
-                {
-                    b.HasOne("Shoghlana.Core.Models.Project", "Project")
-                        .WithMany("Images")
-                        .HasForeignKey("ProjectId");
-
-                    b.Navigation("Project");
-                });
-
-            modelBuilder.Entity("Shoghlana.Core.Models.Proposal", b =>
-                {
-                    b.HasOne("Shoghlana.Core.Models.Freelancer", "Freelancer")
-                        .WithMany("Proposals")
-                        .HasForeignKey("FreelancerId");
-
-                    b.HasOne("Shoghlana.Core.Models.Job", "Job")
-                        .WithMany("Proposals")
-                        .HasForeignKey("JobId");
-
-                    b.Navigation("Freelancer");
-
-                    b.Navigation("Job");
-                });
-
-            modelBuilder.Entity("Shoghlana.Core.Models.ProposalImages", b =>
-                {
-                    b.HasOne("Shoghlana.Core.Models.Proposal", "Proposal")
-                        .WithMany("Images")
-                        .HasForeignKey("ProposalId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Proposal");
-                });
-
-            modelBuilder.Entity("Shoghlana.Core.Models.Rate", b =>
-                {
-                    b.HasOne("Shoghlana.Core.Models.Job", "Job")
-                        .WithOne("Rate")
-                        .HasForeignKey("Shoghlana.Core.Models.Rate", "JobId");
-
-                    b.Navigation("Job");
-                });
-
-            modelBuilder.Entity("freelancerSkills", b =>
-                {
-                    b.HasOne("Shoghlana.Core.Models.Freelancer", null)
-                        .WithMany()
-                        .HasForeignKey("FreelancerId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Shoghlana.Core.Models.Skill", null)
-                        .WithMany()
-                        .HasForeignKey("SkillId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("jobSkills", b =>
-                {
-                    b.HasOne("Shoghlana.Core.Models.Job", null)
-                        .WithMany()
-                        .HasForeignKey("JobId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Shoghlana.Core.Models.Skill", null)
-                        .WithMany()
-                        .HasForeignKey("SkillId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("projectSkills", b =>
-                {
-                    b.HasOne("Shoghlana.Core.Models.Project", null)
-                        .WithMany()
-                        .HasForeignKey("ProjectId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Shoghlana.Core.Models.Skill", null)
-                        .WithMany()
-                        .HasForeignKey("SkillId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("Shoghlana.Core.Models.Category", b =>
-                {
-                    b.Navigation("Jobs");
-                });
-
-            modelBuilder.Entity("Shoghlana.Core.Models.Client", b =>
-                {
-                    b.Navigation("Jobs");
-
-                    b.Navigation("User");
-
-                    b.Navigation("Notifications");
-                });
-
-            modelBuilder.Entity("Shoghlana.Core.Models.Freelancer", b =>
-                {
-                    b.Navigation("Notifications");
-
-                    b.Navigation("Portfolio");
-
-                    b.Navigation("Proposals");
-
-                    b.Navigation("User");
-
-                    b.Navigation("WorkingHistory");
-
-                    b.Navigation("notifications");
-                });
-
-            modelBuilder.Entity("Shoghlana.Core.Models.Job", b =>
-                {
-                    b.Navigation("Proposals");
-
-                    b.Navigation("Rate");
-                });
-
-            modelBuilder.Entity("Shoghlana.Core.Models.Notification", b =>
-                {
-                    b.Navigation("ClientNotifications");
-
-                    b.Navigation("FreelancerNotifications");
-                });
-
-            modelBuilder.Entity("Shoghlana.Core.Models.Project", b =>
-                {
-                    b.Navigation("Images");
-                });
-
-            modelBuilder.Entity("Shoghlana.Core.Models.Proposal", b =>
-                {
-                    b.Navigation("Images");
-                });
-#pragma warning restore 612, 618
         }
     }
 }
