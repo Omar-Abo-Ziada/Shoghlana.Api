@@ -69,7 +69,7 @@ namespace Shoghlana.EF.Repository
 
         public async Task<T> FindAsync(Expression<Func<T, bool>> criteria, string[] includes = null)
         {
-            IQueryable<T> query = Context.Set<T>();
+            IQueryable<T> query = Context.Set<T>().Where(criteria);
 
             if (includes != null)
             {
