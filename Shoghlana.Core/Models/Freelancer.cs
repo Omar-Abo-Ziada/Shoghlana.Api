@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Identity;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -7,11 +8,10 @@ using System.Threading.Tasks;
 
 namespace Shoghlana.Core.Models
 {
-    public class Freelancer
+    public class Freelancer 
     {
-      //  [Key]
+          [Key]
         public int Id { get; set; }
-
         public string? PersonalImage { get; set; }
 
         public string? Name { get; set; }
@@ -30,7 +30,10 @@ namespace Shoghlana.Core.Models
 
         public List<Skill>? skills { get; set; }
 
-        public List<Notification>? notifications { get; set; } 
+        public List<Notification>? notifications { get; set; }
+
+        public ApplicationUser? User { get; set; }
+
 
         // list<Notification> notifications {get; set;}  >> time , desc "url" navigate to dif pages
         // ai guide client how write requirements , recommend freelancers  
@@ -39,5 +42,6 @@ namespace Shoghlana.Core.Models
         // add skills and level bsaed on quick exam  >> timer , retake the exam after period of time for score enhancement
         // ai help client add related skills based on his desc
         // more matched skills >> high chance for recommendation and being one of the first prposals to be displayed
+
     }
 }
