@@ -12,28 +12,32 @@ namespace Shoghlana.Core.Models
     {
           [Key]
         public int Id { get; set; }
-        public string? PersonalImage { get; set; }
 
-        public string? Name { get; set; }
+        //public string? PersonalImage { get; set; }
 
-        public string? Title { get; set; }
+        public byte[]? PersonalImageBytes { get; set; }
+
+        public string Name { get; set; }
+
+        public string Title { get; set; }
 
         public string? Address { get; set; }
 
         public string? Overview { get; set; }
 
-        public List<Project>? Portfolio { get; set; }
+        public List<Project>? Portfolio { get; set; }   
 
         public List<Job>? WorkingHistory { get; set; }
 
         public List<Proposal>? Proposals { get; set; }
 
-        public List<Skill>? skills { get; set; }
+        public List<Skill>? Skills { get; set; }
 
-        public List<Notification>? notifications { get; set; }
+        public List<FreelancerNotification>? Notifications { get; set; }
 
         public ApplicationUser? User { get; set; }
 
+        ///TODO : add service from freelancer
 
         // list<Notification> notifications {get; set;}  >> time , desc "url" navigate to dif pages
         // ai guide client how write requirements , recommend freelancers  

@@ -24,15 +24,21 @@ namespace Shoghlana.EF
 
         public DbSet<Skill> Skills { get; set; }
 
-     //   public DbSet<FreelancerSkills> FreelancerSkills { get; set; }
+        //   public DbSet<FreelancerSkills> FreelancerSkills { get; set; }
 
-     //   public DbSet<JobSkills> JobSkills { get; set; }
+        //   public DbSet<JobSkills> JobSkills { get; set; }
 
- //        public DbSet<ProjectSkills> ProjectSkills { get; set; }
+        //        public DbSet<ProjectSkills> ProjectSkills { get; set; }
+
+        public DbSet<FreelancerNotification> FreelancerNotifications { get; set; }
+
+        public DbSet<ClientNotification> ClientNotifications { get; set; }
 
         public DbSet<Proposal> Proposals { get; set; }
 
         public DbSet<ProjectImages> ProjectImages { get; set; }
+
+        public DbSet<ProposalImages> ProposalImages { get; set; }
 
         public DbSet<Category> Categories { get; set; }
 
@@ -40,7 +46,7 @@ namespace Shoghlana.EF
 
         public ApplicationDBContext(DbContextOptions<ApplicationDBContext> options) : base(options)
         {
-            
+
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -56,23 +62,51 @@ namespace Shoghlana.EF
             //    entity.HasKey(c => c.Id);
             //});
 
+            // Freelancer-Notification relationship
+            modelBuilder.Entity<FreelancerNotification>()
+                .HasKey(fn => new { fn.FreelancerId, fn.NotificationId });
+
+            modelBuilder.Entity<FreelancerNotification>()
+                .HasOne(fn => fn.Freelancer)
+                .WithMany(f => f.Notifications)
+                .HasForeignKey(fn => fn.FreelancerId);
+
+            modelBuilder.Entity<FreelancerNotification>()
+                .HasOne(fn => fn.Notification)
+                .WithMany(n => n.FreelancerNotifications)
+                .HasForeignKey(fn => fn.NotificationId);
+
+            // Client-Notification relationship
+            modelBuilder.Entity<ClientNotification>()
+                .HasKey(cn => new { cn.ClientId, cn.NotificationId });
+
+            modelBuilder.Entity<ClientNotification>()
+                .HasOne(cn => cn.Client)
+                .WithMany(c => c.Notifications)
+                .HasForeignKey(cn => cn.ClientId);
+
+            modelBuilder.Entity<ClientNotification>()
+                .HasOne(cn => cn.Notification)
+                .WithMany(n => n.ClientNotifications)
+                .HasForeignKey(cn => cn.NotificationId);
 
             modelBuilder.Entity<Freelancer>(entity =>
             {
                 //entity.HasKey(f => f.Id);
 
+                entity.Property(f => f.Name).HasMaxLength(50);
+
                 // map relation with skills >> M:M
-                entity.HasMany(f => f.skills) 
+                entity.HasMany(f => f.Skills)
                       .WithMany(s => s.freelancers)
                       .UsingEntity<Dictionary<string, object>>("freelancerSkills",  // j 
-                    j => j.HasOne<Skill>() 
+                    j => j.HasOne<Skill>()
                           .WithMany()
                           .HasForeignKey("SkillId"),
                     j => j.HasOne<Freelancer>()
                           .WithMany()
                           .HasForeignKey("FreelancerId"));
             });
-
 
             modelBuilder.Entity<Job>(entity =>
             {
@@ -140,6 +174,7 @@ namespace Shoghlana.EF
                      .HasForeignKey(pI => pI.ProjectId);
             });
 
+
             modelBuilder.Entity<Proposal>(entity =>
             {
                 entity.HasKey(p => p.Id);
@@ -192,9 +227,31 @@ namespace Shoghlana.EF
             //   .HasKey(pS => new { pS.ProjectId, pS.SkillId });
 
 
+            #region Initial Data
+
+            modelBuilder.Entity<Freelancer>().HasData
+            (
+                new Freelancer() { Id = 1, Name = "أحمد محمد", Title = "مطور الواجهة الخلفية" },
+                new Freelancer() { Id = 2, Name = "علي سليمان", Title = "مطور الواجهة الأمامية" },
+                new Freelancer() { Id = 3, Name = "وائل عبد الرحيم", Title = "مطور الواجهة الخلفية" }
+            );
+
+            modelBuilder.Entity<Skill>().HasData
+         (
+             new List<Skill>()
+             {
+                 new Skill() { Id = 1, Title = "C#" },
+                 new Skill() { Id = 2, Title = "LINQ" },
+                 new Skill() { Id = 3, Title = "EF" },
+                 new Skill() { Id = 4, Title = "OOP" },
+                 new Skill() { Id = 5, Title = "Agile" },
+                 new Skill() { Id = 6, Title = "Blazor" },
+             }
+         );
+
+            #endregion
+
             base.OnModelCreating(modelBuilder);
-
-
         }
     }
 }

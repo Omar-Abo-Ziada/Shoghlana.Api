@@ -1,22 +1,21 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace Shoghlana.Core.Models
 {
-    public class ProjectImages
+    public class ProposalImages
     {
-        [Key]
         public int Id { get; set; }
 
-        [ForeignKey("Project")]
-        public int? ProjectId { get; set; }
+        [ForeignKey("Proposal")]
+        public int ProposalId { get; set; }
 
-        public Project Project { get; set; }
+        public Proposal Proposal { get; set; }
 
         public byte[] Image { get; set; }
     }

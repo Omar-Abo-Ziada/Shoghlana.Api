@@ -1,4 +1,5 @@
-﻿using Shoghlana.Core.Interfaces;
+﻿using Microsoft.EntityFrameworkCore;
+using Shoghlana.Core.Interfaces;
 using Shoghlana.Core.Models;
 using Shoghlana.EF.Repository;
 using System;
@@ -14,6 +15,13 @@ namespace Shoghlana.EF.Repositories
         public ClientRepository(ApplicationDBContext context) : base(context)
         {
             
+        }
+
+        public Client ? GetClientWithJobs(int id)
+        {
+            return Context.Clients
+                .Include(x => x.Jobs)
+                .FirstOrDefault(x => x.Id == id);
         }
     }
 }

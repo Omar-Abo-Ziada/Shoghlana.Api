@@ -61,7 +61,16 @@ namespace Shoghlana.Api
 
 
 
+            builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();// Update-ClientControlller
+            builder.Services.AddScoped<IClientRepository, ClientRepository>();
+            builder.Services.AddScoped<IJobRepository, JobRepository>();
+            
 
+            builder.Services.AddAutoMapper(typeof(Program));
+
+            builder.Services.AddCors();
+
+            //************************************************************************
 
 
             var app = builder.Build();
@@ -77,6 +86,9 @@ namespace Shoghlana.Api
 
             app.UseAuthorization();
 
+            app.UseCors(c => c.AllowAnyHeader().AllowAnyMethod().AllowAnyOrigin());
+
+            app.UseAuthorization();
 
             app.MapControllers();
 
