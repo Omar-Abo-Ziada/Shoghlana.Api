@@ -9,12 +9,12 @@ using System.Threading.Tasks;
 
 namespace Shoghlana.Core.Models
 {
-    public class Proposal
+    public class Proposal 
     {
       //  [Key]
         public int Id { get; set; }
 
-        public string Title { get; set; }
+        public string? Title { get; set; }
 
         public string? Description { get; set; }
 
@@ -27,7 +27,7 @@ namespace Shoghlana.Core.Models
         //---------------------------------
 
       //  [ForeignKey("Freelancer")]
-        public int? FreelancerId { get; set; }
+        public int FreelancerId { get; set; }
 
         public Freelancer Freelancer { get; set; }
 

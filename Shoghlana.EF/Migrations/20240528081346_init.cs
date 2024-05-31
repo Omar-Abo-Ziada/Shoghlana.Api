@@ -3,6 +3,8 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
+#pragma warning disable CA1814 // Prefer jagged arrays over multidimensional
+
 namespace Shoghlana.EF.Migrations
 {
     /// <inheritdoc />
@@ -48,7 +50,8 @@ namespace Shoghlana.EF.Migrations
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Title = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Address = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Overview = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                    Overview = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Rate = table.Column<double>(type: "float", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -101,6 +104,32 @@ namespace Shoghlana.EF.Migrations
                         principalColumn: "Id");
                     table.ForeignKey(
                         name: "FK_Jobs_Freelancers_FreelancerId",
+                        column: x => x.FreelancerId,
+                        principalTable: "Freelancers",
+                        principalColumn: "Id");
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Notification",
+                columns: table => new
+                {
+                    id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    sentTime = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    description = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    ClientId = table.Column<int>(type: "int", nullable: true),
+                    FreelancerId = table.Column<int>(type: "int", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Notification", x => x.id);
+                    table.ForeignKey(
+                        name: "FK_Notification_Clients_ClientId",
+                        column: x => x.ClientId,
+                        principalTable: "Clients",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_Notification_Freelancers_FreelancerId",
                         column: x => x.FreelancerId,
                         principalTable: "Freelancers",
                         principalColumn: "Id");
@@ -182,11 +211,11 @@ namespace Shoghlana.EF.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Title = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Title = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Description = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Price = table.Column<decimal>(type: "Money", nullable: false),
                     Status = table.Column<int>(type: "int", nullable: false, defaultValue: 1),
-                    FreelancerId = table.Column<int>(type: "int", nullable: true),
+                    FreelancerId = table.Column<int>(type: "int", nullable: false),
                     JobId = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
@@ -196,7 +225,8 @@ namespace Shoghlana.EF.Migrations
                         name: "FK_Proposals_Freelancers_FreelancerId",
                         column: x => x.FreelancerId,
                         principalTable: "Freelancers",
-                        principalColumn: "Id");
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.NoAction);
                     table.ForeignKey(
                         name: "FK_Proposals_Jobs_JobId",
                         column: x => x.JobId,
@@ -268,6 +298,78 @@ namespace Shoghlana.EF.Migrations
                         onDelete: ReferentialAction.NoAction);
                 });
 
+            migrationBuilder.InsertData(
+                table: "Categories",
+                columns: new[] { "Id", "Description", "Title" },
+                values: new object[,]
+                {
+                    { 1, null, "Category1" },
+                    { 2, null, "Category2" }
+                });
+
+            migrationBuilder.InsertData(
+                table: "Clients",
+                columns: new[] { "Id", "Name" },
+                values: new object[,]
+                {
+                    { 1, "Client1" },
+                    { 2, "Client2" }
+                });
+
+            migrationBuilder.InsertData(
+                table: "Freelancers",
+                columns: new[] { "Id", "Address", "Name", "Overview", "PersonalImage", "Rate", "Title" },
+                values: new object[,]
+                {
+                    { 1, null, "Freelancer1", null, null, 0.0, null },
+                    { 2, null, "Freelancer2", null, null, 0.0, null }
+                });
+
+            migrationBuilder.InsertData(
+                table: "Skills",
+                columns: new[] { "Id", "Description", "Title" },
+                values: new object[,]
+                {
+                    { 1, null, "Skill1" },
+                    { 2, null, "Skill2" }
+                });
+
+            migrationBuilder.InsertData(
+                table: "Jobs",
+                columns: new[] { "Id", "CategoryId", "ClientId", "Description", "ExperienceLevel", "FreelancerId", "MaxBudget", "MinBudget", "PostTime", "Title" },
+                values: new object[,]
+                {
+                    { 1, 1, 1, "Description for Job1", 0, 1, 500m, 100m, new DateTime(2024, 5, 28, 11, 13, 44, 68, DateTimeKind.Local).AddTicks(9960), "Job1" },
+                    { 2, 2, 2, "Description for Job2", 1, 2, 700m, 200m, new DateTime(2024, 5, 28, 11, 13, 44, 69, DateTimeKind.Local).AddTicks(27), "Job2" }
+                });
+
+            migrationBuilder.InsertData(
+                table: "Projects",
+                columns: new[] { "Id", "Description", "FreelancerId", "Link", "TimePublished", "Title" },
+                values: new object[,]
+                {
+                    { 1, "Description for Project1", 1, null, null, "Project1" },
+                    { 2, "Description for Project2", 2, null, null, "Project2" }
+                });
+
+            migrationBuilder.InsertData(
+                table: "Proposals",
+                columns: new[] { "Id", "Description", "FreelancerId", "JobId", "Price", "Status", "Title" },
+                values: new object[,]
+                {
+                    { 1, null, 1, 1, 300m, 1, null },
+                    { 2, null, 2, 2, 400m, 1, null }
+                });
+
+            migrationBuilder.InsertData(
+                table: "Rates",
+                columns: new[] { "Id", "Feedback", "JobId", "Value" },
+                values: new object[,]
+                {
+                    { 1, null, 1, 4 },
+                    { 2, null, 2, 5 }
+                });
+
             migrationBuilder.CreateIndex(
                 name: "IX_freelancerSkills_SkillId",
                 table: "freelancerSkills",
@@ -292,6 +394,16 @@ namespace Shoghlana.EF.Migrations
                 name: "IX_jobSkills_SkillId",
                 table: "jobSkills",
                 column: "SkillId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Notification_ClientId",
+                table: "Notification",
+                column: "ClientId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Notification_FreelancerId",
+                table: "Notification",
+                column: "FreelancerId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_ProjectImages_ProjectId",
@@ -334,6 +446,9 @@ namespace Shoghlana.EF.Migrations
 
             migrationBuilder.DropTable(
                 name: "jobSkills");
+
+            migrationBuilder.DropTable(
+                name: "Notification");
 
             migrationBuilder.DropTable(
                 name: "ProjectImages");

@@ -21,9 +21,13 @@ namespace Shoghlana.Api
 
             builder.Services.AddDbContext<ApplicationDBContext>(options =>
             options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection") ,
-            b => b.MigrationsAssembly(typeof(ApplicationDBContext).Assembly.FullName)));
+            b => b.MigrationsAssembly(typeof(ApplicationDBContext).Assembly.FullName))); 
 
             builder.Services.AddScoped<IUnitOfWork, UnitOfWork>(); 
+
+            // Registering AutoMapper
+            builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.

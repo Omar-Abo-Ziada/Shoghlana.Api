@@ -30,7 +30,7 @@ namespace Shoghlana.Core.Interfaces
 
         ISkillRepository skill { get; }
 
-        public int Save();
+        public int Save(); 
 
         //public void Dispose();
     }
