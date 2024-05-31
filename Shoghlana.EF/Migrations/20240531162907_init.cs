@@ -360,6 +360,24 @@ namespace Shoghlana.EF.Migrations
                 });
 
             migrationBuilder.InsertData(
+                table: "Categories",
+                columns: new[] { "Id", "Description", "Title" },
+                values: new object[,]
+                {
+                    { 1, null, "Category1" },
+                    { 2, null, "Category2" }
+                });
+
+            migrationBuilder.InsertData(
+                table: "Clients",
+                columns: new[] { "Id", "Country", "Description", "Image", "Name", "Phone" },
+                values: new object[,]
+                {
+                    { 1, null, null, null, "Client1", null },
+                    { 2, null, null, null, "Client2", null }
+                });
+
+            migrationBuilder.InsertData(
                 table: "Freelancers",
                 columns: new[] { "Id", "Address", "Name", "Overview", "PersonalImageBytes", "Title" },
                 values: new object[,]
@@ -380,6 +398,42 @@ namespace Shoghlana.EF.Migrations
                     { 4, null, "OOP" },
                     { 5, null, "Agile" },
                     { 6, null, "Blazor" }
+                });
+
+            migrationBuilder.InsertData(
+                table: "Jobs",
+                columns: new[] { "Id", "CategoryId", "ClientId", "Description", "ExperienceLevel", "FreelancerId", "MaxBudget", "MinBudget", "PostTime", "Title" },
+                values: new object[,]
+                {
+                    { 1, 1, 1, "Description for Job1", 0, 1, 500m, 100m, new DateTime(2024, 5, 31, 19, 29, 6, 523, DateTimeKind.Local).AddTicks(5888), "Job1" },
+                    { 2, 2, 2, "Description for Job2", 1, 2, 700m, 200m, new DateTime(2024, 5, 31, 19, 29, 6, 523, DateTimeKind.Local).AddTicks(5950), "Job2" }
+                });
+
+            migrationBuilder.InsertData(
+                table: "Projects",
+                columns: new[] { "Id", "Description", "FreelancerId", "Link", "TimePublished", "Title" },
+                values: new object[,]
+                {
+                    { 1, "Description for Project1", 1, null, null, "Project1" },
+                    { 2, "Description for Project2", 2, null, null, "Project2" }
+                });
+
+            migrationBuilder.InsertData(
+                table: "Proposals",
+                columns: new[] { "Id", "ApprovedTime", "DeadLine", "Description", "Duration", "FreelancerId", "JobId", "Price", "ReposLinks", "Status" },
+                values: new object[,]
+                {
+                    { 1, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, 0.0, 1, 1, 300m, null, 1 },
+                    { 2, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, 0.0, 2, 2, 400m, null, 1 }
+                });
+
+            migrationBuilder.InsertData(
+                table: "Rates",
+                columns: new[] { "Id", "Feedback", "JobId", "Value" },
+                values: new object[,]
+                {
+                    { 1, null, 1, 4 },
+                    { 2, null, 2, 5 }
                 });
 
             migrationBuilder.CreateIndex(
