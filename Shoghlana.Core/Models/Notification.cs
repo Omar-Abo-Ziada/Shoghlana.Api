@@ -12,8 +12,6 @@ namespace Shoghlana.Core.Models
 
         public DateTime sentTime { get; set; }
 
-        public DateTime sentTime { get; set; }
-         
         public string description { get; set; }
 
         //--------------------------------------------
