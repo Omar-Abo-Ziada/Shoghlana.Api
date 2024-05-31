@@ -8,8 +8,6 @@ namespace Shoghlana.Api
     {
         public Mapping() 
         {
-            CreateMap<List<Job>, List<JobDTO>>();
-            CreateMap<List<JobDTO>, List<Job>>(); 
             CreateMap<Job, JobDTO>();
             CreateMap<JobDTO, Job>();
 

@@ -27,14 +27,19 @@ namespace Shoghlana.Api.Controllers
         [HttpGet]
         public ActionResult<GeneralResponse> GetAll()
         {
-            List<Job> jobs = unitOfWork.job.FindAll(new string[] { "Client" , "Category" }).ToList();
+            List<Job> jobs = unitOfWork.job.FindAll(new string[] { "Client" , "Category", "skills" }).ToList();
 
-            List<JobDTO> jobDTOs = mapper.Map<List<Job> , List<JobDTO>>(jobs); 
+           List<JobDTO> jobDTOs = mapper.Map<List<Job> , List<JobDTO>>(jobs); 
             
             for(int i = 0; i<jobs.Count; i++)
             {
-                jobDTOs[i].clientName = jobs[i].Client.Name; 
+                jobDTOs[i].clientName = jobs[i].Client.Name;
                 jobDTOs[i].categoryTitle = jobs[i].Category.Title;
+
+                foreach(Skill skill in jobs[i].skills) 
+                {
+                   jobDTOs[i].skillsDic.Add(skill.Id , skill.Title); 
+                }
             }
             return new GeneralResponse
             {
@@ -43,6 +48,8 @@ namespace Shoghlana.Api.Controllers
                 Message = "All jobs retrieved successfully"
             };
         }
+
+
 
         [HttpGet("Id")]
         public ActionResult<GeneralResponse> Get(int id) 
@@ -53,10 +60,19 @@ namespace Shoghlana.Api.Controllers
             {
                 job = unitOfWork.job.Find(new string[] { "Proposals" , "skills" , "Category" , "Client"});
                 jobDTO = mapper.Map<Job, JobDTO>(job);
+                jobDTO.clientName = job.Client.Name;
+                jobDTO.categoryTitle = job.Category.Title;
+
                 foreach (Proposal proposal in job.Proposals)
                 {
                     Freelancer freelancer = unitOfWork.freelancer.GetById(proposal.FreelancerId);
-                    jobDTO.AppliedFreelancers.Add(freelancer);
+                    jobDTO.freelancerDic.Add(freelancer.Id, freelancer.Name);
+                    jobDTO.proposalDic.Add(proposal.Id, proposal.Description);
+                    //    jobDTO.AppliedFreelancers.Add(freelancer);
+                }
+                foreach (Skill skill in job.skills)
+                {
+                    jobDTO.skillsDic.Add(skill.Id, skill.Title);
                 }
             }
             catch(Exception ex)

@@ -3,7 +3,7 @@ using Shoghlana.Core.Models;
 
 namespace Shoghlana.Api.DTOs
 {
-    public class JobDTO
+    public class JobDTO 
     {
         public int Id { get; set; }
 
@@ -20,11 +20,14 @@ namespace Shoghlana.Api.DTOs
 
         public ExperienceLevel ExperienceLevel { get; set; }
 
-        public List<Skill>? skills { get; set; }
+        //  public List<Skill>? skills { get; set; }
 
-        public List<Proposal>? Proposals { get; set; }
+        //   public List<Proposal>? Proposals { get; set; }
 
-        public Rate? Rate { get; set; }
+        //   public Rate? Rate { get; set; }
+        public Dictionary<int, string> skillsDic { get; set; } = new Dictionary<int, string>();
+        public Dictionary<int, string> freelancerDic { get; set; } = new Dictionary<int, string>(); 
+        public Dictionary<int, string> proposalDic { get; set; } = new Dictionary<int, string>();
 
         public JobStatus Status { get; set; } = JobStatus.Active;
 
@@ -37,6 +40,6 @@ namespace Shoghlana.Api.DTOs
 
         public string? categoryTitle { get; set; }
 
-        public List<Freelancer>? AppliedFreelancers { get; set; }
+     //   public List<Freelancer>? AppliedFreelancers { get; set; }
     }
 }

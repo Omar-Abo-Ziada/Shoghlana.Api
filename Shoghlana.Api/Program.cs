@@ -20,13 +20,20 @@ namespace Shoghlana.Api
             builder.Services.AddSwaggerGen();
 
             builder.Services.AddDbContext<ApplicationDBContext>(options =>
-            options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection") ,
-            b => b.MigrationsAssembly(typeof(ApplicationDBContext).Assembly.FullName))); 
+            options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"),
+            b => b.MigrationsAssembly(typeof(ApplicationDBContext).Assembly.FullName)));
 
-            builder.Services.AddScoped<IUnitOfWork, UnitOfWork>(); 
+            builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();// Update-ClientControlller
+            builder.Services.AddScoped<IClientRepository, ClientRepository>();
+            builder.Services.AddScoped<IJobRepository, JobRepository>();
 
-            // Registering AutoMapper
-            builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+
+            builder.Services.AddAutoMapper(typeof(Program));
+
+            builder.Services.AddCors();
+
+            //************************************************************************
+
 
             var app = builder.Build();
 
@@ -37,8 +44,9 @@ namespace Shoghlana.Api
                 app.UseSwaggerUI();
             }
 
-            app.UseAuthorization();
+            app.UseCors(c => c.AllowAnyHeader().AllowAnyMethod().AllowAnyOrigin());
 
+            app.UseAuthorization();
 
             app.MapControllers();
 
