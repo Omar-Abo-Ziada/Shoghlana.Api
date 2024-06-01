@@ -119,6 +119,50 @@ namespace Shoghlana.Api.Controllers
             };
         }
 
+        [HttpGet("GetByFreelancerId/{id:int}")]
+        public ActionResult<GeneralResponse> GetByFreelancerId(int id)
+        {
+            Freelancer freelancer = unitOfWork.freelancer.GetById(id);
+
+            if (freelancer is null)
+            {
+                return new GeneralResponse()
+                {
+                    IsSuccess = false,
+                    Status = 404,
+                    Message = $"There are no freelancer found with this ID {id} ."
+                };
+            }
+
+            List<Proposal> proposals = unitOfWork.proposal.FindAll(includes: null, criteria: p => p.FreelancerId == id).ToList();
+
+            if (proposals.Count == 0)
+            {
+                return new GeneralResponse()
+                {
+                    IsSuccess = false,
+                    Status = 404,
+                    Message = "There are no proposals yet to this freelancer ."
+                };
+            }
+
+            List<GetProposalDTO> getProposalDTOs = new List<GetProposalDTO>(proposals.Count);
+
+            foreach (Proposal proposal in proposals)
+            {
+                GetProposalDTO getProposalDTO = mapper.Map<Proposal, GetProposalDTO>(proposal);
+
+                getProposalDTOs.Add(getProposalDTO);
+            }
+
+            return new GeneralResponse()
+            {
+                IsSuccess = true,
+                Status = 200,
+                Data = getProposalDTOs,
+            };
+        }
+
         [HttpPost]
         public async Task<ActionResult<GeneralResponse>> AddAsync([FromForm] AddProposalDTO addProposalDTO)
         {
