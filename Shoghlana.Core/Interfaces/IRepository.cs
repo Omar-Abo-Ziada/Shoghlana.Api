@@ -14,7 +14,7 @@ namespace Shoghlana.Core.Interfaces
 
         public Task<IEnumerable<T>> GetAllAsync();
 
-        public T GetById(int id);
+        public T GetById(int id, string[] includes = null);
 
         public Task<T> GetByIdAsync(int id);
 

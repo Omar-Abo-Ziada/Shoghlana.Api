@@ -51,14 +51,16 @@ namespace Shoghlana.Api.Controllers
 
 
 
-        [HttpGet("Id")]
+        [HttpGet("Id")] 
         public ActionResult<GeneralResponse> Get(int id) 
         {
            Job job = new Job();
             JobDTO jobDTO = new JobDTO();
             try
             {
-                job = unitOfWork.job.Find(new string[] { "Proposals" , "skills" , "Category" , "Client"});
+                //job = unitOfWork.job.Find(new string[] { "Proposals" , "skills" , "Category" , "Client"});
+                job = unitOfWork.job.GetById(id ,new string[] { "Proposals" , "skills" , "Category" , "Client"});
+
                 jobDTO = mapper.Map<Job, JobDTO>(job);
                 jobDTO.clientName = job.Client.Name;
                 jobDTO.categoryTitle = job.Category.Title;

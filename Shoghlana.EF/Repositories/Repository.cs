@@ -29,9 +29,22 @@ namespace Shoghlana.EF.Repository
             return await Context.Set<T>().ToListAsync();
         }
 
-        public T GetById(int id)
+        public T GetById(int id, string[] includes = null) 
         {
-            return Context.Set<T>().Find(id);
+            IQueryable<T> query = Context.Set<T>();
+            if(includes == null)
+            {
+                return query.FirstOrDefault();
+            }
+            else
+            {
+                foreach(string include in includes)
+                {
+                    query = query.Include(include);
+                }
+                return query.FirstOrDefault();
+            }
+
         }
 
         public async Task<T> GetByIdAsync(int id)
@@ -41,7 +54,7 @@ namespace Shoghlana.EF.Repository
 
         public T Find(Expression<Func<T, bool>> criteria, string[] includes = null)
         {
-            IQueryable<T> query = Context.Set<T>();
+            IQueryable<T> query = Context.Set<T>().Where(criteria);
 
             if (includes != null)
             {
@@ -50,7 +63,8 @@ namespace Shoghlana.EF.Repository
                     query = query.Include(include);
                 }
             }
-            return query.FirstOrDefault(criteria);
+            Console.WriteLine(query);
+            return query.FirstOrDefault();
         }
 
         public T Find(string[] includes = null) 

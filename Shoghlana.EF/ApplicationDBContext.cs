@@ -216,7 +216,7 @@ namespace Shoghlana.EF
                 new Job
                 {
                     Id = 1,
-                    Title = "Job1",
+                 //   Title = "Job1",
                     PostTime = DateTime.Now,
                     Description = "Description for Job1",
                     MinBudget = 100,
@@ -230,7 +230,7 @@ namespace Shoghlana.EF
                 new Job
                 {
                     Id = 2,
-                    Title = "Job2",
+               //     Title = "Job2",
                     PostTime = DateTime.Now,
                     Description = "Description for Job2",
                     MinBudget = 200,
