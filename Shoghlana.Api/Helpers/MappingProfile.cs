@@ -1,4 +1,4 @@
-﻿using AutoMapper;
+using AutoMapper;
 using Shoghlana.Api.DTOs;
 using Shoghlana.Core.DTO;
 using Shoghlana.Core.Models;

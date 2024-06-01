@@ -1,4 +1,6 @@
-﻿namespace Shoghlana.Api.DTOs
+﻿using Microsoft.AspNetCore.Http;
+
+namespace Shoghlana.Core.DTO
 {
     public class AddFreelancerDTO
     {

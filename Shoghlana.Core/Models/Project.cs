@@ -19,6 +19,8 @@ namespace Shoghlana.Core.Models
 
         public string? Link { get; set; }
 
+        public byte[] Poster { get; set; }
+
         public List<ProjectImages>? Images { get; set; }
 
         public List<Skill>? skills { get; set; }
