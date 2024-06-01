@@ -1,4 +1,5 @@
-﻿using AutoMapper;
+using AutoMapper;
+using Shoghlana.Api.DTOs;
 using Shoghlana.Core.DTO;
 using Shoghlana.Core.Models;
 
@@ -14,8 +15,11 @@ namespace Shoghlana.Api.Helpers
             CreateMap<ProposalDTO, Proposal>();
             CreateMap<Freelancer, ProposalDTO>();
 
-            CreateMap<SkillDTO, Skill>();
-            CreateMap<Skill, SkillDTO>();
+            CreateMap<SkillsDTO, Skill>();
+            CreateMap<Skill, SkillsDTO>();
+
+            CreateMap<Job, JobDTO>(); 
+            CreateMap<JobDTO, Job>();
         }
     }
 }

@@ -31,7 +31,7 @@ namespace Shoghlana.Core.Models
 
         public List<ProposalImages>? Images { get; set; }
 
-        public int? FreelancerId { get; set; }
+        public int FreelancerId { get; set; }
 
         public Freelancer Freelancer { get; set; }
 
