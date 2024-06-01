@@ -9,7 +9,7 @@ namespace Shoghlana.Core.DTO
 {
     public class JobDTO
     {
-         public int Id { get; set; }
+        public int Id { get; set; }
 
         public string Title { get; set; }
 
@@ -17,21 +17,17 @@ namespace Shoghlana.Core.DTO
 
         public string Description { get; set; }
 
-      
+
         public decimal MinBudget { get; set; }
 
         public decimal MaxBudget { get; set; }
 
         public ExperienceLevel ExperienceLevel { get; set; }
 
-        //  public List<Skill>? skills { get; set; }
 
-        //   public List<Proposal>? Proposals { get; set; }
-
-        //   public Rate? Rate { get; set; }
-        public Dictionary<int, string> skillsDic { get; set; } = new Dictionary<int, string>();
-        public Dictionary<int, string> freelancerDic { get; set; } = new Dictionary<int, string>(); 
-        public Dictionary<int, string> proposalDic { get; set; } = new Dictionary<int, string>();
+        public List<SkillDTO> skillsDTO { get; set; } = new List<SkillDTO>();
+        public List<FreelancerDTO> freelancersDTO { get; set; } = new List<FreelancerDTO>();
+        public List<ProposalDTO> proposalsDTO { get; set; } = new List<ProposalDTO>();
 
         public JobStatus Status { get; set; } = JobStatus.Active;
 
@@ -44,6 +40,6 @@ namespace Shoghlana.Core.DTO
 
         public string? categoryTitle { get; set; }
 
-     //   public List<Freelancer>? AppliedFreelancers { get; set; }
+        //   public List<Freelancer>? AppliedFreelancers { get; set; }
     }
 }
