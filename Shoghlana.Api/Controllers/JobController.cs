@@ -60,7 +60,7 @@ namespace Shoghlana.Api.Controllers
             try
             {
                 //job = unitOfWork.job.Find(new string[] { "Proposals" , "skills" , "Category" , "Client"});
-                job = unitOfWork.job.GetById(id, new string[] { "Proposals", "skills", "Category", "Client" });
+                job = unitOfWork.job.Find( new string[] { "Proposals", "skills", "Category", "Client" }, j => j.Id == id);
 
                 jobDTO = mapper.Map<Job, JobDTO>(job);
                 jobDTO.clientName = job.Client.Name;

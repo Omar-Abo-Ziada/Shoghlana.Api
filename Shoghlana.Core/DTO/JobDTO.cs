@@ -16,5 +16,7 @@ namespace Shoghlana.Core.DTO
         public string clientName { get; set; } 
         public string categoryTitle { get; set; }
         public Dictionary<int, string> skillsDic { get; set; } = new Dictionary<int, string>();
+        public Dictionary<int, string> freelancerDic { get; set; } = new Dictionary<int, string>();
+        public Dictionary<int, string> proposalDic { get; set; } = new Dictionary<int, string>();
     }
 }

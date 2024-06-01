@@ -257,7 +257,7 @@ namespace Shoghlana.EF.Migrations
                     Price = table.Column<decimal>(type: "Money", nullable: false),
                     Status = table.Column<int>(type: "int", nullable: false, defaultValue: 1),
                     ReposLinks = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    FreelancerId = table.Column<int>(type: "int", nullable: true),
+                    FreelancerId = table.Column<int>(type: "int", nullable: false),
                     JobId = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
@@ -267,7 +267,8 @@ namespace Shoghlana.EF.Migrations
                         name: "FK_Proposals_Freelancers_FreelancerId",
                         column: x => x.FreelancerId,
                         principalTable: "Freelancers",
-                        principalColumn: "Id");
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.NoAction);
                     table.ForeignKey(
                         name: "FK_Proposals_Jobs_JobId",
                         column: x => x.JobId,
@@ -405,8 +406,8 @@ namespace Shoghlana.EF.Migrations
                 columns: new[] { "Id", "CategoryId", "ClientId", "Description", "ExperienceLevel", "FreelancerId", "MaxBudget", "MinBudget", "PostTime", "Title" },
                 values: new object[,]
                 {
-                    { 1, 1, 1, "Description for Job1", 0, 1, 500m, 100m, new DateTime(2024, 5, 31, 19, 29, 6, 523, DateTimeKind.Local).AddTicks(5888), "Job1" },
-                    { 2, 2, 2, "Description for Job2", 1, 2, 700m, 200m, new DateTime(2024, 5, 31, 19, 29, 6, 523, DateTimeKind.Local).AddTicks(5950), "Job2" }
+                    { 1, 1, 1, "Description for Job1", 0, 1, 500m, 100m, new DateTime(2024, 6, 1, 12, 0, 31, 873, DateTimeKind.Local).AddTicks(794), "Job1" },
+                    { 2, 2, 2, "Description for Job2", 1, 2, 700m, 200m, new DateTime(2024, 6, 1, 12, 0, 31, 873, DateTimeKind.Local).AddTicks(860), "Job2" }
                 });
 
             migrationBuilder.InsertData(

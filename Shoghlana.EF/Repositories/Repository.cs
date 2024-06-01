@@ -29,17 +29,8 @@ namespace Shoghlana.EF.Repository
             return await Context.Set<T>().ToListAsync();
         }
 
-        public T GetById(int id , string[] includes = null)
+        public T GetById(int id)
         {
-            if(includes != null)
-            {
-                IQueryable<T> query = Context.Set<T>().Find(id);
-                foreach(string include in includes)
-                {
-                    query = query.Include(include);
-                }
-                return query.FirstOrDefault();
-            }
             return Context.Set<T>().Find(id);
         }
 

@@ -239,7 +239,7 @@ namespace Shoghlana.EF.Migrations
                             FreelancerId = 1,
                             MaxBudget = 500m,
                             MinBudget = 100m,
-                            PostTime = new DateTime(2024, 5, 31, 19, 29, 6, 523, DateTimeKind.Local).AddTicks(5888),
+                            PostTime = new DateTime(2024, 6, 1, 12, 0, 31, 873, DateTimeKind.Local).AddTicks(794),
                             Status = 0,
                             Title = "Job1"
                         },
@@ -253,7 +253,7 @@ namespace Shoghlana.EF.Migrations
                             FreelancerId = 2,
                             MaxBudget = 700m,
                             MinBudget = 200m,
-                            PostTime = new DateTime(2024, 5, 31, 19, 29, 6, 523, DateTimeKind.Local).AddTicks(5950),
+                            PostTime = new DateTime(2024, 6, 1, 12, 0, 31, 873, DateTimeKind.Local).AddTicks(860),
                             Status = 0,
                             Title = "Job2"
                         });
@@ -368,7 +368,7 @@ namespace Shoghlana.EF.Migrations
                     b.Property<double>("Duration")
                         .HasColumnType("float");
 
-                    b.Property<int?>("FreelancerId")
+                    b.Property<int>("FreelancerId")
                         .HasColumnType("int");
 
                     b.Property<int?>("JobId")
@@ -661,7 +661,9 @@ namespace Shoghlana.EF.Migrations
                 {
                     b.HasOne("Shoghlana.Core.Models.Freelancer", "Freelancer")
                         .WithMany("Proposals")
-                        .HasForeignKey("FreelancerId");
+                        .HasForeignKey("FreelancerId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("Shoghlana.Core.Models.Job", "Job")
                         .WithMany("Proposals")
