@@ -344,6 +344,11 @@ namespace Shoghlana.EF
                 new Proposal { Id = 2, Price = 400, Status = ProposalStatus.Waiting, FreelancerId = 2, JobId = 2 }
             );
 
+            modelBuilder.Entity<ProposalImages>().HasData(
+              new ProposalImages { Id = 1, Image = new byte[] { 0x20, 0x21, 0x22, 0x23 }, ProposalId = 1},
+              new ProposalImages { Id = 2, Image = new byte[] { 0x20, 0x21, 0x22, 0x23 }, ProposalId = 2}
+          );
+
             modelBuilder.Entity<Rate>().HasData(
                 new Rate { Id = 1, Value = 4, JobId = 1 },
                 new Rate { Id = 2, Value = 5, JobId = 2 }

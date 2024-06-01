@@ -19,11 +19,13 @@ namespace Shoghlana.EF.Repositories
         public IProjectImagesRepository projectImages { get; private set; } 
         public IProjectRepository project { get; private set; } 
         public IProjectSkillsRepository projectSkills { get; private set; }  
-        public IProposalRepository proposal { get; private set; }
+        public IProposalRepository proposal { get; private set; } 
+        public iProposalImageRepository proposalImage { get; private set; }  
         public IRateRepository rate { get; private set; }
         public ISkillRepository skill { get; private set; }
         public IFreelanceSkillsRepository freelancerSkills { get; private set; }
 
+       // iProposalImageRepository IUnitOfWork.proposalImage => throw new NotImplementedException();
 
         public UnitOfWork(ApplicationDBContext _context)
         {
@@ -39,6 +41,7 @@ namespace Shoghlana.EF.Repositories
             skill = new SkillRepository(context);
             proposal = new ProposalRepository(context);
             jobSkills = new JobSkillsRepository(context);
+            proposalImage = new proposalImageRepository(context);
         }
 
         // returns num of affected entities in db

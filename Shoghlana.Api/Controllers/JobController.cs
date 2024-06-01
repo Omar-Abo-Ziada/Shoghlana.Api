@@ -56,7 +56,7 @@ namespace Shoghlana.Api.Controllers
 
 
 
-        [HttpGet("Id")]
+        [HttpGet("{Id:int}")]
         public ActionResult<GeneralResponse> Get(int id)
         {
             Job job = new Job();
@@ -122,18 +122,30 @@ namespace Shoghlana.Api.Controllers
         {
             Job job = mapper.Map<JobDTO, Job>(jobDto);
 
-            foreach(SkillDTO skillDTO in jobDto.skillsDTO) 
-            {
-                JobSkills skill = unitOfWork.jobSkills.GetById(skillDTO.Id);
+            //foreach(SkillDTO skillDTO in jobDto.skillsDTO) 
+            //{
+            //    JobSkills skill = unitOfWork.jobSkills.Find(js => {js.SkillId == skillDTO.Id && js.JobId ==  });
 
-                job.skills.Add(skill);
-            }
+            //    job.skills.Add(skill);
+            //}
             
             try
             {
                 unitOfWork.job.Add(job);
                 unitOfWork.Save();
+
+                foreach (SkillDTO skillDTO in jobDto.skillsDTO)
+                {
+                    job.skills.Add(new JobSkills
+                    {
+                        SkillId = skillDTO.Id,
+                        JobId = job.Id
+                    });
+                } 
+                unitOfWork.job.Update(job);
+                unitOfWork.Save();
             }
+
             catch (Exception ex) 
             {
                 return new GeneralResponse
@@ -164,20 +176,22 @@ namespace Shoghlana.Api.Controllers
             job.ExperienceLevel = jobDto.ExperienceLevel;
             job.CategoryId = jobDto.CategoryId;
 
+            List<JobSkills> jobSkills = unitOfWork.jobSkills
+                                   .FindAll(criteria: js => js.JobId == jobDto.Id)
+                                   .ToList();
+            unitOfWork.jobSkills.DeleteRange(jobSkills);
 
             List<JobSkills> skills = new List<JobSkills>();
             foreach (SkillDTO skillDto in jobDto.skillsDTO)
             {
-                JobSkills skill = unitOfWork.jobSkills.GetById(skillDto.Id);
-                skills.Add(skill);
+                skills.Add(new JobSkills
+                {
+                    SkillId = skillDto.Id,
+                    JobId = jobDto.Id
+                });
             }
             job.skills = skills;
 
-            List<JobSkills> jobSkills = unitOfWork.jobSkills
-                                       .FindAll(criteria: j => j.JobId == jobDto.Id)
-                                       .ToList();
-
-            unitOfWork.jobSkills.DeleteRange(jobSkills);
 
                 try
                 {
@@ -199,6 +213,69 @@ namespace Shoghlana.Api.Controllers
                         Message = ex.Message
                     };
                 }
+        }
+
+
+
+        [HttpDelete("{id:int}")]
+        public ActionResult<GeneralResponse> delete(int id)
+        {
+            Job job = unitOfWork.job.GetById(id);
+            List<JobSkills> jobSkills = unitOfWork.jobSkills
+                                       .FindAll(criteria: js => js.JobId == id)
+                                       .ToList();
+
+            if(jobSkills.Count > 0)
+            {
+                unitOfWork.jobSkills.DeleteRange(jobSkills);
+            }
+
+
+            List<Proposal> proposals = unitOfWork.proposal
+                                      .FindAll(criteria: p => p.JobId == id)
+                                      .ToList();
+
+            if(proposals.Count > 0)
+            {
+                foreach (Proposal proposal in proposals)
+                {
+                    List<ProposalImages> images = unitOfWork.proposalImage
+                                              .FindAll(criteria: pi => pi.ProposalId == proposal.Id)
+                                              .ToList();
+
+                    unitOfWork.proposalImage.DeleteRange(images);
+                }
+
+                unitOfWork.proposal.DeleteRange(proposals);
+            }
+           
+
+            Rate rate = unitOfWork.rate.Find(criteria: r => r.JobId == id);
+            if(rate != null)
+            {
+                unitOfWork.rate.Delete(rate);
+            }
+
+            try
+            {
+                unitOfWork.job.Delete(job);
+                unitOfWork.Save();
+                return new GeneralResponse
+                {
+                    IsSuccess = true,
+                    Data = null,
+                    Message = "Job was deleted successfully"
+                };
+            }
+            catch (Exception ex) 
+            {
+                return new GeneralResponse
+                {
+                    IsSuccess = false,
+                    Data = null,
+                    Message = ex.Message
+                };
+            }
         }
     }
 }
