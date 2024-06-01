@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace Shoghlana.EF
 {
-    public class ApplicationDBContext :  IdentityDbContext<ApplicationUser>
+    public class ApplicationDBContext : IdentityDbContext<ApplicationUser>
 
     {
         public DbSet<Freelancer> Freelancers { get; set; }
@@ -195,6 +195,29 @@ namespace Shoghlana.EF
                       .HasForeignKey(p => p.JobId);
             });
 
+            modelBuilder.Entity<IdentityRole>().HasData(
+             new IdentityRole()
+             {
+                 Id = Guid.NewGuid().ToString(),
+                 Name = "Admin",
+                 NormalizedName = "Admin".ToUpper(),
+                 ConcurrencyStamp = Guid.NewGuid().ToString()
+             },
+                new IdentityRole()
+                {
+                    Id = Guid.NewGuid().ToString(),
+                    Name = "Client",
+                    NormalizedName = "Client".ToUpper(),
+                    ConcurrencyStamp = Guid.NewGuid().ToString()
+                },
+                  new IdentityRole()
+                  {
+                      Id = Guid.NewGuid().ToString(),
+                      Name = "Freelancer",
+                      NormalizedName = "Freelancer".ToUpper(),
+                      ConcurrencyStamp = Guid.NewGuid().ToString()
+                  }
+             );
 
             modelBuilder.Entity<Rate>(entity =>
             {

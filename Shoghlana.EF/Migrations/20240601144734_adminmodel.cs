@@ -558,6 +558,8 @@ namespace Shoghlana.EF.Migrations
                     { 2, null, null, null, "Client2", null }
                 });
 
+
+
             migrationBuilder.InsertData(
                 table: "Freelancers",
                 columns: new[] { "Id", "Address", "Name", "Overview", "PersonalImageBytes", "Title" },

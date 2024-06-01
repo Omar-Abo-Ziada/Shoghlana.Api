@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Shoghlana.EF;
 
@@ -11,9 +12,11 @@ using Shoghlana.EF;
 namespace Shoghlana.EF.Migrations
 {
     [DbContext(typeof(ApplicationDBContext))]
-    partial class ApplicationDBContextModelSnapshot : ModelSnapshot
+    [Migration("20240601180727_addroles")]
+    partial class addroles
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -47,29 +50,6 @@ namespace Shoghlana.EF.Migrations
                         .HasFilter("[NormalizedName] IS NOT NULL");
 
                     b.ToTable("AspNetRoles", (string)null);
-
-                    b.HasData(
-                        new
-                        {
-                            Id = "888df4f9-eb86-4089-bed2-f94cd10e5a3d",
-                            ConcurrencyStamp = "75ab8697-5cab-4a5e-9187-679e99e9c3c5",
-                            Name = "Admin",
-                            NormalizedName = "ADMIN"
-                        },
-                        new
-                        {
-                            Id = "93fd7a84-0507-454a-ad65-a89814592ff3",
-                            ConcurrencyStamp = "1f6ee9bb-2609-435c-b961-10e7cbcdc5b2",
-                            Name = "Client",
-                            NormalizedName = "CLIENT"
-                        },
-                        new
-                        {
-                            Id = "38dc52ce-f3ad-4120-bfaa-a576e4683850",
-                            ConcurrencyStamp = "7ab71c6c-2c5a-4bc9-b90f-5f49f3eca4d0",
-                            Name = "Freelancer",
-                            NormalizedName = "FREELANCER"
-                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -507,7 +487,7 @@ namespace Shoghlana.EF.Migrations
                             FreelancerId = 1,
                             MaxBudget = 500m,
                             MinBudget = 100m,
-                            PostTime = new DateTime(2024, 6, 1, 22, 32, 59, 412, DateTimeKind.Local).AddTicks(7795),
+                            PostTime = new DateTime(2024, 6, 1, 21, 7, 25, 799, DateTimeKind.Local).AddTicks(2014),
                             Status = 0,
                             Title = "Job1"
                         },
@@ -521,7 +501,7 @@ namespace Shoghlana.EF.Migrations
                             FreelancerId = 2,
                             MaxBudget = 700m,
                             MinBudget = 200m,
-                            PostTime = new DateTime(2024, 6, 1, 22, 32, 59, 412, DateTimeKind.Local).AddTicks(7850),
+                            PostTime = new DateTime(2024, 6, 1, 21, 7, 25, 799, DateTimeKind.Local).AddTicks(2074),
                             Status = 0,
                             Title = "Job2"
                         });
