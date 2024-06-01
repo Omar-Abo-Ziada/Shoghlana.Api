@@ -14,9 +14,7 @@ namespace Shoghlana.Core.DTO
     {
         [Required(ErrorMessage = "Image is required")]
         public IFormFile? Image { get; set; }
+
         public int? ProjectId { get; set; }
-
     }
-
-    
 }

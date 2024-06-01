@@ -16,6 +16,10 @@ namespace Shoghlana.Api.Controllers
 
         private readonly IUnitOfWork unitOfWork;
 
+        private List<string> allowedExtensions = new List<string>() { ".jpg", ".png" };
+
+        private long maxAllowedPersonalImageSize = 1_048_576;  // 1 MB = 1024 * 1024 bytes
+
         public ProposalController(IMapper mapper, IUnitOfWork unitOfWork)
         {
             this.mapper = mapper;
@@ -27,231 +31,435 @@ namespace Shoghlana.Api.Controllers
         [HttpGet]
         public ActionResult<GeneralResponse> GetAll()
         {
-            List<Freelancer> freelancers = unitOfWork.freelancer.GetAll().ToList();
+            List<Proposal> proposals = unitOfWork.proposal.FindAll(includes: ["Images"]).ToList();
 
-            List<FreelancerDTO> freelancerDTOs = new List<FreelancerDTO>(freelancers.Count);
+            List<GetProposalDTO> getProposalDTOs = new List<GetProposalDTO>(proposals.Count);
 
-            foreach (Freelancer freelancer in freelancers)
+            foreach (Proposal proposal in proposals)
             {
-                //FreelancerDTO freelancerDTO = new FreelancerDTO()
-                //{
-                //    Name = freelancer.Name,
-                //    Title = freelancer.Title,
-                //    Overview = freelancer.Overview,
-                //    Address = freelancer.Address,
+                GetProposalDTO getProposalDTO = mapper.Map<Proposal, GetProposalDTO>(proposal);
 
-                //    PersonalImageBytes = freelancer.PersonalImageBytes,
-                //};
-
-                FreelancerDTO freelancerDTO = mapper.Map<Freelancer, FreelancerDTO>(freelancer);
-
-                freelancerDTOs.Add(freelancerDTO);
+                getProposalDTOs.Add(getProposalDTO);
             }
 
             return new GeneralResponse()
             {
                 IsSuccess = true,
                 Status = 200,
-                Data = freelancerDTOs,
+                Data = getProposalDTOs,
             };
         }
 
-        //[HttpGet("{id:int}")]
-        //public ActionResult<GeneralResponse> GetById(int id)
-        //{
-        //    Freelancer? freelancer = unitOfWork.freelancer.GetById(id);
+        [HttpGet("{id:int}")]
+        public ActionResult<GeneralResponse> GetById(int id)
+        {
+            Proposal? proposal = unitOfWork.proposal.GetById(id);
 
-        //    if (freelancer is null)
-        //    {
-        //        return new GeneralResponse()
-        //        {
-        //            IsSuccess = false,
-        //            Status = 400, // bad request
-        //            Message = "There is no Freelancer found with this ID !"
-        //        };
-        //    }
+            if (proposal is null)
+            {
+                return new GeneralResponse()
+                {
+                    IsSuccess = false,
+                    Status = 400, // bad request
+                    Message = "There is no Proposal found with this ID !"
+                };
+            }
 
-        //    FreelancerDTO freelancerDTO = mapper.Map<Freelancer, FreelancerDTO>(freelancer);
+            GetProposalDTO getProposalDTO = mapper.Map<Proposal, GetProposalDTO>(proposal);
 
-        //    return new GeneralResponse()
-        //    {
-        //        IsSuccess = true,
-        //        Status = 200,
-        //        Data = freelancerDTO
-        //    };
-        //}
+            return new GeneralResponse()
+            {
+                IsSuccess = true,
+                Status = 200,
+                Data = getProposalDTO
+            };
+        }
 
-        //[HttpPost]
-        //public async Task<ActionResult<GeneralResponse>> AddAsync([FromForm] AddFreelancerDTO addedFreelancerDTO)
-        //{
-        //    if (!ModelState.IsValid)
-        //    {
-        //        return new GeneralResponse()
-        //        {
-        //            IsSuccess = false,
-        //            Status = 400,
-        //            Data = ModelState,
-        //            Message = "Invalid Model State !"
-        //        };
-        //    }
+        [HttpGet("GetByJobId/{id:int}")]
+        public ActionResult<GeneralResponse> GetByJobId(int id)
+        {
+            Job job = unitOfWork.job.GetById(id);
 
-        //    if (addedFreelancerDTO.PersonalImageBytes is null)
-        //    {
-        //        return new GeneralResponse()
-        //        {
-        //            IsSuccess = false,
-        //            Status = 400,
-        //            Message = "Personal Image is required"
-        //        };
-        //    }
+            if (job is null)
+            {
+                return new GeneralResponse()
+                {
+                    IsSuccess = false,
+                    Status = 404,
+                    Message = "There are no Job found with this ID ."
+                };
+            }
 
-        //    if (!allowedExtensions.Contains(Path.GetExtension(addedFreelancerDTO.PersonalImageBytes.FileName).ToLower()))
-        //    {
-        //        return new GeneralResponse()
-        //        {
-        //            IsSuccess = false,
-        //            Status = 400,
-        //            Message = "The allowed Personal Image Extensions => {jpg , png}",
-        //        };
-        //    }
+            List<Proposal> proposals = unitOfWork.proposal.FindAll(includes: null, criteria: p => p.JobId == id).ToList();
 
-        //    if (addedFreelancerDTO.PersonalImageBytes.Length > maxAllowedPersonalImageSize)
-        //    {
-        //        return new GeneralResponse()
-        //        {
-        //            IsSuccess = false,
-        //            Status = 400,
-        //            Message = "The max Allowed Personal Image Size => 1 MB ",
-        //        };
-        //    }
+            if (proposals.Count == 0)
+            {
+                return new GeneralResponse()
+                {
+                    IsSuccess = false,
+                    Status = 404,
+                    Message = "There are no proposals yet to this job ."
+                };
+            }
 
-        //    using var dataStream = new MemoryStream();
+            List<GetProposalDTO> getProposalDTOs = new List<GetProposalDTO>(proposals.Count);
 
-        //    await addedFreelancerDTO.PersonalImageBytes.CopyToAsync(dataStream);
+            foreach (Proposal proposal in proposals)
+            {
+                GetProposalDTO getProposalDTO = mapper.Map<Proposal, GetProposalDTO>(proposal);
 
-        //    Freelancer freelancer = new Freelancer()
-        //    {
-        //        Name = addedFreelancerDTO.Name,
-        //        Title = addedFreelancerDTO.Title,
-        //        Address = addedFreelancerDTO.Address,
-        //        Overview = addedFreelancerDTO.Overview,
-        //        PersonalImageBytes = dataStream.ToArray(),
-        //    };
+                getProposalDTOs.Add(getProposalDTO);
+            }
 
-        //    Freelancer addedFreelancer = await unitOfWork.freelancer.AddAsync(freelancer);
+            return new GeneralResponse()
+            {
+                IsSuccess = true,
+                Status = 200,
+                Data = getProposalDTOs,
+            };
+        }
 
-        //    unitOfWork.Save();
+        [HttpPost]
+        public async Task<ActionResult<GeneralResponse>> AddAsync([FromForm] AddProposalDTO addProposalDTO)
+        {
+            if (!ModelState.IsValid)
+            {
+                return new GeneralResponse()
+                {
+                    IsSuccess = false,
+                    Status = 400,
+                    Data = ModelState,
+                    Message = "Invalid Model State !"
+                };
+            }
 
-        //    FreelancerDTO freelancerDTO = mapper.Map<Freelancer, FreelancerDTO>(freelancer);
+            Job job = unitOfWork.job.GetById(addProposalDTO.JobId);
 
-        //    return new GeneralResponse()
-        //    {
-        //        IsSuccess = true,
-        //        Status = 201,
-        //        Data = freelancerDTO,
-        //        Message = "Added Successfully"
-        //    };
-        //    //freelancer = mapper.Map<FreelancerDTO, Freelancer>(freelancerDTO);
-        //}
+            if (job is null)
+            {
+                return new GeneralResponse()
+                {
+                    IsSuccess = false,
+                    Status = 400,
+                    Message = $"No job found with this ID: {addProposalDTO.JobId}!"
+                };
+            }
 
-        //[HttpPut("{id:int}")]
-        //public async Task<ActionResult<GeneralResponse>> UpdateAsync(int id, [FromForm] AddFreelancerDTO addedFreelancerDTO)
-        //{
-        //    if (!ModelState.IsValid)
-        //    {
-        //        return new GeneralResponse()
-        //        {
-        //            IsSuccess = false,
-        //            Status = 400,
-        //            Data = ModelState,
-        //            Message = "Invalid Model State !"
-        //        };
-        //    }
+            Freelancer freelancer = unitOfWork.freelancer.GetById(addProposalDTO.FreelancerId);
 
-        //    Freelancer? freelancer = unitOfWork.freelancer.GetById(id);
+            if (freelancer is null)
+            {
+                return new GeneralResponse()
+                {
+                    IsSuccess = false,
+                    Status = 400,
+                    Message = $"No freelancer found with this ID: {addProposalDTO.FreelancerId}!"
+                };
+            }
 
-        //    if (freelancer is null)
-        //    {
-        //        return new GeneralResponse()
-        //        {
-        //            IsSuccess = false,
-        //            Status = 400,
-        //            Message = "There is no Freelancer found with this ID !"
-        //        };
-        //    }
+            if (addProposalDTO.Images is not null && addProposalDTO.Images.Count > 0)
+            {
 
-        //    if (addedFreelancerDTO.PersonalImageBytes != null)
-        //    {
-        //        if (!allowedExtensions.Contains(Path.GetExtension(addedFreelancerDTO.PersonalImageBytes.FileName).ToLower()))
-        //        {
-        //            return new GeneralResponse()
-        //            {
-        //                IsSuccess = false,
-        //                Status = 400,
-        //                Message = "The allowed Personal Image Extensions => {jpg , png}",
-        //            };
-        //        }
+                List<ProposalImages> proposalImages = new List<ProposalImages>();
 
-        //        if (addedFreelancerDTO.PersonalImageBytes.Length > maxAllowedPersonalImageSize)
-        //        {
-        //            return new GeneralResponse()
-        //            {
-        //                IsSuccess = false,
-        //                Status = 400,
-        //                Message = "The max Allowed Personal Image Size => 1 MB ",
-        //            };
-        //        }
+                foreach (AddProposalImageDTO addProposalImageDTO in addProposalDTO.Images)
+                {
+                    if (!allowedExtensions.Contains(Path.GetExtension(addProposalImageDTO.Image.FileName).ToLower()))
+                    {
+                        return new GeneralResponse()
+                        {
+                            IsSuccess = false,
+                            Status = 400,
+                            Message = "The allowed Image Extensions => {jpg , png}",
+                        };
+                    }
 
-        //        using var dataStream = new MemoryStream();
+                    if (addProposalImageDTO.Image.Length > maxAllowedPersonalImageSize)
+                    {
+                        return new GeneralResponse()
+                        {
+                            IsSuccess = false,
+                            Status = 400,
+                            Message = "The max Allowed Image Size => 1 MB ",
+                        };
+                    }
 
-        //        await addedFreelancerDTO.PersonalImageBytes.CopyToAsync(dataStream);
+                    using var dataStream = new MemoryStream();
 
-        //        freelancer.PersonalImageBytes = dataStream.ToArray();
-        //    }
+                    await addProposalImageDTO.Image.CopyToAsync(dataStream);
 
-        //    freelancer.Name = addedFreelancerDTO.Name;
-        //    freelancer.Title = addedFreelancerDTO.Title;
-        //    freelancer.Overview = addedFreelancerDTO.Overview;
-        //    freelancer.Address = addedFreelancerDTO.Address;
+                    ProposalImages proposalImage = new ProposalImages()
+                    {
+                        //Id = addProposalImageDTO.Id,
+                        Image = dataStream.ToArray(),
+                        //ProposalId = addProposalImageDTO.ProposalId,
+                    };
 
-        //    unitOfWork.Save();
+                    proposalImages.Add(proposalImage);
+                }
 
-        //    FreelancerDTO freelancerDTO = mapper.Map<Freelancer, FreelancerDTO>(freelancer);
+                Proposal proposal = new Proposal()
+                {
+                    Images = proposalImages,
 
-        //    return new GeneralResponse()
-        //    {
-        //        IsSuccess = true,
-        //        Status = 200,
-        //        Data = freelancerDTO
-        //    };
-        //}
+                    Duration = addProposalDTO.Duration,
 
-        //[HttpDelete("{id:int}")]
-        //public ActionResult<GeneralResponse> Delete(int id)
-        //{
-        //    Freelancer? freelancer = unitOfWork.freelancer.GetById(id);
+                    Description = addProposalDTO.Description,
 
-        //    if (freelancer is null)
-        //    {
-        //        return new GeneralResponse()
-        //        {
-        //            IsSuccess = false,
-        //            Status = 400,
-        //            Message = "There is no Freelancer found with this ID !"
-        //        };
-        //    }
+                    ReposLinks = addProposalDTO.ReposLinks,
 
-        //    unitOfWork.freelancer.Delete(freelancer);
+                    FreelancerId = addProposalDTO.FreelancerId,
 
-        //    unitOfWork.Save();
+                    JobId = addProposalDTO.JobId,
+                };
 
-        //    return new GeneralResponse()
-        //    {
-        //        IsSuccess = true,
-        //        Status = 204, // no content
-        //        Message = $"The Freelancer with ID ({freelancer.Id}) is deleted successfully !"
-        //    };
-        //}
+                //proposal = mapper.Map<AddProposalDTO, Proposal>(addProposalDTO);
 
+                Proposal addedProposal = await unitOfWork.proposal.AddAsync(proposal);
+
+                unitOfWork.Save();
+
+                GetProposalDTO getProposalDTO = mapper.Map<Proposal, GetProposalDTO>(addedProposal);
+
+                return new GeneralResponse()
+                {
+                    IsSuccess = true,
+                    Status = 201,
+                    Data = getProposalDTO,
+                    Message = "Proposal Added Successfully"
+                };
+            }
+            else
+            {
+                Proposal proposal = new Proposal()
+                {
+                    Description = addProposalDTO.Description,
+
+                    Duration = addProposalDTO.Duration,
+
+                    Price = addProposalDTO.Price,
+
+                    FreelancerId = addProposalDTO.FreelancerId,
+
+                    JobId = addProposalDTO.JobId,
+
+                    ReposLinks = addProposalDTO.ReposLinks,
+
+                    Images = null,
+                };
+
+                //proposal = mapper.Map<AddProposalDTO, Proposal>(addProposalDTO);
+
+                Proposal addedProposal = await unitOfWork.proposal.AddAsync(proposal);
+
+                unitOfWork.Save();
+
+                GetProposalDTO getProposalDTO = mapper.Map<Proposal, GetProposalDTO>(proposal);
+
+                return new GeneralResponse()
+                {
+                    IsSuccess = true,
+                    Status = 201,
+                    Data = getProposalDTO,
+                    Message = "Proposal Added Successfully"
+                };
+            }
+        }
+
+        // TODO : Try To use Async in Find to reduce waiting time
+        [HttpPut("{id:int}")]
+        public async Task<ActionResult<GeneralResponse>> Update(int id, [FromForm] AddProposalDTO addProposalDTO)
+        {
+            if (!ModelState.IsValid)
+            {
+                return new GeneralResponse()
+                {
+                    IsSuccess = false,
+                    Status = 400,
+                    Data = ModelState,
+                    Message = "Invalid Model State !"
+                };
+            }
+
+            Proposal proposal = unitOfWork.proposal.Find(includes: ["Images"], criteria: p => p.Id == id);
+
+            if (proposal is null)
+            {
+                return new GeneralResponse()
+                {
+                    IsSuccess = false,
+                    Status = 400,
+                    Message = $"No Proposal found with this ID: {id}!"
+                };
+            }
+
+            Job job = unitOfWork.job.GetById(addProposalDTO.JobId);
+
+            if (job is null)
+            {
+                return new GeneralResponse()
+                {
+                    IsSuccess = false,
+                    Status = 400,
+                    Message = $"No job found with this ID: {addProposalDTO.JobId}!"
+                };
+            }
+
+            Freelancer freelancer = unitOfWork.freelancer.GetById(addProposalDTO.FreelancerId);
+
+            if (freelancer is null)
+            {
+                return new GeneralResponse()
+                {
+                    IsSuccess = false,
+                    Status = 400,
+                    Message = $"No freelancer found with this ID: {addProposalDTO.FreelancerId}!"
+                };
+            }
+
+            if (proposal.Images is not null || proposal?.Images?.Count > 0)
+            {
+                foreach (var image in proposal.Images)
+                {
+                    image.ProposalId = null;
+
+                    unitOfWork.ProposalImages.Delete(image);
+                }
+            }
+
+            if (addProposalDTO.Images is not null && addProposalDTO.Images.Count > 0)
+            {
+                //Proposal validProposal = unitOfWork.proposal.Find(includes: ["Images"], criteria: p => p.Id == id);
+
+                //foreach (var image in validProposal.Images)
+                //{
+                //    image.ProposalId = null;
+
+                //    unitOfWork.ProposalImages.Delete(image);
+                //}
+
+                List<ProposalImages> proposalImages = new List<ProposalImages>();
+
+                foreach (AddProposalImageDTO addProposalImageDTO in addProposalDTO.Images)
+                {
+                    if (!allowedExtensions.Contains(Path.GetExtension(addProposalImageDTO.Image.FileName).ToLower()))
+                    {
+                        return new GeneralResponse()
+                        {
+                            IsSuccess = false,
+                            Status = 400,
+                            Message = "The allowed Image Extensions => {jpg , png}",
+                        };
+                    }
+
+                    if (addProposalImageDTO.Image.Length > maxAllowedPersonalImageSize)
+                    {
+                        return new GeneralResponse()
+                        {
+                            IsSuccess = false,
+                            Status = 400,
+                            Message = "The max Allowed Image Size => 1 MB ",
+                        };
+                    }
+
+                    using var dataStream = new MemoryStream();
+
+                    await addProposalImageDTO.Image.CopyToAsync(dataStream);
+
+                    ProposalImages proposalImage = new ProposalImages()
+                    {
+                        //Id = addProposalImageDTO.Id,
+                        Image = dataStream.ToArray(),
+                        //ProposalId = addProposalImageDTO.ProposalId,
+                    };
+
+                    proposalImages.Add(proposalImage);
+                }
+
+                proposal.Images = proposalImages;
+
+                proposal.Duration = addProposalDTO.Duration;
+
+                proposal.Description = addProposalDTO.Description;
+
+                proposal.ReposLinks = addProposalDTO.ReposLinks;
+
+                proposal.FreelancerId = addProposalDTO.FreelancerId;
+
+                proposal.JobId = addProposalDTO.JobId;
+
+                proposal.Price = addProposalDTO.Price;
+
+                //proposal = mapper.Map<AddProposalDTO, Proposal>(addProposalDTO);
+
+                unitOfWork.Save();
+
+                Proposal editedProposal = unitOfWork.proposal.Find(includes: ["Images"], criteria: p => p.Id == proposal.Id);
+
+                GetProposalDTO getProposalDTO = mapper.Map<Proposal, GetProposalDTO>(editedProposal);
+
+                return new GeneralResponse()
+                {
+                    IsSuccess = true,
+                    Status = 201,
+                    Data = getProposalDTO,
+                    Message = "Proposal Added Successfully"
+                };
+            }
+            else
+            {
+
+                proposal.Description = addProposalDTO.Description;
+                proposal.Duration = addProposalDTO.Duration;
+                proposal.Price = addProposalDTO.Price;
+                proposal.FreelancerId = addProposalDTO.FreelancerId;
+                proposal.JobId = addProposalDTO.JobId;
+                proposal.ReposLinks = addProposalDTO.ReposLinks;
+                proposal.Images = null;
+
+                //proposal = mapper.Map<AddProposalDTO, Proposal>(addProposalDTO);
+
+                //Proposal editedProposal = await unitOfWork.proposal.AddAsync(proposal);
+
+                unitOfWork.Save();
+
+                GetProposalDTO getProposalDTO = mapper.Map<Proposal, GetProposalDTO>(proposal);
+
+                return new GeneralResponse()
+                {
+                    IsSuccess = true,
+                    Status = 201,
+                    Data = getProposalDTO,
+                    Message = "Proposal Added Successfully"
+                };
+            }
+        }
+
+        [HttpDelete("{id:int}")]
+        public ActionResult<GeneralResponse> Delete(int id)
+        {
+            Proposal proposal = unitOfWork.proposal.Find(includes: ["Images"], criteria: p => p.Id == id);
+
+            if (proposal == null)
+            {
+                return new GeneralResponse()
+                {
+                    IsSuccess = false,
+                    Status = 400,
+                    Message = $"No Proposal Found With this ID {id} ! ",
+                };
+            }
+
+            unitOfWork.proposal.Delete(proposal);
+
+            unitOfWork.Save();
+
+            return new GeneralResponse()
+            {
+                IsSuccess = true,
+                Status = 204, // no content
+                Message = $"The Proposal with ID ({proposal.Id}) is deleted successfully !"
+            };
+        }
     }
 }

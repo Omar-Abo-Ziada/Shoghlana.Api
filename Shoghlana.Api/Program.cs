@@ -59,12 +59,9 @@ namespace Shoghlana.Api
                    };
                });
 
-
-
             builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();// Update-ClientControlller
             builder.Services.AddScoped<IClientRepository, ClientRepository>();
             builder.Services.AddScoped<IJobRepository, JobRepository>();
-            
 
             builder.Services.AddAutoMapper(typeof(Program));
 

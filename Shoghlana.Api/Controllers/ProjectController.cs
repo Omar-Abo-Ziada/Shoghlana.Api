@@ -149,13 +149,14 @@ namespace Shoghlana.Api.Controllers
             await projectDTO.Poster.CopyToAsync(posterDataStream);
 
             List<ProjectImages> images = new List<ProjectImages>();
+
             if (projectDTO.Images != null)
             {
                 foreach (var imageDTO in projectDTO.Images)
                 {
                     if (!allowedExtensions.Contains(Path.GetExtension(imageDTO.Image.FileName).ToLower()))
                     {
-                        return new GeneralResponse
+                        return new GeneralResponse  
                         {
                             IsSuccess = false,
                             Status = 400,
@@ -175,6 +176,7 @@ namespace Shoghlana.Api.Controllers
 
                     using var imageDataStream = new MemoryStream();
                     await imageDTO.Image.CopyToAsync(imageDataStream);
+
                     images.Add(new ProjectImages { Image = imageDataStream.ToArray() });
                 }
             }

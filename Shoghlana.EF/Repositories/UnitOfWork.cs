@@ -12,15 +12,26 @@ namespace Shoghlana.EF.Repositories
 
         private readonly ApplicationDBContext context;
         public ICategoryRepository category { get; private set; }  
+
         public IClientRepository client { get; private set; } 
+
         public IFreelancerRepository freelancer { get; private set; } 
+
         public IJobRepository job { get; private set; } 
+
         public IJobSkillsRepository jobSkills { get; private set; }
+
         public IProjectImagesRepository projectImages { get; private set; } 
+
         public IProjectRepository project { get; private set; } 
+
         public IProjectSkillsRepository projectSkills { get; private set; } 
+
         public IProposalRepository proposal { get; private set; }
+        public IProposalImagesRepository ProposalImages { get; private set; }
+
         public IRateRepository rate { get; private set; }
+
         public ISkillRepository skill { get; private set; }
 
         public UnitOfWork(ApplicationDBContext _context)
@@ -37,6 +48,7 @@ namespace Shoghlana.EF.Repositories
             skill = new SkillRepository(context);
             proposal = new ProposalRepository(context);
             jobSkills = new JobSkillsRepository(context);
+            ProposalImages = new ProposalImagesRepositry(context);
         }
 
         // returns num of affected entities in db
