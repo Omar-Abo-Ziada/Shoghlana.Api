@@ -1,15 +1,10 @@
 ﻿using Shoghlana.Core.Enums;
-using System;
-using System.Collections.Generic;
+using Shoghlana.Core.Models;
 using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace Shoghlana.Core.Models
+namespace Shoghlana.Core.DTO
 {
-    public class Proposal
+    public class GetProposalDTO
     {
         public int Id { get; set; }
 
@@ -19,25 +14,26 @@ namespace Shoghlana.Core.Models
 
         public double Duration { get; set; } // given from the freelancer
 
-        public string? Description { get; set; }
+        public string? Description { get; set; } 
 
-        [Column(TypeName = "decimal(18, 2)")]
         public decimal Price { get; set; }
 
-        public ProposalStatus Status { get; set; } // not in the DTO
+        //public ProposalStatus Status { get; set; } // not in the get DTO but assigned from backend when adding a proposal
 
         public List<string>? ReposLinks { get; set; }
 
         //---------------------------------
 
-        public List<ProposalImages>? Images { get; set; }
+        //public List<ProposalImages>? Images { get; set; }
+
+        public List<GetProposalImageDTO>? Images { get; set; }
 
         public int FreelancerId { get; set; }
 
-        public Freelancer Freelancer { get; set; }
+        //public Freelancer Freelancer { get; set; }
 
         public int? JobId { get; set; }
 
-        public Job Job { get; set; }
+        //public Job Job { get; set; }
     }
 }

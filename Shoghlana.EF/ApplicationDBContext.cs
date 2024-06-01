@@ -11,10 +11,11 @@ using System.Threading.Tasks;
 
 namespace Shoghlana.EF
 {
-    public class ApplicationDBContext :  IdentityDbContext<ApplicationUser>
+    public class ApplicationDBContext : IdentityDbContext<ApplicationUser>
 
     {
         public DbSet<Freelancer> Freelancers { get; set; }
+        public DbSet<Admin> Admins { get; set; }
 
         public DbSet<Client> Clients { get; set; }
 
@@ -36,9 +37,9 @@ namespace Shoghlana.EF
 
         public DbSet<Proposal> Proposals { get; set; }
 
-        public DbSet<ProjectImages> ProjectImages { get; set; }
-
         public DbSet<ProposalImages> ProposalImages { get; set; }
+
+        public DbSet<ProjectImages> ProjectImages { get; set; }
 
         public DbSet<Category> Categories { get; set; }
 
@@ -194,6 +195,29 @@ namespace Shoghlana.EF
                       .HasForeignKey(p => p.JobId);
             });
 
+            modelBuilder.Entity<IdentityRole>().HasData(
+             new IdentityRole()
+             {
+                 Id = Guid.NewGuid().ToString(),
+                 Name = "Admin",
+                 NormalizedName = "Admin".ToUpper(),
+                 ConcurrencyStamp = Guid.NewGuid().ToString()
+             },
+                new IdentityRole()
+                {
+                    Id = Guid.NewGuid().ToString(),
+                    Name = "Client",
+                    NormalizedName = "Client".ToUpper(),
+                    ConcurrencyStamp = Guid.NewGuid().ToString()
+                },
+                  new IdentityRole()
+                  {
+                      Id = Guid.NewGuid().ToString(),
+                      Name = "Freelancer",
+                      NormalizedName = "Freelancer".ToUpper(),
+                      ConcurrencyStamp = Guid.NewGuid().ToString()
+                  }
+             );
 
             modelBuilder.Entity<Rate>(entity =>
             {
@@ -290,7 +314,7 @@ namespace Shoghlana.EF
             );
 
             modelBuilder.Entity<Project>().HasData(
-                new Project { Id = 1, Title = "Project1", Description = "Description for Project1", FreelancerId = 1, Poster = new byte[] { 0x20, 0x21, 0x22, 0x23 } }, 
+                new Project { Id = 1, Title = "Project1", Description = "Description for Project1", FreelancerId = 1, Poster = new byte[] { 0x20, 0x21, 0x22, 0x23 } },
                 new Project { Id = 2, Title = "Project2", Description = "Description for Project2", FreelancerId = 2, Poster = new byte[] { 0x20, 0x21, 0x22, 0x23 } }
             );
 

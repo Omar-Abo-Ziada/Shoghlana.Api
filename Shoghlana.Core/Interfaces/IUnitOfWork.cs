@@ -26,6 +26,8 @@ namespace Shoghlana.Core.Interfaces
 
         IProposalRepository proposal { get; }
 
+        IProposalImagesRepository ProposalImages { get; }
+
         IRateRepository rate { get; }
 
         ISkillRepository skill { get; }
