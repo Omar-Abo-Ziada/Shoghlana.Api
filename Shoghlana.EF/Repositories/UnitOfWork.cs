@@ -13,7 +13,7 @@ namespace Shoghlana.EF.Repositories
         private readonly ApplicationDBContext context;
         public ICategoryRepository category { get; private set; }  
         public IClientRepository client { get; private set; } 
-        public IFreelancerRepository freelancer { get; private set; }  
+        public IFreelancerRepository freelancer { get; private set; } 
         public IJobRepository job { get; private set; } 
         public IJobSkillsRepository jobSkills { get; private set; }
         public IProjectImagesRepository projectImages { get; private set; } 

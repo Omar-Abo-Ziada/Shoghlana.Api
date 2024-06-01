@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace Shoghlana.Core.Models
 {
-    public class Proposal 
+    public class Proposal
     {
         public int Id { get; set; }
 
