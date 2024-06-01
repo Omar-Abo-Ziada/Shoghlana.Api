@@ -13,14 +13,14 @@ namespace Shoghlana.Core.Models
 
         //----------------------------
 
-        [ForeignKey("Freelancer")]
-        public int? FreelancerId { get; set; }
+        //[ForeignKey("Freelancer")]
+        //public int? FreelancerId { get; set; }
 
-        public Freelancer Freelancer { get; set; }
+        //public Freelancer Freelancer { get; set; }
 
-        [ForeignKey("Skill")]
-        public int? SkillId { get; set; }
+        //[ForeignKey("Skill")]
+        //public int? SkillId { get; set; }
 
-        public Skill Skill { get; set; } 
+        //public Skill Skill { get; set; } 
     }
 }
