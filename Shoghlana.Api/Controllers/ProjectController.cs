@@ -11,6 +11,7 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using static System.Net.Mime.MediaTypeNames;
+using Shoghlana.EF.Repositories;
 
 namespace Shoghlana.Api.Controllers
 {
@@ -42,8 +43,8 @@ namespace Shoghlana.Api.Controllers
                 }).ToList(),
                 Skills = project.skills?.Select(skill => new SkillDTO
                 {
-                    Title = skill.Title,
-                    Description = skill.Description
+                    Title = _unitOfWork.skill.GetById(skill.SkillId).Title,
+                    Description = _unitOfWork.skill.GetById(skill.SkillId).Description
                 }).ToList(),
                 TimePublished = project.TimePublished,
                 FreelancerId = project.FreelancerId
@@ -83,8 +84,8 @@ namespace Shoghlana.Api.Controllers
                 Images = project.Images?.Select(image => new GetImageDTO { Image = image.Image }).ToList(),
                 Skills = project.skills?.Select(skill => new SkillDTO
                 {
-                    Title = skill.Title,
-                    Description = skill.Description
+                    Title = _unitOfWork.skill.GetById(skill.SkillId).Title,
+                    Description = _unitOfWork.skill.GetById(skill.SkillId).Description
                 }).ToList(),
                 TimePublished = project.TimePublished,
                 FreelancerId = project.FreelancerId
@@ -187,15 +188,19 @@ namespace Shoghlana.Api.Controllers
                 Poster = posterDataStream.ToArray(),
                 TimePublished = projectDTO.TimePublished,
                 FreelancerId = projectDTO.FreelancerId,
-                skills = projectDTO.Skills?.Select(skillDTO => new Skill
-                {
-                    Title = skillDTO.Title,
-                    Description = skillDTO.Description
-                }).ToList(),
                 Images = images
             };
 
             await _unitOfWork.project.AddAsync(project);
+            _unitOfWork.Save();
+
+            project.skills = projectDTO.Skills?.Select(skillDTO => new ProjectSkills   // skills are added after project id is generated
+            {
+                SkillId = skillDTO.Id,
+                ProjectId = project.Id
+            }).ToList();
+
+            _unitOfWork.project.Update(project);
             _unitOfWork.Save();
 
             return new GeneralResponse
@@ -298,14 +303,14 @@ namespace Shoghlana.Api.Controllers
             project.TimePublished = updateProjectDTO.TimePublished;
             project.FreelancerId = updateProjectDTO.FreelancerId;
 
-            project.skills ??= new List<Skill>();
+            project.skills ??= new List<ProjectSkills>();
             project.skills.Clear();
             if (updateProjectDTO.Skills != null)
             {
-                project.skills.AddRange(updateProjectDTO.Skills.Select(skillDTO => new Skill
+                project.skills.AddRange(updateProjectDTO.Skills.Select(skillDTO => new ProjectSkills
                 {
-                    Title = skillDTO.Title,
-                    Description = skillDTO.Description
+                    ProjectId = project.Id,
+                    SkillId = skillDTO.Id
                 }));
             }
 
@@ -318,10 +323,12 @@ namespace Shoghlana.Api.Controllers
                 Link = project.Link,
                 Poster = project.Poster != null ? new FormFile(new MemoryStream(project.Poster), 0, project.Poster.Length, null, Path.GetFileName(project.Poster.ToString())) : null,
                 Images = project.Images?.Select(image => new ImageDTO { Image = new FormFile(new MemoryStream(image.Image), 0, image.Image.Length, null, Path.GetFileName(image.Image.ToString())) }).ToList(),
-                Skills = project.skills?.Select(skill => new SkillDTO
+                Skills = project.skills?.Select(skill => 
+
+                new SkillDTO
                 {
-                    Title = skill.Title,
-                    Description = skill.Description
+                    Title = _unitOfWork.skill.GetById(skill.SkillId).Title,
+                    Description = _unitOfWork.skill.GetById(skill.SkillId).Description,
                 }).ToList(),
                 TimePublished = project.TimePublished,
                 FreelancerId = project.FreelancerId

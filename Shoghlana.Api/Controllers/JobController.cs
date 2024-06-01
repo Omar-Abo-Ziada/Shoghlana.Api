@@ -36,8 +36,9 @@ namespace Shoghlana.Api.Controllers
                 jobDTOs[i].clientName = jobs[i].Client.Name;
                 jobDTOs[i].categoryTitle = jobs[i].Category.Title;
 
-                foreach (Skill skill in jobs[i].skills)
+                foreach (JobSkills jobSkill in jobs[i].skills)
                 {
+                    Skill skill = unitOfWork.skill.GetById(jobSkill.SkillId);
                     jobDTOs[i].skillsDTO.Add(new SkillDTO
                     {
                         Title = skill.Title,
@@ -84,8 +85,11 @@ namespace Shoghlana.Api.Controllers
                     });
                 }
 
-                foreach (Skill skill in job.skills)
+                foreach (JobSkills jobSkill in job.skills)
                 {
+                    
+                  Skill skill = unitOfWork.skill.GetById(jobSkill.SkillId);
+                     
                     jobDTO.skillsDTO.Add(new SkillDTO
                     {
                         Title = skill.Title,
@@ -120,7 +124,7 @@ namespace Shoghlana.Api.Controllers
 
             foreach(SkillDTO skillDTO in jobDto.skillsDTO) 
             {
-                Skill skill = unitOfWork.skill.GetById(skillDTO.Id);
+                JobSkills skill = unitOfWork.jobSkills.GetById(skillDTO.Id);
 
                 job.skills.Add(skill);
             }
@@ -161,10 +165,10 @@ namespace Shoghlana.Api.Controllers
             job.CategoryId = jobDto.CategoryId;
 
 
-            List<Skill> skills = new List<Skill>();
+            List<JobSkills> skills = new List<JobSkills>();
             foreach (SkillDTO skillDto in jobDto.skillsDTO)
             {
-                Skill skill = unitOfWork.skill.GetById(skillDto.Id);
+                JobSkills skill = unitOfWork.jobSkills.GetById(skillDto.Id);
                 skills.Add(skill);
             }
             job.skills = skills;
