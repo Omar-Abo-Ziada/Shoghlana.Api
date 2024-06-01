@@ -19,7 +19,7 @@ namespace Shoghlana.EF.Repositories
 
         public Client ? GetClientWithJobs(int id)
         {
-            return Context.Clients
+            return context.Clients
                 .Include(x => x.Jobs)
                 .FirstOrDefault(x => x.Id == id);
         }
