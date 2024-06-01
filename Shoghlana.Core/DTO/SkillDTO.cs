@@ -10,6 +10,7 @@ namespace Shoghlana.Core.DTO
 {
     public class SkillDTO
     {
+        public int Id { get; set; }
 
         [Required(ErrorMessage = "Title is required")]
         [MinLength(3, ErrorMessage = "Title must be at least 3 characters long")]
@@ -17,7 +18,7 @@ namespace Shoghlana.Core.DTO
         public string Title { get; set; }
 
         [MaxLength(200, ErrorMessage = "Description cannot exceed 200 characters")]
-        public string? Description { get; set; } 
+        public string? Description { get; set; }
 
     }
 }
