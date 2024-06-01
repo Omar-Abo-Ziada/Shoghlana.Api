@@ -367,7 +367,7 @@ namespace Shoghlana.Api.Controllers
                 {
                     image.ProposalId = null;
 
-                    unitOfWork.ProposalImages.Delete(image);
+                    unitOfWork.proposalImage.Delete(image);
                 }
             }
 
