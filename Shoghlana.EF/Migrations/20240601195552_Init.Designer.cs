@@ -12,8 +12,8 @@ using Shoghlana.EF;
 namespace Shoghlana.EF.Migrations
 {
     [DbContext(typeof(ApplicationDBContext))]
-    [Migration("20240601144734_adminmodel")]
-    partial class adminmodel
+    [Migration("20240601195552_Init")]
+    partial class Init
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -50,6 +50,29 @@ namespace Shoghlana.EF.Migrations
                         .HasFilter("[NormalizedName] IS NOT NULL");
 
                     b.ToTable("AspNetRoles", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            Id = "c29eb4df-e317-451a-a6f0-349971f285a5",
+                            ConcurrencyStamp = "1c28e3d1-0665-4576-ada0-d1a0d65e536c",
+                            Name = "Admin",
+                            NormalizedName = "ADMIN"
+                        },
+                        new
+                        {
+                            Id = "2f78faa3-4c74-4afa-9800-4bd7f3850cc1",
+                            ConcurrencyStamp = "672191c2-e2d1-46a7-802e-49a85400b837",
+                            Name = "Client",
+                            NormalizedName = "CLIENT"
+                        },
+                        new
+                        {
+                            Id = "e4ab45a7-1707-4681-b142-e0438b1a8c2c",
+                            ConcurrencyStamp = "9238c35e-5ade-4e30-a254-a10049d4df68",
+                            Name = "Freelancer",
+                            NormalizedName = "FREELANCER"
+                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -487,7 +510,7 @@ namespace Shoghlana.EF.Migrations
                             FreelancerId = 1,
                             MaxBudget = 500m,
                             MinBudget = 100m,
-                            PostTime = new DateTime(2024, 6, 1, 17, 47, 31, 830, DateTimeKind.Local).AddTicks(9217),
+                            PostTime = new DateTime(2024, 6, 1, 22, 55, 50, 824, DateTimeKind.Local).AddTicks(8860),
                             Status = 0,
                             Title = "Job1"
                         },
@@ -501,7 +524,7 @@ namespace Shoghlana.EF.Migrations
                             FreelancerId = 2,
                             MaxBudget = 700m,
                             MinBudget = 200m,
-                            PostTime = new DateTime(2024, 6, 1, 17, 47, 31, 830, DateTimeKind.Local).AddTicks(9282),
+                            PostTime = new DateTime(2024, 6, 1, 22, 55, 50, 824, DateTimeKind.Local).AddTicks(8995),
                             Status = 0,
                             Title = "Job2"
                         });
@@ -566,6 +589,7 @@ namespace Shoghlana.EF.Migrations
                             Id = 1,
                             Description = "Description for Project1",
                             FreelancerId = 1,
+                            Poster = new byte[] { 32, 33, 34, 35 },
                             Title = "Project1"
                         },
                         new
@@ -573,6 +597,7 @@ namespace Shoghlana.EF.Migrations
                             Id = 2,
                             Description = "Description for Project2",
                             FreelancerId = 2,
+                            Poster = new byte[] { 32, 33, 34, 35 },
                             Title = "Project2"
                         });
                 });
@@ -681,7 +706,7 @@ namespace Shoghlana.EF.Migrations
                         .IsRequired()
                         .HasColumnType("varbinary(max)");
 
-                    b.Property<int>("ProposalId")
+                    b.Property<int?>("ProposalId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
@@ -1001,9 +1026,7 @@ namespace Shoghlana.EF.Migrations
                 {
                     b.HasOne("Shoghlana.Core.Models.Proposal", "Proposal")
                         .WithMany("Images")
-                        .HasForeignKey("ProposalId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("ProposalId");
 
                     b.Navigation("Proposal");
                 });

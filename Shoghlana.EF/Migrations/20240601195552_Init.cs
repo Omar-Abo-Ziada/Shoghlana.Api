@@ -14,6 +14,22 @@ namespace Shoghlana.EF.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
+                name: "Admins",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Image = table.Column<byte[]>(type: "varbinary(max)", nullable: true),
+                    Country = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Phone = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Admins", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "AspNetRoles",
                 columns: table => new
                 {
@@ -123,7 +139,7 @@ namespace Shoghlana.EF.Migrations
                         principalColumn: "Id",
                         onDelete: ReferentialAction.NoAction);
                 });
-
+            //dd
             migrationBuilder.CreateTable(
                 name: "AspNetUsers",
                 columns: table => new
@@ -131,6 +147,7 @@ namespace Shoghlana.EF.Migrations
                     Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     ClientId = table.Column<int>(type: "int", nullable: true),
                     FreeLancerId = table.Column<int>(type: "int", nullable: true),
+                    AdminId = table.Column<int>(type: "int", nullable: true),
                     UserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
                     NormalizedUserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
                     Email = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
@@ -149,6 +166,11 @@ namespace Shoghlana.EF.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_AspNetUsers", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_AspNetUsers_Admins_AdminId",
+                        column: x => x.AdminId,
+                        principalTable: "Admins",
+                        principalColumn: "Id");
                     table.ForeignKey(
                         name: "FK_AspNetUsers_Clients_ClientId",
                         column: x => x.ClientId,
@@ -207,7 +229,7 @@ namespace Shoghlana.EF.Migrations
                     Title = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Description = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Link = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Poster = table.Column<byte[]>(type: "varbinary(max)", nullable: false),
+                    Poster = table.Column<byte[]>(type: "varbinary(max)", nullable: true),
                     TimePublished = table.Column<DateTime>(type: "datetime2", nullable: true),
                     FreelancerId = table.Column<int>(type: "int", nullable: true)
                 },
@@ -504,8 +526,8 @@ namespace Shoghlana.EF.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    ProposalId = table.Column<int>(type: "int", nullable: false),
-                    Image = table.Column<byte[]>(type: "varbinary(max)", nullable: false)
+                    Image = table.Column<byte[]>(type: "varbinary(max)", nullable: false),
+                    ProposalId = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -514,8 +536,17 @@ namespace Shoghlana.EF.Migrations
                         name: "FK_ProposalImages_Proposals_ProposalId",
                         column: x => x.ProposalId,
                         principalTable: "Proposals",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.NoAction);
+                        principalColumn: "Id");
+                });
+
+            migrationBuilder.InsertData(
+                table: "AspNetRoles",
+                columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
+                values: new object[,]
+                {
+                    { "2f78faa3-4c74-4afa-9800-4bd7f3850cc1", "672191c2-e2d1-46a7-802e-49a85400b837", "Client", "CLIENT" },
+                    { "c29eb4df-e317-451a-a6f0-349971f285a5", "1c28e3d1-0665-4576-ada0-d1a0d65e536c", "Admin", "ADMIN" },
+                    { "e4ab45a7-1707-4681-b142-e0438b1a8c2c", "9238c35e-5ade-4e30-a254-a10049d4df68", "Freelancer", "FREELANCER" }
                 });
 
             migrationBuilder.InsertData(
@@ -564,8 +595,8 @@ namespace Shoghlana.EF.Migrations
                 columns: new[] { "Id", "CategoryId", "ClientId", "Description", "ExperienceLevel", "FreelancerId", "MaxBudget", "MinBudget", "PostTime", "Title" },
                 values: new object[,]
                 {
-                    { 1, 1, 1, "Description for Job1", 0, 1, 500m, 100m, new DateTime(2024, 6, 1, 12, 53, 36, 655, DateTimeKind.Local).AddTicks(1538), "Job1" },
-                    { 2, 2, 2, "Description for Job2", 1, 2, 700m, 200m, new DateTime(2024, 6, 1, 12, 53, 36, 655, DateTimeKind.Local).AddTicks(1687), "Job2" }
+                    { 1, 1, 1, "Description for Job1", 0, 1, 500m, 100m, new DateTime(2024, 6, 1, 22, 55, 50, 824, DateTimeKind.Local).AddTicks(8860), "Job1" },
+                    { 2, 2, 2, "Description for Job2", 1, 2, 700m, 200m, new DateTime(2024, 6, 1, 22, 55, 50, 824, DateTimeKind.Local).AddTicks(8995), "Job2" }
                 });
 
             migrationBuilder.InsertData(
@@ -626,6 +657,13 @@ namespace Shoghlana.EF.Migrations
                 name: "EmailIndex",
                 table: "AspNetUsers",
                 column: "NormalizedEmail");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_AspNetUsers_AdminId",
+                table: "AspNetUsers",
+                column: "AdminId",
+                unique: true,
+                filter: "[AdminId] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetUsers_ClientId",
@@ -780,6 +818,9 @@ namespace Shoghlana.EF.Migrations
 
             migrationBuilder.DropTable(
                 name: "Proposals");
+
+            migrationBuilder.DropTable(
+                name: "Admins");
 
             migrationBuilder.DropTable(
                 name: "Jobs");
