@@ -12,36 +12,46 @@ namespace Shoghlana.EF.Repository
 {
     public class Repository<T> : IRepository<T> where T : class
     {
-        protected readonly ApplicationDBContext Context;
+        protected readonly ApplicationDBContext context;
 
         public Repository(ApplicationDBContext Context)
         {
-            this.Context = Context;
+            this.context = Context;
         }
 
         public IEnumerable<T> GetAll()
         {
-            return Context.Set<T>().ToList();
+            return context.Set<T>().ToList();
         }
 
         public async Task<IEnumerable<T>> GetAllAsync()
         {
-            return await Context.Set<T>().ToListAsync();
+            return await context.Set<T>().ToListAsync();
         }
 
         public T GetById(int id)
         {
-            return Context.Set<T>().Find(id);
+            return context.Set<T>().Find(id);
         }
 
         public async Task<T> GetByIdAsync(int id)
         {
-            return await Context.Set<T>().FindAsync(id);
+            return await context.Set<T>().FindAsync(id);
         }
-        
+
+        public bool IsValid(int id)
+        {
+            return context.Set<T>().Find(id) != null;
+        }
+
+        public async Task<bool> IsValidAsync(int id)
+        {
+            return await context.Set<T>().FindAsync(id) != null;
+        }
+
         public T Find(string[] includes = null, Expression<Func<T, bool>> criteria = null)
         {
-            IQueryable<T> query = Context.Set<T>();
+            IQueryable<T> query = context.Set<T>();
 
             if (criteria is not null)
             {
@@ -55,13 +65,13 @@ namespace Shoghlana.EF.Repository
                     query = query.Include(include);
                 }
             }
-      
+
             return query.FirstOrDefault();
         }
 
         public async Task<T> FindAsync(Expression<Func<T, bool>> criteria, string[] includes = null)
         {
-            IQueryable<T> query = Context.Set<T>();
+            IQueryable<T> query = context.Set<T>();
 
             if (includes != null)
             {
@@ -73,9 +83,9 @@ namespace Shoghlana.EF.Repository
             return await query.FirstOrDefaultAsync(criteria);
         }
 
-        public IEnumerable<T> FindAll(string[] includes = null , Expression < Func<T, bool>> criteria = null )
+        public IEnumerable<T> FindAll(string[] includes = null, Expression<Func<T, bool>> criteria = null)
         {
-            IQueryable<T> query = Context.Set<T>();
+            IQueryable<T> query = context.Set<T>();
 
             if (criteria is not null)
             {
@@ -95,13 +105,13 @@ namespace Shoghlana.EF.Repository
 
         public IEnumerable<T> FindAll(Expression<Func<T, bool>> criteria, int skip, int take)
         {
-            return Context.Set<T>().Where(criteria).Skip(skip).Take(take).ToList();
+            return context.Set<T>().Where(criteria).Skip(skip).Take(take).ToList();
         }
 
         public IEnumerable<T> FindAll(Expression<Func<T, bool>> criteria, int? skip, int? take,
             Expression<Func<T, object>> orderBy = null, OrderWay orderByDirection = OrderWay.Ascending)
         {
-            IQueryable<T> query = Context.Set<T>().Where(criteria);
+            IQueryable<T> query = context.Set<T>().Where(criteria);
 
             if (skip.HasValue)
             {
@@ -130,7 +140,7 @@ namespace Shoghlana.EF.Repository
 
         public async Task<IEnumerable<T>> FindAllAsync(Expression<Func<T, bool>> criteria, string[] includes = null)
         {
-            IQueryable<T> query = Context.Set<T>();
+            IQueryable<T> query = context.Set<T>();
 
             if (includes != null)
             {
@@ -144,13 +154,13 @@ namespace Shoghlana.EF.Repository
 
         public async Task<IEnumerable<T>> FindAllAsync(Expression<Func<T, bool>> criteria, int take, int skip)
         {
-            return await Context.Set<T>().Where(criteria).Skip(skip).Take(take).ToListAsync();
+            return await context.Set<T>().Where(criteria).Skip(skip).Take(take).ToListAsync();
         }
 
         public async Task<IEnumerable<T>> FindAllAsync(Expression<Func<T, bool>> criteria, int? take, int? skip,
             Expression<Func<T, object>> orderBy = null, OrderWay orderByDirection = OrderWay.Ascending)
         {
-            IQueryable<T> query = Context.Set<T>().Where(criteria);
+            IQueryable<T> query = context.Set<T>().Where(criteria);
 
             if (orderBy != null)
             {
@@ -179,72 +189,72 @@ namespace Shoghlana.EF.Repository
 
         public T Add(T entity)
         {
-            Context.Set<T>().Add(entity);
+            context.Set<T>().Add(entity);
             return entity;
         }
 
         public async Task<T> AddAsync(T entity)
         {
-            await Context.Set<T>().AddAsync(entity);
+            await context.Set<T>().AddAsync(entity);
             return entity;
         }
 
         public IEnumerable<T> AddRange(IEnumerable<T> entities)
         {
-            Context.Set<T>().AddRange(entities);
+            context.Set<T>().AddRange(entities);
             return entities;
         }
 
         public async Task<IEnumerable<T>> AddRangeAsync(IEnumerable<T> entities)
         {
-            await Context.Set<T>().AddRangeAsync(entities);
+            await context.Set<T>().AddRangeAsync(entities);
             return entities;
         }
 
         public T Update(T entity)
         {
-            Context.Update(entity);
+            context.Update(entity);
             return entity;
         }
 
         public void Delete(T entity)
         {
-            Context.Set<T>().Remove(entity);
+            context.Set<T>().Remove(entity);
         }
 
         public void DeleteRange(IEnumerable<T> entities)
         {
-            Context.Set<T>().RemoveRange(entities);
+            context.Set<T>().RemoveRange(entities);
         }
 
         public void Attach(T entity)
         {
-            Context.Set<T>().Attach(entity);
+            context.Set<T>().Attach(entity);
         }
 
         public void AttachRange(IEnumerable<T> entities)
         {
-            Context.Set<T>().AttachRange(entities);
+            context.Set<T>().AttachRange(entities);
         }
 
         public int Count()
         {
-            return Context.Set<T>().Count();
+            return context.Set<T>().Count();
         }
 
         public int Count(Expression<Func<T, bool>> criteria)
         {
-            return Context.Set<T>().Count(criteria);
+            return context.Set<T>().Count(criteria);
         }
 
         public async Task<int> CountAsync()
         {
-            return await Context.Set<T>().CountAsync();
+            return await context.Set<T>().CountAsync();
         }
 
         public async Task<int> CountAsync(Expression<Func<T, bool>> criteria)
         {
-            return await Context.Set<T>().CountAsync(criteria);
+            return await context.Set<T>().CountAsync(criteria);
         }
 
     }

@@ -14,7 +14,7 @@ namespace Shoghlana.Core.DTO
 
         public double Duration { get; set; } // given from the freelancer
 
-        public string? Description { get; set; }
+        public string? Description { get; set; } 
 
         public decimal Price { get; set; }
 
@@ -25,6 +25,8 @@ namespace Shoghlana.Core.DTO
         //---------------------------------
 
         //public List<ProposalImages>? Images { get; set; }
+
+        public List<GetProposalImageDTO>? Images { get; set; }
 
         public int FreelancerId { get; set; }
 

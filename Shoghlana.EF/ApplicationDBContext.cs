@@ -36,9 +36,9 @@ namespace Shoghlana.EF
 
         public DbSet<Proposal> Proposals { get; set; }
 
-        public DbSet<ProjectImages> ProjectImages { get; set; }
-
         public DbSet<ProposalImages> ProposalImages { get; set; }
+
+        public DbSet<ProjectImages> ProjectImages { get; set; }
 
         public DbSet<Category> Categories { get; set; }
 
