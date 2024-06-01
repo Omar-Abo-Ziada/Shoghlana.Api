@@ -18,7 +18,7 @@ namespace Shoghlana.Core.Interfaces
 
         public Task<T> GetByIdAsync(int id);
 
-        public T Find(string[] includes = null, Expression<Func<T, bool>> criteria = null);
+        public T Find(Expression<Func<T, bool>> criteria = null, string[] includes = null);
 
         public Task<T> FindAsync(Expression<Func<T, bool>> criteria, string[] includes = null);
 

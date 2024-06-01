@@ -38,7 +38,11 @@ namespace Shoghlana.Api.Controllers
 
                 foreach (Skill skill in jobs[i].skills)
                 {
-                    jobDTOs[i].skillsDic.Add(skill.Id, skill.Title);
+                    jobDTOs[i].skillsDTO.Add(new SkillDTO
+                    {
+                        Title = skill.Title,
+                        Id = skill.Id,
+                    });
                 }
             }
             return new GeneralResponse
@@ -58,8 +62,7 @@ namespace Shoghlana.Api.Controllers
             JobDTO jobDTO = new JobDTO();
             try
             {
-                //job = unitOfWork.job.Find(new string[] { "Proposals" , "skills" , "Category" , "Client"});
-                job = unitOfWork.job.Find( new string[] { "Proposals", "skills", "Category", "Client" }, j => j.Id == id);
+                job = unitOfWork.job.Find(j => j.Id == id , new string[] { "Proposals", "skills", "Category", "Client" });
 
                 jobDTO = mapper.Map<Job, JobDTO>(job);
                 jobDTO.clientName = job.Client.Name;
@@ -68,13 +71,26 @@ namespace Shoghlana.Api.Controllers
                 foreach (Proposal proposal in job.Proposals)
                 {
                     Freelancer freelancer = unitOfWork.freelancer.GetById(proposal.FreelancerId);
-                    jobDTO.freelancerDic.Add(freelancer.Id, freelancer.Name);
-                    jobDTO.proposalDic.Add(proposal.Id, proposal.Description);
-                    //    jobDTO.AppliedFreelancers.Add(freelancer);
+                    jobDTO.freelancersDTO.Add(new FreelancerDTO
+                    {
+                        Name = freelancer.Name,
+                        Id = freelancer.Id
+                    });
+
+                    jobDTO.proposalsDTO.Add(new ProposalDTO
+                    {
+                        Description = proposal.Description,
+                        Id = proposal.Id
+                    });
                 }
+
                 foreach (Skill skill in job.skills)
                 {
-                    jobDTO.skillsDic.Add(skill.Id, skill.Title);
+                    jobDTO.skillsDTO.Add(new SkillDTO
+                    {
+                        Title = skill.Title,
+                        Id = skill.Id
+                    });
                 }
             }
             catch (Exception ex)
@@ -101,12 +117,84 @@ namespace Shoghlana.Api.Controllers
         public ActionResult<GeneralResponse> Add(JobDTO jobDto)
         {
             Job job = mapper.Map<JobDTO, Job>(jobDto);
+
+            foreach(SkillDTO skillDTO in jobDto.skillsDTO) 
+            {
+                Skill skill = unitOfWork.skill.GetById(skillDTO.Id);
+
+                job.skills.Add(skill);
+            }
+            
+            try
+            {
+                unitOfWork.job.Add(job);
+                unitOfWork.Save();
+            }
+            catch (Exception ex) 
+            {
+                return new GeneralResponse
+                {
+                    IsSuccess = false,
+                    Data = null,
+                    Message = ex.Message
+                };
+            }
             return new GeneralResponse
             {
                 IsSuccess = true,
                 Data = jobDto,
                 Message = "Job is added successfully"
             };
+        }
+
+
+        [HttpPut]
+        public ActionResult<GeneralResponse> update(JobDTO jobDto)
+        {
+            Job job = unitOfWork.job.GetById(jobDto.Id);
+            //  job = mapper.Map<JobDTO, Job>(jobDto);
+            job.Description = jobDto.Description;
+            job.Title = jobDto.Title;
+            job.MaxBudget = jobDto.MaxBudget;
+            job.MinBudget = jobDto.MinBudget;
+            job.ExperienceLevel = jobDto.ExperienceLevel;
+            job.CategoryId = jobDto.CategoryId;
+
+
+            List<Skill> skills = new List<Skill>();
+            foreach (SkillDTO skillDto in jobDto.skillsDTO)
+            {
+                Skill skill = unitOfWork.skill.GetById(skillDto.Id);
+                skills.Add(skill);
+            }
+            job.skills = skills;
+
+            List<JobSkills> jobSkills = unitOfWork.jobSkills
+                                       .FindAll(criteria: j => j.JobId == jobDto.Id)
+                                       .ToList();
+
+            unitOfWork.jobSkills.DeleteRange(jobSkills);
+
+                try
+                {
+                    unitOfWork.job.Update(job);
+                    unitOfWork.Save();
+                    return new GeneralResponse
+                    {
+                        IsSuccess = true,
+                        Data = jobDto,
+                        Message = "Job updated successfully"
+                    };
+                }
+                catch (Exception ex)
+                {
+                    return new GeneralResponse
+                    {
+                        IsSuccess = false,
+                        Data = null,
+                        Message = ex.Message
+                    };
+                }
         }
     }
 }

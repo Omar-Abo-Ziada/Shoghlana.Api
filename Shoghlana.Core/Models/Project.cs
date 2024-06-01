@@ -23,7 +23,7 @@ namespace Shoghlana.Core.Models
 
         public List<ProjectImages>? Images { get; set; }
 
-        public List<Skill>? skills { get; set; }
+        public List<ProjectSkills>? skills { get; set; }
 
         public DateTime? TimePublished { get; set; }
 

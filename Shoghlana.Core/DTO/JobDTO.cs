@@ -24,15 +24,11 @@ namespace Shoghlana.Core.DTO
 
         public ExperienceLevel ExperienceLevel { get; set; }
 
-        //  public List<Skill>? skills { get; set; }
-
-        //   public List<Proposal>? Proposals { get; set; }
-
-        //   public Rate? Rate { get; set; }
-        public Dictionary<int, string> skillsDic { get; set; } = new Dictionary<int, string>();
-        public Dictionary<int, string> freelancerDic { get; set; } = new Dictionary<int, string>(); 
-        public Dictionary<int, string> proposalDic { get; set; } = new Dictionary<int, string>();
-
+       
+        public List<SkillDTO> skillsDTO { get; set; } = new List<SkillDTO> ();
+        public List<FreelancerDTO> freelancersDTO { get; set; } = new List<FreelancerDTO> ();
+        public List<ProposalDTO> proposalsDTO { get; set; } = new List<ProposalDTO> ();
+   
         public JobStatus Status { get; set; } = JobStatus.Active;
 
 

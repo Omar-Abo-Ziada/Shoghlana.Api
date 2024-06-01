@@ -39,7 +39,7 @@ namespace Shoghlana.EF.Repository
             return await Context.Set<T>().FindAsync(id);
         }
 
-        public T Find(string[] includes = null, Expression<Func<T, bool>> criteria = null)
+        public T Find(Expression<Func<T, bool>> criteria = null, string[] includes = null)
         {
             IQueryable<T> query = Context.Set<T>();
 

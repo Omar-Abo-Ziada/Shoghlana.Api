@@ -31,7 +31,7 @@ namespace Shoghlana.Core.Models
 
         public List<Proposal>? Proposals { get; set; }
 
-        public List<Skill>? Skills { get; set; }
+        public List<FreelancerSkills>? Skills { get; set; }
 
         public List<FreelancerNotification>? Notifications { get; set; }
 

@@ -18,10 +18,12 @@ namespace Shoghlana.EF.Repositories
         public IJobSkillsRepository jobSkills { get; private set; }
         public IProjectImagesRepository projectImages { get; private set; } 
         public IProjectRepository project { get; private set; } 
-        public IProjectSkillsRepository projectSkills { get; private set; } 
+        public IProjectSkillsRepository projectSkills { get; private set; }  
         public IProposalRepository proposal { get; private set; }
         public IRateRepository rate { get; private set; }
         public ISkillRepository skill { get; private set; }
+        public IFreelanceSkillsRepository freelancerSkills { get; private set; }
+
 
         public UnitOfWork(ApplicationDBContext _context)
         {

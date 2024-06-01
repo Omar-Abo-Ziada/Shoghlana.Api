@@ -17,10 +17,10 @@ namespace Shoghlana.Core.Models
 
         public string? Description { get; set; }
 
-        public List<Freelancer>? freelancers { get; set; }
+        public List<FreelancerSkills>? freelancers { get; set; }
 
-        public List<Job>? jobs { get; set; }
+        public List<JobSkills>? jobs { get; set; }
 
-        public List<Project>? projects { get; set; }
+        public List<ProjectSkills>? projects { get; set; } 
     }
 }
