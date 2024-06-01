@@ -29,22 +29,9 @@ namespace Shoghlana.EF.Repository
             return await Context.Set<T>().ToListAsync();
         }
 
-        public T GetById(int id, string[] includes = null) 
+        public T GetById(int id)
         {
-            IQueryable<T> query = Context.Set<T>();
-            if(includes == null)
-            {
-                return query.FirstOrDefault();
-            }
-            else
-            {
-                foreach(string include in includes)
-                {
-                    query = query.Include(include);
-                }
-                return query.FirstOrDefault();
-            }
-
+            return Context.Set<T>().Find(id);
         }
 
         public async Task<T> GetByIdAsync(int id)
@@ -53,21 +40,6 @@ namespace Shoghlana.EF.Repository
         }
 
         public T Find(string[] includes = null, Expression<Func<T, bool>> criteria = null)
-        {
-            IQueryable<T> query = Context.Set<T>().Where(criteria);
-
-            if (includes != null)
-            {
-                foreach (var include in includes)
-                {
-                    query = query.Include(include);
-                }
-            }
-            Console.WriteLine(query);
-            return query.FirstOrDefault();
-        }
-
-        public T Find(string[] includes = null) 
         {
             IQueryable<T> query = Context.Set<T>();
 
@@ -89,7 +61,7 @@ namespace Shoghlana.EF.Repository
 
         public async Task<T> FindAsync(Expression<Func<T, bool>> criteria, string[] includes = null)
         {
-            IQueryable<T> query = Context.Set<T>().Where(criteria);
+            IQueryable<T> query = Context.Set<T>();
 
             if (includes != null)
             {
@@ -120,22 +92,6 @@ namespace Shoghlana.EF.Repository
 
             return query.ToList();
         }
-
-        public IEnumerable<T> FindAll(string[] includes = null) 
-        {
-            IQueryable<T> query = Context.Set<T>();
-
-            if (includes != null)
-            {
-                foreach (var include in includes)
-                {
-                    query = query.Include(include);
-                }
-            }
-            return query.ToList();
-        }
-
-
 
         public IEnumerable<T> FindAll(Expression<Func<T, bool>> criteria, int skip, int take)
         {

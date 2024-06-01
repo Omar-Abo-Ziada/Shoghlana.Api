@@ -24,7 +24,6 @@ namespace Shoghlana.Core.Models
         public string? Address { get; set; }
 
         public string? Overview { get; set; }
-        public double Rate { get; set; } // divide all rates over num of rated jobs , if 0 rated jobs >> 0 rate 
 
         public List<Project>? Portfolio { get; set; }   
 

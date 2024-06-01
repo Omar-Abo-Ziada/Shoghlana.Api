@@ -28,11 +28,11 @@ namespace Shoghlana.Core.Models
 
         public ExperienceLevel ExperienceLevel { get; set; }
 
-        public List<Skill> skills { get; set; } 
+        public List<Skill> skills { get; set; }
 
         public List<Proposal>? Proposals { get; set; }
 
-        public Rate? Rate { get; set; }  
+        public Rate? Rate { get; set; }
 
         public JobStatus Status { get; set; }
         //public JobStatus Status { get; set; } = JobStatus.Active;
