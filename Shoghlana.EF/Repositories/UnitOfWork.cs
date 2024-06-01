@@ -7,32 +7,25 @@ using System.Threading.Tasks;
 
 namespace Shoghlana.EF.Repositories
 {
-    public class UnitOfWork : IUnitOfWork , IDisposable
+    public class UnitOfWork : IUnitOfWork, IDisposable
     {
 
         private readonly ApplicationDBContext context;
-        public ICategoryRepository category { get; private set; }  
-
-        public IClientRepository client { get; private set; } 
-
-        public IFreelancerRepository freelancer { get; private set; } 
-
-        public IJobRepository job { get; private set; } 
-
+        public ICategoryRepository category { get; private set; }
+        public IClientRepository client { get; private set; }
+        public IFreelancerRepository freelancer { get; private set; }
+        public IJobRepository job { get; private set; }
         public IJobSkillsRepository jobSkills { get; private set; }
-
-        public IProjectImagesRepository projectImages { get; private set; } 
-
-        public IProjectRepository project { get; private set; } 
-
-        public IProjectSkillsRepository projectSkills { get; private set; } 
-
+        public IProjectImagesRepository projectImages { get; private set; }
+        public IProjectRepository project { get; private set; }
+        public IProjectSkillsRepository projectSkills { get; private set; }
         public IProposalRepository proposal { get; private set; }
-        public IProposalImagesRepository ProposalImages { get; private set; }
-
+        public iProposalImageRepository proposalImage { get; private set; }
         public IRateRepository rate { get; private set; }
-
         public ISkillRepository skill { get; private set; }
+        public IFreelanceSkillsRepository freelancerSkills { get; private set; }
+
+        // iProposalImageRepository IUnitOfWork.proposalImage => throw new NotImplementedException();
 
         public UnitOfWork(ApplicationDBContext _context)
         {
@@ -48,18 +41,18 @@ namespace Shoghlana.EF.Repositories
             skill = new SkillRepository(context);
             proposal = new ProposalRepository(context);
             jobSkills = new JobSkillsRepository(context);
-            ProposalImages = new ProposalImagesRepositry(context);
+            proposalImage = new proposalImageRepository(context);
         }
 
         // returns num of affected entities in db
-        public int Save() 
+        public int Save()
         {
-           return context.SaveChanges();      
+            return context.SaveChanges();
         }
 
         // as destructor >> called automatic when this request connection ends "if registered using addscoped"
         // >> release unmanaged resources like connection with db "like garbage collector but for unmanaged resources"
-        public void Dispose()  
+        public void Dispose()
         {
             context.Dispose();
         }
