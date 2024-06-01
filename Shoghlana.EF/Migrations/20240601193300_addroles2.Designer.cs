@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Shoghlana.EF;
 
@@ -11,9 +12,11 @@ using Shoghlana.EF;
 namespace Shoghlana.EF.Migrations
 {
     [DbContext(typeof(ApplicationDBContext))]
-    partial class ApplicationDBContextModelSnapshot : ModelSnapshot
+    [Migration("20240601193300_addroles2")]
+    partial class addroles2
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -507,7 +510,7 @@ namespace Shoghlana.EF.Migrations
                             FreelancerId = 1,
                             MaxBudget = 500m,
                             MinBudget = 100m,
-                            PostTime = new DateTime(2024, 6, 1, 20, 58, 53, 362, DateTimeKind.Local).AddTicks(6510),
+                            PostTime = new DateTime(2024, 6, 1, 22, 32, 59, 412, DateTimeKind.Local).AddTicks(7795),
                             Status = 0,
                             Title = "Job1"
                         },
@@ -565,7 +568,6 @@ namespace Shoghlana.EF.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<byte[]>("Poster")
-                        .IsRequired()
                         .HasColumnType("varbinary(max)");
 
                     b.Property<DateTime?>("TimePublished")
@@ -587,7 +589,6 @@ namespace Shoghlana.EF.Migrations
                             Id = 1,
                             Description = "Description for Project1",
                             FreelancerId = 1,
-                            Poster = new byte[] { 32, 33, 34, 35 },
                             Title = "Project1"
                         },
                         new
@@ -595,7 +596,6 @@ namespace Shoghlana.EF.Migrations
                             Id = 2,
                             Description = "Description for Project2",
                             FreelancerId = 2,
-                            Poster = new byte[] { 32, 33, 34, 35 },
                             Title = "Project2"
                         });
                 });
@@ -704,7 +704,7 @@ namespace Shoghlana.EF.Migrations
                         .IsRequired()
                         .HasColumnType("varbinary(max)");
 
-                    b.Property<int?>("ProposalId")
+                    b.Property<int>("ProposalId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
@@ -911,7 +911,6 @@ namespace Shoghlana.EF.Migrations
                         .WithOne("User")
                         .HasForeignKey("Shoghlana.Core.Models.ApplicationUser", "AdminId");
 
-
                     b.HasOne("Shoghlana.Core.Models.Client", "Client")
                         .WithOne("User")
                         .HasForeignKey("Shoghlana.Core.Models.ApplicationUser", "ClientId");
@@ -1025,8 +1024,9 @@ namespace Shoghlana.EF.Migrations
                 {
                     b.HasOne("Shoghlana.Core.Models.Proposal", "Proposal")
                         .WithMany("Images")
-
-                        .HasForeignKey("ProposalId");
+                        .HasForeignKey("ProposalId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Proposal");
                 });
