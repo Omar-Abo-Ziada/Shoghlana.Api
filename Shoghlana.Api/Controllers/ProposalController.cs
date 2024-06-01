@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Shoghlana.Api.DTOs;
+using Shoghlana.Core.DTO;
 using Shoghlana.Api.Response;
 using Shoghlana.Core.Interfaces;
 using Shoghlana.Core.Models;

@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace Shoghlana.EF.Migrations
 {
     /// <inheritdoc />
-    public partial class NEW : Migration
+    public partial class init : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -135,6 +135,7 @@ namespace Shoghlana.EF.Migrations
                     Title = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Description = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Link = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Poster = table.Column<byte[]>(type: "varbinary(max)", nullable: false),
                     TimePublished = table.Column<DateTime>(type: "datetime2", nullable: true),
                     FreelancerId = table.Column<int>(type: "int", nullable: true)
                 },

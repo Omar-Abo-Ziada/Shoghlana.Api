@@ -463,6 +463,10 @@ namespace Shoghlana.EF.Migrations
                     b.Property<string>("Link")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<byte[]>("Poster")
+                        .IsRequired()
+                        .HasColumnType("varbinary(max)");
+
                     b.Property<DateTime?>("TimePublished")
                         .HasColumnType("datetime2");
 
