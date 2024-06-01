@@ -32,8 +32,9 @@ namespace Shoghlana.Api
             builder.Services.Configure<Jwt>(builder.Configuration.GetSection("JWT"));
 
             builder.Services.AddDbContext<ApplicationDBContext>(options =>
-            options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection") ,
+            options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"),
             b => b.MigrationsAssembly(typeof(ApplicationDBContext).Assembly.FullName)));
+
 
             builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 

@@ -251,6 +251,18 @@ namespace Shoghlana.EF.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Categories");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Title = "Category1"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Title = "Category2"
+                        });
                 });
 
             modelBuilder.Entity("Shoghlana.Core.Models.Client", b =>
@@ -280,6 +292,18 @@ namespace Shoghlana.EF.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Clients");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Name = "Client1"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Name = "Client2"
+                        });
                 });
 
             modelBuilder.Entity("Shoghlana.Core.Models.ClientNotification", b =>
@@ -319,6 +343,9 @@ namespace Shoghlana.EF.Migrations
                     b.Property<byte[]>("PersonalImageBytes")
                         .HasColumnType("varbinary(max)");
 
+                    b.Property<double>("Rate")
+                        .HasColumnType("float");
+
                     b.Property<string>("Title")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -331,12 +358,15 @@ namespace Shoghlana.EF.Migrations
                         new
                         {
                             Id = 1,
+                            Rate = 0.0
                             Name = "أحمد محمد",
                             Title = "مطور الواجهة الخلفية"
                         },
                         new
                         {
                             Id = 2,
+                            Rate = 0.0
+                        });
                             Name = "علي سليمان",
                             Title = "مطور الواجهة الأمامية"
                         },
@@ -414,6 +444,66 @@ namespace Shoghlana.EF.Migrations
                     b.HasIndex("FreelancerId");
 
                     b.ToTable("Jobs");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            CategoryId = 1,
+                            ClientId = 1,
+                            Description = "Description for Job1",
+                            ExperienceLevel = 0,
+                            FreelancerId = 1,
+                            MaxBudget = 500m,
+                            MinBudget = 100m,
+                            PostTime = new DateTime(2024, 6, 1, 9, 44, 54, 466, DateTimeKind.Local).AddTicks(6823),
+                            Status = 0,
+                            Title = "Job1"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            CategoryId = 2,
+                            ClientId = 2,
+                            Description = "Description for Job2",
+                            ExperienceLevel = 1,
+                            FreelancerId = 2,
+                            MaxBudget = 700m,
+                            MinBudget = 200m,
+                            PostTime = new DateTime(2024, 6, 1, 9, 44, 54, 466, DateTimeKind.Local).AddTicks(6880),
+                            Status = 0,
+                            Title = "Job2"
+                        });
+                });
+
+            modelBuilder.Entity("Shoghlana.Core.Models.Notification", b =>
+                {
+                    b.Property<int>("id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("id"));
+
+                    b.Property<int?>("ClientId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("FreelancerId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("description")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("sentTime")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("id");
+
+                    b.HasIndex("ClientId");
+
+                    b.HasIndex("FreelancerId");
+
+                    b.ToTable("Notification");
                 });
 
             modelBuilder.Entity("Shoghlana.Core.Models.Notification", b =>
@@ -479,6 +569,22 @@ namespace Shoghlana.EF.Migrations
                     b.HasIndex("FreelancerId");
 
                     b.ToTable("Projects");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Description = "Description for Project1",
+                            FreelancerId = 1,
+                            Title = "Project1"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Description = "Description for Project2",
+                            FreelancerId = 2,
+                            Title = "Project2"
+                        });
                 });
 
             modelBuilder.Entity("Shoghlana.Core.Models.ProjectImages", b =>
@@ -520,6 +626,7 @@ namespace Shoghlana.EF.Migrations
                     b.Property<string>("Description")
                         .HasColumnType("nvarchar(max)");
 
+
                     b.Property<double>("Duration")
                         .HasColumnType("float");
 
@@ -547,6 +654,24 @@ namespace Shoghlana.EF.Migrations
                     b.HasIndex("JobId");
 
                     b.ToTable("Proposals");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            FreelancerId = 1,
+                            JobId = 1,
+                            Price = 300m,
+                            Status = 1
+                        },
+                        new
+                        {
+                            Id = 2,
+                            FreelancerId = 2,
+                            JobId = 2,
+                            Price = 400m,
+                            Status = 1
+                        });
                 });
 
             modelBuilder.Entity("Shoghlana.Core.Models.ProposalImages", b =>
@@ -597,6 +722,20 @@ namespace Shoghlana.EF.Migrations
                     b.ToTable("Rates", t =>
                         {
                             t.HasCheckConstraint("CK_VALUE_RANGE", "[Value] BETWEEN 1 AND 5");
+                        });
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            JobId = 1,
+                            Value = 4
+                        },
+                        new
+                        {
+                            Id = 2,
+                            JobId = 2,
+                            Value = 5
                         });
                 });
 
@@ -697,6 +836,80 @@ namespace Shoghlana.EF.Migrations
                     b.ToTable("projectSkills");
                 });
 
+            modelBuilder.Entity("Shoghlana.Core.Models.Job", b =>
+                {
+                    b.HasOne("Shoghlana.Core.Models.Category", "Category")
+                        .WithMany("Jobs")
+                        .HasForeignKey("CategoryId");
+
+                    b.HasOne("Shoghlana.Core.Models.Client", "Client")
+                        .WithMany("Jobs")
+                        .HasForeignKey("ClientId");
+
+                    b.HasOne("Shoghlana.Core.Models.Freelancer", "Freelancer")
+                        .WithMany("WorkingHistory")
+                        .HasForeignKey("FreelancerId");
+
+                    b.Navigation("Category");
+
+                    b.Navigation("Client");
+
+                    b.Navigation("Freelancer");
+                });
+
+            modelBuilder.Entity("Shoghlana.Core.Models.Notification", b =>
+                {
+                    b.HasOne("Shoghlana.Core.Models.Client", null)
+                        .WithMany("notifications")
+                        .HasForeignKey("ClientId");
+
+                    b.HasOne("Shoghlana.Core.Models.Freelancer", null)
+                        .WithMany("notifications")
+                        .HasForeignKey("FreelancerId");
+                });
+
+            modelBuilder.Entity("Shoghlana.Core.Models.Project", b =>
+                {
+                    b.HasOne("Shoghlana.Core.Models.Freelancer", "Freelancer")
+                        .WithMany("Portfolio")
+                        .HasForeignKey("FreelancerId");
+
+                    b.Navigation("Freelancer");
+                });
+
+            modelBuilder.Entity("Shoghlana.Core.Models.ProjectImages", b =>
+                {
+                    b.HasOne("Shoghlana.Core.Models.Project", "Project")
+                        .WithMany("Images")
+                        .HasForeignKey("ProjectId");
+
+                    b.Navigation("Project");
+                });
+
+            modelBuilder.Entity("Shoghlana.Core.Models.Proposal", b =>
+                {
+                    b.HasOne("Shoghlana.Core.Models.Freelancer", "Freelancer")
+                        .WithMany("Proposals")
+                        .HasForeignKey("FreelancerId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Shoghlana.Core.Models.Job", "Job")
+                        .WithMany("Proposals")
+                        .HasForeignKey("JobId");
+
+                    b.Navigation("Freelancer");
+
+                    b.Navigation("Job");
+                });
+
+            modelBuilder.Entity("Shoghlana.Core.Models.Rate", b =>
+                {
+                    b.HasOne("Shoghlana.Core.Models.Job", "Job")
+                        .WithOne("Rate")
+                        .HasForeignKey("Shoghlana.Core.Models.Rate", "JobId");
+
+                    b.Navigation("Job");
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
                 {
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole", null)
@@ -754,6 +967,12 @@ namespace Shoghlana.EF.Migrations
                         .WithOne("User")
                         .HasForeignKey("Shoghlana.Core.Models.ApplicationUser", "ClientId");
 
+            modelBuilder.Entity("Shoghlana.Core.Models.Client", b =>
+                {
+                    b.Navigation("Jobs");
+
+                    b.Navigation("Notifications");
+                });
                     b.HasOne("Shoghlana.Core.Models.Freelancer", "Freelancer")
                         .WithOne("User")
                         .HasForeignKey("Shoghlana.Core.Models.ApplicationUser", "FreeLancerId");
@@ -762,6 +981,10 @@ namespace Shoghlana.EF.Migrations
 
                     b.Navigation("Freelancer");
 
+                    b.Navigation("WorkingHistory");
+
+                    b.Navigation("Notifications");
+                });
                     modelBuilder.Entity("Shoghlana.Core.Models.ClientNotification", b =>
                         {
                             b.HasOne("Shoghlana.Core.Models.Client", "Client")

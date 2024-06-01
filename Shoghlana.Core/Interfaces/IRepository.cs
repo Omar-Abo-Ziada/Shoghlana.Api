@@ -14,9 +14,18 @@ namespace Shoghlana.Core.Interfaces
 
         public Task<IEnumerable<T>> GetAllAsync();
 
-        public T GetById(int id);
+        public T GetById(int id, string[] includes = null);
 
         public Task<T> GetByIdAsync(int id);
+
+        public T Find(Expression<Func<T, bool>> criteria, string[] includes = null);
+    //    public T Find(string[] includes = null);
+
+
+        public Task<T> FindAsync(Expression<Func<T, bool>> criteria, string[] includes = null);
+
+        public IEnumerable<T> FindAll(Expression<Func<T, bool>> criteria, string[] includes = null);
+      //  public IEnumerable<T> FindAll(string[] includes = null);
 
         public T Find(string[] includes = null, Expression<Func<T, bool>> criteria = null);
 

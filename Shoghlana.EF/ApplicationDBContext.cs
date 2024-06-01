@@ -211,6 +211,10 @@ namespace Shoghlana.EF
                 entity.HasKey(c => c.Id);
             });
 
+            modelBuilder.Entity<Notification>(entity =>
+            {
+                entity.HasKey(n => n.id);
+            });
 
             //modelBuilder.Entity<FreelancerSkills>(entity =>
             //{
@@ -226,6 +230,77 @@ namespace Shoghlana.EF
             //modelBuilder.Entity<ProjectSkills>()
             //   .HasKey(pS => new { pS.ProjectId, pS.SkillId });
 
+
+            // seed data 
+
+            modelBuilder.Entity<Client>().HasData(
+               new Client { Id = 1, Name = "Client1" },
+               new Client { Id = 2, Name = "Client2" }
+           );
+
+            modelBuilder.Entity<Freelancer>().HasData(
+                new Freelancer { Id = 1, Name = "Freelancer1" },
+                new Freelancer { Id = 2, Name = "Freelancer2" }
+            );
+
+            modelBuilder.Entity<Skill>().HasData(
+                new Skill { Id = 1, Title = "Skill1" },
+                new Skill { Id = 2, Title = "Skill2" }
+            );
+
+            modelBuilder.Entity<Job>().HasData(
+                new Job
+                {
+                    Id = 1,
+                    Title = "Job1",
+                    PostTime = DateTime.Now,
+                    Description = "Description for Job1",
+                    MinBudget = 100,
+                    MaxBudget = 500,
+                    ExperienceLevel = ExperienceLevel.Beginner,
+                    Status = JobStatus.Active,
+                    ClientId = 1,
+                    FreelancerId = 1,
+                    CategoryId = 1
+                },
+                new Job
+                {
+                    Id = 2,
+                    Title = "Job2",
+                    PostTime = DateTime.Now,
+                    Description = "Description for Job2",
+                    MinBudget = 200,
+                    MaxBudget = 700,
+                    ExperienceLevel = ExperienceLevel.Intermediate,
+                    Status = JobStatus.Active,
+                    ClientId = 2,
+                    FreelancerId = 2,
+                    CategoryId = 2
+                }
+            );
+
+            modelBuilder.Entity<Project>().HasData(
+                new Project { Id = 1, Title = "Project1", Description = "Description for Project1", FreelancerId = 1 },
+                new Project { Id = 2, Title = "Project2", Description = "Description for Project2", FreelancerId = 2 }
+            );
+
+            modelBuilder.Entity<Category>().HasData(
+                new Category { Id = 1, Title = "Category1" },
+                new Category { Id = 2, Title = "Category2" }
+            );
+
+            modelBuilder.Entity<Proposal>().HasData(
+                new Proposal { Id = 1, Price = 300, Status = ProposalStatus.Waiting, FreelancerId = 1, JobId = 1 },
+                new Proposal { Id = 2, Price = 400, Status = ProposalStatus.Waiting, FreelancerId = 2, JobId = 2 }
+            );
+
+            modelBuilder.Entity<Rate>().HasData(
+                new Rate { Id = 1, Value = 4, JobId = 1 },
+                new Rate { Id = 2, Value = 5, JobId = 2 }
+            );
+
+
+            base.OnModelCreating(modelBuilder);
 
             #region Initial Data
 
