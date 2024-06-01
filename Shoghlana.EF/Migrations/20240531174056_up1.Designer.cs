@@ -12,8 +12,8 @@ using Shoghlana.EF;
 namespace Shoghlana.EF.Migrations
 {
     [DbContext(typeof(ApplicationDBContext))]
-    [Migration("20240530171511_NEW")]
-    partial class NEW
+    [Migration("20240531174056_up1")]
+    partial class up1
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -244,6 +244,10 @@ namespace Shoghlana.EF.Migrations
 
                     b.Property<string>("Link")
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<byte[]>("Poster")
+                        .IsRequired()
+                        .HasColumnType("varbinary(max)");
 
                     b.Property<DateTime?>("TimePublished")
                         .HasColumnType("datetime2");

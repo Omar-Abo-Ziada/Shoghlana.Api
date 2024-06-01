@@ -1,6 +1,6 @@
 ﻿using Shoghlana.Core.Models;
 
-namespace Shoghlana.Api.DTOs
+namespace Shoghlana.Core.DTO
 {
     public class FreelancerDTO
     {
@@ -25,7 +25,7 @@ namespace Shoghlana.Api.DTOs
 
         //public List<Proposal>? Proposals { get; set; }
 
-        public List<SkillsDTO>? skills { get; set; }
+        public List<SkillDTO>? skills { get; set; }
 
         //public List<Notification>? notifications { get; set; }
     }
