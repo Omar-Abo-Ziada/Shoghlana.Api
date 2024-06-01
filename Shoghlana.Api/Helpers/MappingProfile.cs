@@ -11,8 +11,8 @@ namespace Shoghlana.Api.Helpers
             CreateMap<Freelancer, FreelancerDTO>();
             CreateMap<FreelancerDTO, Freelancer>();
 
-            CreateMap<ProposalDTO, Proposal>();
-            CreateMap<Freelancer, ProposalDTO>();
+            CreateMap<GetProposalDTO, Proposal>();
+            CreateMap<Proposal, GetProposalDTO>();
 
             CreateMap<SkillDTO, Skill>();
             CreateMap<Skill, SkillDTO>();

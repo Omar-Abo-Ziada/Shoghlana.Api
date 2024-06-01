@@ -27,59 +27,71 @@ namespace Shoghlana.Api.Controllers
         [HttpGet]
         public ActionResult<GeneralResponse> GetAll()
         {
-            List<Freelancer> freelancers = unitOfWork.freelancer.GetAll().ToList();
+            List<Proposal> proposals = unitOfWork.proposal.GetAll().ToList();
 
-            List<FreelancerDTO> freelancerDTOs = new List<FreelancerDTO>(freelancers.Count);
+            List<GetProposalDTO> getProposalDTOs = new List<GetProposalDTO>(proposals.Count);
 
-            foreach (Freelancer freelancer in freelancers)
+            foreach (Proposal proposal in proposals)
             {
-                //FreelancerDTO freelancerDTO = new FreelancerDTO()
-                //{
-                //    Name = freelancer.Name,
-                //    Title = freelancer.Title,
-                //    Overview = freelancer.Overview,
-                //    Address = freelancer.Address,
+                GetProposalDTO getProposalDTO = mapper.Map<Proposal, GetProposalDTO>(proposal);
 
-                //    PersonalImageBytes = freelancer.PersonalImageBytes,
-                //};
-
-                FreelancerDTO freelancerDTO = mapper.Map<Freelancer, FreelancerDTO>(freelancer);
-
-                freelancerDTOs.Add(freelancerDTO);
+                getProposalDTOs.Add(getProposalDTO);
             }
 
             return new GeneralResponse()
             {
                 IsSuccess = true,
                 Status = 200,
-                Data = freelancerDTOs,
+                Data = getProposalDTOs,
             };
         }
 
-        //[HttpGet("{id:int}")]
-        //public ActionResult<GeneralResponse> GetById(int id)
-        //{
-        //    Freelancer? freelancer = unitOfWork.freelancer.GetById(id);
+        [HttpGet("{id:int}")]
+        public ActionResult<GeneralResponse> GetById(int id)
+        {
+            Proposal? proposal = unitOfWork.proposal.GetById(id);
 
-        //    if (freelancer is null)
-        //    {
-        //        return new GeneralResponse()
-        //        {
-        //            IsSuccess = false,
-        //            Status = 400, // bad request
-        //            Message = "There is no Freelancer found with this ID !"
-        //        };
-        //    }
+            if (proposal is null)
+            {
+                return new GeneralResponse()
+                {
+                    IsSuccess = false,
+                    Status = 400, // bad request
+                    Message = "There is no Proposal found with this ID !"
+                };
+            }
 
-        //    FreelancerDTO freelancerDTO = mapper.Map<Freelancer, FreelancerDTO>(freelancer);
+            GetProposalDTO getProposalDTO = mapper.Map<Proposal, GetProposalDTO>(proposal);
 
-        //    return new GeneralResponse()
-        //    {
-        //        IsSuccess = true,
-        //        Status = 200,
-        //        Data = freelancerDTO
-        //    };
-        //}
+            return new GeneralResponse()
+            {
+                IsSuccess = true,
+                Status = 200,
+                Data = getProposalDTO
+            };
+        }
+
+        [HttpGet("GetByJobId/{id:int}")]
+        public ActionResult<GeneralResponse> GetByJobId(int id)
+        {
+            List<Proposal> proposals = unitOfWork.proposal.GetAll().ToList();
+
+            List<GetProposalDTO> getProposalDTOs = new List<GetProposalDTO>(proposals.Count);
+
+            foreach (Proposal proposal in proposals)
+            {
+                GetProposalDTO getProposalDTO = mapper.Map<Proposal, GetProposalDTO>(proposal);
+
+                getProposalDTOs.Add(getProposalDTO);
+            }
+
+            return new GeneralResponse()
+            {
+                IsSuccess = true,
+                Status = 200,
+                Data = getProposalDTOs,
+            };
+        }
 
         //[HttpPost]
         //public async Task<ActionResult<GeneralResponse>> AddAsync([FromForm] AddFreelancerDTO addedFreelancerDTO)
