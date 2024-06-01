@@ -37,9 +37,9 @@ namespace Shoghlana.EF
 
         public DbSet<Proposal> Proposals { get; set; }
 
-        public DbSet<ProjectImages> ProjectImages { get; set; }
-
         public DbSet<ProposalImages> ProposalImages { get; set; }
+
+        public DbSet<ProjectImages> ProjectImages { get; set; }
 
         public DbSet<Category> Categories { get; set; }
 
@@ -314,8 +314,8 @@ namespace Shoghlana.EF
             );
 
             modelBuilder.Entity<Project>().HasData(
-                new Project { Id = 1, Title = "Project1", Description = "Description for Project1", FreelancerId = 1 },
-                new Project { Id = 2, Title = "Project2", Description = "Description for Project2", FreelancerId = 2 }
+                new Project { Id = 1, Title = "Project1", Description = "Description for Project1", FreelancerId = 1, Poster = new byte[] { 0x20, 0x21, 0x22, 0x23 } },
+                new Project { Id = 2, Title = "Project2", Description = "Description for Project2", FreelancerId = 2, Poster = new byte[] { 0x20, 0x21, 0x22, 0x23 } }
             );
 
             modelBuilder.Entity<Category>().HasData(

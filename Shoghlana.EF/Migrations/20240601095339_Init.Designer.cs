@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Shoghlana.EF;
 
@@ -11,9 +12,11 @@ using Shoghlana.EF;
 namespace Shoghlana.EF.Migrations
 {
     [DbContext(typeof(ApplicationDBContext))]
-    partial class ApplicationDBContextModelSnapshot : ModelSnapshot
+    [Migration("20240601095339_Init")]
+    partial class Init
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -47,29 +50,6 @@ namespace Shoghlana.EF.Migrations
                         .HasFilter("[NormalizedName] IS NOT NULL");
 
                     b.ToTable("AspNetRoles", (string)null);
-
-                    b.HasData(
-                        new
-                        {
-                            Id = "888df4f9-eb86-4089-bed2-f94cd10e5a3d",
-                            ConcurrencyStamp = "75ab8697-5cab-4a5e-9187-679e99e9c3c5",
-                            Name = "Admin",
-                            NormalizedName = "ADMIN"
-                        },
-                        new
-                        {
-                            Id = "93fd7a84-0507-454a-ad65-a89814592ff3",
-                            ConcurrencyStamp = "1f6ee9bb-2609-435c-b961-10e7cbcdc5b2",
-                            Name = "Client",
-                            NormalizedName = "CLIENT"
-                        },
-                        new
-                        {
-                            Id = "38dc52ce-f3ad-4120-bfaa-a576e4683850",
-                            ConcurrencyStamp = "7ab71c6c-2c5a-4bc9-b90f-5f49f3eca4d0",
-                            Name = "Freelancer",
-                            NormalizedName = "FREELANCER"
-                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -178,41 +158,12 @@ namespace Shoghlana.EF.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
-            modelBuilder.Entity("Shoghlana.Core.Models.Admin", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("Country")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<byte[]>("Image")
-                        .HasColumnType("varbinary(max)");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Phone")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Admins");
-                });
-
             modelBuilder.Entity("Shoghlana.Core.Models.ApplicationUser", b =>
                 {
                     b.Property<string>("Id")
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<int>("AccessFailedCount")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("AdminId")
                         .HasColumnType("int");
 
                     b.Property<int?>("ClientId")
@@ -266,10 +217,6 @@ namespace Shoghlana.EF.Migrations
                         .HasColumnType("nvarchar(256)");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("AdminId")
-                        .IsUnique()
-                        .HasFilter("[AdminId] IS NOT NULL");
 
                     b.HasIndex("ClientId")
                         .IsUnique()
@@ -507,7 +454,7 @@ namespace Shoghlana.EF.Migrations
                             FreelancerId = 1,
                             MaxBudget = 500m,
                             MinBudget = 100m,
-                            PostTime = new DateTime(2024, 6, 1, 20, 58, 53, 362, DateTimeKind.Local).AddTicks(6510),
+                            PostTime = new DateTime(2024, 6, 1, 12, 53, 36, 655, DateTimeKind.Local).AddTicks(1538),
                             Status = 0,
                             Title = "Job1"
                         },
@@ -521,7 +468,7 @@ namespace Shoghlana.EF.Migrations
                             FreelancerId = 2,
                             MaxBudget = 700m,
                             MinBudget = 200m,
-                            PostTime = new DateTime(2024, 6, 1, 22, 32, 59, 412, DateTimeKind.Local).AddTicks(7850),
+                            PostTime = new DateTime(2024, 6, 1, 12, 53, 36, 655, DateTimeKind.Local).AddTicks(1687),
                             Status = 0,
                             Title = "Job2"
                         });
@@ -704,7 +651,7 @@ namespace Shoghlana.EF.Migrations
                         .IsRequired()
                         .HasColumnType("varbinary(max)");
 
-                    b.Property<int?>("ProposalId")
+                    b.Property<int>("ProposalId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
@@ -907,11 +854,6 @@ namespace Shoghlana.EF.Migrations
 
             modelBuilder.Entity("Shoghlana.Core.Models.ApplicationUser", b =>
                 {
-                    b.HasOne("Shoghlana.Core.Models.Admin", "Admin")
-                        .WithOne("User")
-                        .HasForeignKey("Shoghlana.Core.Models.ApplicationUser", "AdminId");
-
-
                     b.HasOne("Shoghlana.Core.Models.Client", "Client")
                         .WithOne("User")
                         .HasForeignKey("Shoghlana.Core.Models.ApplicationUser", "ClientId");
@@ -919,8 +861,6 @@ namespace Shoghlana.EF.Migrations
                     b.HasOne("Shoghlana.Core.Models.Freelancer", "Freelancer")
                         .WithOne("User")
                         .HasForeignKey("Shoghlana.Core.Models.ApplicationUser", "FreeLancerId");
-
-                    b.Navigation("Admin");
 
                     b.Navigation("Client");
 
@@ -1025,8 +965,9 @@ namespace Shoghlana.EF.Migrations
                 {
                     b.HasOne("Shoghlana.Core.Models.Proposal", "Proposal")
                         .WithMany("Images")
-
-                        .HasForeignKey("ProposalId");
+                        .HasForeignKey("ProposalId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Proposal");
                 });
@@ -1083,11 +1024,6 @@ namespace Shoghlana.EF.Migrations
                         .HasForeignKey("SkillId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-                });
-
-            modelBuilder.Entity("Shoghlana.Core.Models.Admin", b =>
-                {
-                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("Shoghlana.Core.Models.Category", b =>

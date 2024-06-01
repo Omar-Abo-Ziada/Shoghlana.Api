@@ -10,9 +10,9 @@ namespace Shoghlana.Core.DTO
 {
     public class GetImageDTO
     {
-
         [Required(ErrorMessage = "Image is required")]
         public byte[] Image { get; set; }
+
         public int? ProjectId { get; set; }
     }
 }

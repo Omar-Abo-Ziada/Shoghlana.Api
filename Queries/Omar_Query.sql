@@ -15,3 +15,11 @@ inner join Skills S on FS.SkillId = S.Id
 SELECT * FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_NAME = 'ClientNotification';
 
 SELECT * FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_NAME = 'FreelancerNotification';
+
+select * from projects
+
+select * from projectImages
+
+select * from Proposals
+
+select * from ProposalImages
