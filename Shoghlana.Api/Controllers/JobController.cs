@@ -56,7 +56,7 @@ namespace Shoghlana.Api.Controllers
 
 
 
-        [HttpGet("{Id:int}")]
+        [HttpGet("{id:int}")]
         public ActionResult<GeneralResponse> Get(int id)
         {
             Job job = new Job();
