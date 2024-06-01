@@ -23,7 +23,7 @@ namespace Shoghlana.EF.Repositories
         public iProposalImageRepository proposalImage { get; private set; }
         public IRateRepository rate { get; private set; }
         public ISkillRepository skill { get; private set; }
-        public IFreelanceSkillsRepository freelancerSkills { get; private set; }
+        public IFreelancerSkillsRepository freelancerSkills { get; private set; }
 
         // iProposalImageRepository IUnitOfWork.proposalImage => throw new NotImplementedException();
 
