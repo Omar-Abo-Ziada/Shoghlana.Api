@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Query.SqlExpressions;
 using Shoghlana.Core.Enums;
 using Shoghlana.Core.Models;
 using System;
@@ -15,7 +16,6 @@ namespace Shoghlana.EF
 
     {
         public DbSet<Freelancer> Freelancers { get; set; }
-        public DbSet<Admin> Admins { get; set; }
 
         public DbSet<Client> Clients { get; set; }
 
@@ -25,11 +25,9 @@ namespace Shoghlana.EF
 
         public DbSet<Skill> Skills { get; set; }
 
-        //   public DbSet<FreelancerSkills> FreelancerSkills { get; set; }
-
-        //   public DbSet<JobSkills> JobSkills { get; set; }
-
-        //        public DbSet<ProjectSkills> ProjectSkills { get; set; }
+        public DbSet<FreelancerSkills> FreelancerSkills { get; set; }
+        public DbSet<JobSkills> JobSkills { get; set; }
+        public DbSet<ProjectSkills> ProjectSkills { get; set; }
 
         public DbSet<FreelancerNotification> FreelancerNotifications { get; set; }
 
@@ -37,9 +35,9 @@ namespace Shoghlana.EF
 
         public DbSet<Proposal> Proposals { get; set; }
 
-        public DbSet<ProposalImages> ProposalImages { get; set; }
-
         public DbSet<ProjectImages> ProjectImages { get; set; }
+
+        public DbSet<ProposalImages> ProposalImages { get; set; }
 
         public DbSet<Category> Categories { get; set; }
 
@@ -98,15 +96,29 @@ namespace Shoghlana.EF
                 entity.Property(f => f.Name).HasMaxLength(50);
 
                 // map relation with skills >> M:M
-                entity.HasMany(f => f.Skills)
-                      .WithMany(s => s.freelancers)
-                      .UsingEntity<Dictionary<string, object>>("freelancerSkills",  // j 
-                    j => j.HasOne<Skill>()
-                          .WithMany()
-                          .HasForeignKey("SkillId"),
-                    j => j.HasOne<Freelancer>()
-                          .WithMany()
-                          .HasForeignKey("FreelancerId"));
+                //entity.HasMany(f => f.Skills)
+                //      .WithMany(s => s.freelancers)
+                //      .UsingEntity<Dictionary<string, object>>("freelancerSkills",  // j 
+                //    j => j.HasOne<Skill>()
+                //          .WithMany()
+                //          .HasForeignKey("SkillId"),
+                //    j => j.HasOne<Freelancer>()
+                //          .WithMany()
+                //          .HasForeignKey("FreelancerId"));
+            });
+
+
+            modelBuilder.Entity<FreelancerSkills>(entity =>
+            {
+                entity.HasKey(fs => new { fs.SkillId, fs.FreelancerId });
+
+                entity.HasOne(fs => fs.Freelancer)
+                      .WithMany(f => f.Skills)
+                      .HasForeignKey(fs => fs.FreelancerId);
+
+                entity.HasOne(fs => fs.Skill)
+                       .WithMany(s => s.freelancers)
+                       .HasForeignKey(fs => fs.SkillId);
             });
 
             modelBuilder.Entity<Job>(entity =>
@@ -135,16 +147,30 @@ namespace Shoghlana.EF
                      .HasForeignKey(j => j.CategoryId);
 
                 // map relation with skills >> M:M
-                entity.HasMany(j => j.skills)
-                      .WithMany(s => s.jobs)
-                      .UsingEntity<Dictionary<string, object>>("jobSkills",
-                    j => j.HasOne<Skill>()
-                          .WithMany()
-                          .HasForeignKey("SkillId"),
-                    j => j.HasOne<Job>()
-                          .WithMany()
-                          .HasForeignKey("JobId"));
+                //entity.HasMany(j => j.skills)
+                //      .WithMany(s => s.jobs)
+                //      .UsingEntity<Dictionary<string, object>>("jobSkills",
+                //    j => j.HasOne<Skill>()
+                //          .WithMany()
+                //          .HasForeignKey("SkillId"),
+                //    j => j.HasOne<Job>()
+                //          .WithMany()
+                //          .HasForeignKey("JobId"));
             });
+
+            modelBuilder.Entity<JobSkills>(entity =>
+            {
+                entity.HasKey(e => new { e.SkillId, e.JobId });
+
+                entity.HasOne(js => js.Job)
+                      .WithMany(j => j.skills)
+                      .HasForeignKey(js => js.JobId);
+
+                entity.HasOne(js => js.Skill)
+                       .WithMany(s => s.jobs)
+                       .HasForeignKey(js => js.SkillId);
+            });
+
 
             modelBuilder.Entity<Project>(entity =>
             {
@@ -155,15 +181,28 @@ namespace Shoghlana.EF
                      .HasForeignKey(p => p.FreelancerId);
 
                 // map relation with skills >> M:M
-                entity.HasMany(p => p.skills)
-                      .WithMany(s => s.projects)
-                      .UsingEntity<Dictionary<string, object>>("projectSkills",
-                    j => j.HasOne<Skill>()
-                          .WithMany()
-                          .HasForeignKey("SkillId"),
-                    j => j.HasOne<Project>()
-                          .WithMany()
-                          .HasForeignKey("ProjectId"));
+                //entity.HasMany(p => p.skills)
+                //      .WithMany(s => s.projects)
+                //      .UsingEntity<Dictionary<string, object>>("projectSkills",
+                //    j => j.HasOne<Skill>()
+                //          .WithMany()
+                //          .HasForeignKey("SkillId"),
+                //    j => j.HasOne<Project>()
+                //          .WithMany()
+                //          .HasForeignKey("ProjectId"));
+            });
+
+            modelBuilder.Entity<ProjectSkills>(entity =>
+            {
+                entity.HasKey(e => new { e.SkillId, e.ProjectId });
+
+                entity.HasOne(ps => ps.Project)
+                      .WithMany(p => p.skills)
+                      .HasForeignKey(ps => ps.ProjectId);
+
+                entity.HasOne(ps => ps.Skill)
+                       .WithMany(s => s.projects)
+                       .HasForeignKey(ps => ps.SkillId);
             });
 
             modelBuilder.Entity<ProjectImages>(entity =>
@@ -195,29 +234,6 @@ namespace Shoghlana.EF
                       .HasForeignKey(p => p.JobId);
             });
 
-            modelBuilder.Entity<IdentityRole>().HasData(
-             new IdentityRole()
-             {
-                 Id = Guid.NewGuid().ToString(),
-                 Name = "Admin",
-                 NormalizedName = "Admin".ToUpper(),
-                 ConcurrencyStamp = Guid.NewGuid().ToString()
-             },
-                new IdentityRole()
-                {
-                    Id = Guid.NewGuid().ToString(),
-                    Name = "Client",
-                    NormalizedName = "Client".ToUpper(),
-                    ConcurrencyStamp = Guid.NewGuid().ToString()
-                },
-                  new IdentityRole()
-                  {
-                      Id = Guid.NewGuid().ToString(),
-                      Name = "Freelancer",
-                      NormalizedName = "Freelancer".ToUpper(),
-                      ConcurrencyStamp = Guid.NewGuid().ToString()
-                  }
-             );
 
             modelBuilder.Entity<Rate>(entity =>
             {
@@ -327,6 +343,11 @@ namespace Shoghlana.EF
                 new Proposal { Id = 1, Price = 300, Status = ProposalStatus.Waiting, FreelancerId = 1, JobId = 1 },
                 new Proposal { Id = 2, Price = 400, Status = ProposalStatus.Waiting, FreelancerId = 2, JobId = 2 }
             );
+
+            modelBuilder.Entity<ProposalImages>().HasData(
+              new ProposalImages { Id = 1, Image = new byte[] { 0x20, 0x21, 0x22, 0x23 }, ProposalId = 1 },
+              new ProposalImages { Id = 2, Image = new byte[] { 0x20, 0x21, 0x22, 0x23 }, ProposalId = 2 }
+          );
 
             modelBuilder.Entity<Rate>().HasData(
                 new Rate { Id = 1, Value = 4, JobId = 1 },
