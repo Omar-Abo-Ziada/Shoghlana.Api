@@ -56,7 +56,7 @@ namespace Shoghlana.Api.Controllers
         {
            Job job = new Job();
             JobDTO jobDTO = new JobDTO();
-            try
+            try 
             {
                 //job = unitOfWork.job.Find(new string[] { "Proposals" , "skills" , "Category" , "Client"});
                 job = unitOfWork.job.GetById(id ,new string[] { "Proposals" , "skills" , "Category" , "Client"});
@@ -95,6 +95,7 @@ namespace Shoghlana.Api.Controllers
             };
             // rate?????
         }
+
 
         [HttpPost]
         public ActionResult<GeneralResponse> Add(JobDTO jobDto)
