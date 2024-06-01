@@ -17,7 +17,7 @@ namespace Shoghlana.Core.DTO
         public string Title { get; set; }
 
         [MaxLength(200, ErrorMessage = "Description cannot exceed 200 characters")]
-        public string? Description { get; set; }
+        public string? Description { get; set; } 
 
     }
 }
