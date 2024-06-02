@@ -25,7 +25,7 @@ namespace Shoghlana.EF.Repositories
 
         private readonly IHubContext<NotificationHub> _hubContext;
 
-        public AuthService(UserManager<ApplicationUser> userManager, IOptions<Jwt> jwt, RoleManager<IdentityRole> roleManager, IHubContext<NotificationHub> hubContext)
+        public AuthService(UserManager<ApplicationUser> userManager, IOptions<Jwt> jwt, RoleManager<IdentityRole> roleManager, IHubContext<NotificationHub> hubContext) { }
 
         private readonly IUnitOfWork _unitOfWork;
 

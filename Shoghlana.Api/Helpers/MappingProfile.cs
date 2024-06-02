@@ -20,8 +20,8 @@ namespace Shoghlana.Api.Helpers
             CreateMap<Skill, SkillDTO>();
 
 
-            CreateMap<SkillsDTO, Skill>();
-            CreateMap<Skill, SkillsDTO>();
+            CreateMap<SkillDTO, Skill>();
+            CreateMap<Skill, SkillDTO>();
 
             CreateMap<Rate , RateDTO>();
             CreateMap<RateDTO, Rate>();

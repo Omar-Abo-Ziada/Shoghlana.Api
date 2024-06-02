@@ -44,11 +44,12 @@ namespace Shoghlana.EF.Repositories
 
             clientNotification = new ClientNotificationRepository(context);
             freelancerNotification = new FreelancerNotificationRepository(context);
-        }
-
-
             proposalImage = new proposalImageRepository(context);
         }
+
+
+         
+        
 
         // returns num of affected entities in db
 
