@@ -17,7 +17,7 @@ namespace Shoghlana.Api.Controllers
         }
 
         [HttpPost("Register")]
-        public async Task<GeneralResponse> RegisterAsync([FromBody] RegisterModel registerModel )
+        public async Task<GeneralResponse> RegisterAsync([FromBody] RegisterModel registerModel)
         {
             if (ModelState.IsValid)
             {
@@ -28,8 +28,8 @@ namespace Shoghlana.Api.Controllers
                     {
                         Data = result,
                         IsSuccess = true,
-                        Message="Authenticated",
-                        Token=result.Token
+                        Message = "Authenticated",
+                        Token = result.Token
                     };
                 }
                 else
@@ -48,7 +48,7 @@ namespace Shoghlana.Api.Controllers
                 {
                     Data = ModelState,
                     IsSuccess = false,
-                    Message=ModelState.ToString()
+                    Message = ModelState.ToString()
 
                 };
             }
@@ -98,7 +98,7 @@ namespace Shoghlana.Api.Controllers
         [HttpPost("addrole")]
         public async Task<GeneralResponse> AddRoleAsync([FromBody] AddRoleModel model)
         {
-         
+
             if (ModelState.IsValid)
             {
                 var result = await _authService.AddRoleAsync(model);

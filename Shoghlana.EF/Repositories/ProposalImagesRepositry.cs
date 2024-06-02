@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace Shoghlana.EF.Repositories
 {
-    public class ProposalImagesRepositry : Repository<ProposalImages> , IProposalImagesRepository
+    public class ProposalImagesRepositry : Repository<ProposalImages> , iProposalImageRepository
     {
         public ProposalImagesRepositry( ApplicationDBContext applicationDBContext) : base(applicationDBContext)
         {
