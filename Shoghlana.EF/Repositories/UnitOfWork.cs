@@ -1,10 +1,15 @@
 ﻿using Shoghlana.Core.Interfaces;
 using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace Shoghlana.EF.Repositories
 {
     public class UnitOfWork : IUnitOfWork, IDisposable
     {
+
         private readonly ApplicationDBContext context;
         public ICategoryRepository category { get; private set; }
         public IClientRepository client { get; private set; }
@@ -18,18 +23,13 @@ namespace Shoghlana.EF.Repositories
         public iProposalImageRepository proposalImage { get; private set; }
         public IRateRepository rate { get; private set; }
         public ISkillRepository skill { get; private set; }
-
-        public IClientNotificationRepository clientNotification { get; private set; }
-        public IFreelancerNotificationRepository freelancerNotification { get; private set; }
-
         public IFreelancerSkillsRepository freelancerSkills { get; private set; }
 
         // iProposalImageRepository IUnitOfWork.proposalImage => throw new NotImplementedException();
 
-
         public UnitOfWork(ApplicationDBContext _context)
         {
-            context = _context;
+            this.context = _context;
             category = new CategoryRepository(context);
             client = new ClientRepository(context);
             freelancer = new FreelancerRepository(context);
@@ -41,26 +41,17 @@ namespace Shoghlana.EF.Repositories
             skill = new SkillRepository(context);
             proposal = new ProposalRepository(context);
             jobSkills = new JobSkillsRepository(context);
-
-            clientNotification = new ClientNotificationRepository(context);
-            freelancerNotification = new FreelancerNotificationRepository(context);
-        }
-
-
             proposalImage = new proposalImageRepository(context);
         }
 
         // returns num of affected entities in db
-
         public int Save()
         {
             return context.SaveChanges();
         }
 
-
         // as destructor >> called automatic when this request connection ends "if registered using addscoped"
         // >> release unmanaged resources like connection with db "like garbage collector but for unmanaged resources"
-
         public void Dispose()
         {
             context.Dispose();
