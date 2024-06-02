@@ -32,8 +32,7 @@ namespace Shoghlana.EF
         public DbSet<ProposalImages> ProposalImages { get; set; }
         public DbSet<Category> Categories { get; set; }
         public DbSet<Rate> Rates { get; set; }
-        public DbSet<ClientNotification> ClientNotifications { get; set; }
-        public DbSet<FreelancerNotification> FreelancerNotifications { get; set; }
+      
 
         public ApplicationDBContext(DbContextOptions<ApplicationDBContext> options) : base(options) { }
 
@@ -66,15 +65,15 @@ namespace Shoghlana.EF
                       .WithOne(n => n.Freelancer)
                       .HasForeignKey(n => n.FreelancerId);
 
-                entity.HasMany(f => f.Skills)
-                      .WithMany(s => s.freelancers)
-                      .UsingEntity<Dictionary<string, object>>("freelancerSkills",
-                    j => j.HasOne<Skill>()
-                          .WithMany()
-                          .HasForeignKey("SkillId"),
-                    j => j.HasOne<Freelancer>()
-                          .WithMany()
-                          .HasForeignKey("FreelancerId"));
+                //entity.HasMany(f => f.Skills)
+                //      .WithMany(s => s.)
+                //      .UsingEntity<Dictionary<string, object>>("freelancerSkills",
+                //    j => j.HasOne<Skill>()
+                //          .WithMany()
+                //          .HasForeignKey("SkillId"),
+                //    j => j.HasOne<Freelancer>()
+                //          .WithMany()
+                //          .HasForeignKey("FreelancerId"));
 
                 // map relation with skills >> M:M
                 //entity.HasMany(f => f.Skills)
@@ -129,15 +128,15 @@ namespace Shoghlana.EF
                      .HasForeignKey(j => j.CategoryId);
 
 
-                entity.HasMany(j => j.skills)
-                      .WithMany(s => s.jobs)
-                      .UsingEntity<Dictionary<string, object>>("jobSkills",
-                    j => j.HasOne<Skill>()
-                          .WithMany()
-                          .HasForeignKey("SkillId"),
-                    j => j.HasOne<Job>()
-                          .WithMany()
-                          .HasForeignKey("JobId"));
+                //entity.HasMany(j => j.skills)
+                //      .WithMany(s => s.Job)
+                //      .UsingEntity<Dictionary<string, object>>("jobSkills",
+                //    j => j.HasOne<Skill>()
+                //          .WithMany()
+                //          .HasForeignKey("SkillId"),
+                //    j => j.HasOne<Job>()
+                //          .WithMany()
+                //          .HasForeignKey("JobId"));
 
                 // map relation with skills >> M:M
                 //entity.HasMany(j => j.skills)
@@ -175,15 +174,15 @@ namespace Shoghlana.EF
                      .HasForeignKey(p => p.FreelancerId);
 
 
-                entity.HasMany(p => p.skills)
-                      .WithMany(s => s.projects)
-                      .UsingEntity<Dictionary<string, object>>("projectSkills",
-                    j => j.HasOne<Skill>()
-                          .WithMany()
-                          .HasForeignKey("SkillId"),
-                    j => j.HasOne<Project>()
-                          .WithMany()
-                          .HasForeignKey("ProjectId"));
+                //entity.HasMany(p => p.skills)
+                //      .WithMany(s => s.projects)
+                //      .UsingEntity<Dictionary<string, object>>("projectSkills",
+                //    j => j.HasOne<Skill>()
+                //          .WithMany()
+                //          .HasForeignKey("SkillId"),
+                //    j => j.HasOne<Project>()
+                //          .WithMany()
+                //          .HasForeignKey("ProjectId"));
 
                 // map relation with skills >> M:M
                 //entity.HasMany(p => p.skills)
@@ -283,7 +282,7 @@ namespace Shoghlana.EF
 
             modelBuilder.Entity<ClientNotification>(entity =>
             {
-                entity.HasKey(cn => cn.Id);
+                entity.HasKey(cn => cn.ClientId);
 
                 entity.HasOne(cn => cn.Client)
                       .WithMany(c => c.Notifications)

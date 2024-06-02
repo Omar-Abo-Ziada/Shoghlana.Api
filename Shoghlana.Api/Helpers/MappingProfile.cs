@@ -1,6 +1,5 @@
 
 ﻿using AutoMapper;
-using Shoghlana.Api.DTOs;
 
 using AutoMapper;
 
