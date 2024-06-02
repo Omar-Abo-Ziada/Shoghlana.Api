@@ -21,7 +21,7 @@
         /// </summary>
         public int Status { get; set; }
 
-        public string? Token { get; set; } = null;
+        public string? Token { get; set; } =   null;
 
         public DateTime? Expired { get; set; } = null;
     }

@@ -3,103 +3,58 @@ using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Shoghlana.Core.Enums;
 using Shoghlana.Core.Models;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Shoghlana.EF
 {
-    public class ApplicationDBContext :  IdentityDbContext<ApplicationUser>
-
+    public class ApplicationDBContext : IdentityDbContext<ApplicationUser>
     {
         public DbSet<Freelancer> Freelancers { get; set; }
-
         public DbSet<Client> Clients { get; set; }
-
         public DbSet<Project> Projects { get; set; }
-
         public DbSet<Job> Jobs { get; set; }
-
         public DbSet<Skill> Skills { get; set; }
-
-        //   public DbSet<FreelancerSkills> FreelancerSkills { get; set; }
-
-        //   public DbSet<JobSkills> JobSkills { get; set; }
-
-        //        public DbSet<ProjectSkills> ProjectSkills { get; set; }
-
+        public DbSet<Proposal> Proposals { get; set; }
+        public DbSet<ProjectImages> ProjectImages { get; set; }
+        public DbSet<ProposalImages> ProposalImages { get; set; }
+        public DbSet<Category> Categories { get; set; }
+        public DbSet<Rate> Rates { get; set; }
+        public DbSet<ClientNotification> ClientNotifications { get; set; }
         public DbSet<FreelancerNotification> FreelancerNotifications { get; set; }
 
-        public DbSet<ClientNotification> ClientNotifications { get; set; }
-
-        public DbSet<Proposal> Proposals { get; set; }
-
-        public DbSet<ProjectImages> ProjectImages { get; set; }
-
-        public DbSet<ProposalImages> ProposalImages { get; set; }
-
-        public DbSet<Category> Categories { get; set; }
-
-        public DbSet<Rate> Rates { get; set; }
-
-        public ApplicationDBContext(DbContextOptions<ApplicationDBContext> options) : base(options)
-        {
-
-        }
+        public ApplicationDBContext(DbContextOptions<ApplicationDBContext> options) : base(options) { }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-
             modelBuilder.Entity<Category>(entity =>
             {
                 entity.HasKey(c => c.Id);
             });
 
-            //modelBuilder.Entity<Client>(entity =>
-            //{
-            //    entity.HasKey(c => c.Id);
-            //});
+            modelBuilder.Entity<Client>(entity =>
+            {
+                entity.HasKey(c => c.Id);
 
-            // Freelancer-Notification relationship
-            modelBuilder.Entity<FreelancerNotification>()
-                .HasKey(fn => new { fn.FreelancerId, fn.NotificationId });
+                entity.Property(c => c.Name).HasMaxLength(50);
 
-            modelBuilder.Entity<FreelancerNotification>()
-                .HasOne(fn => fn.Freelancer)
-                .WithMany(f => f.Notifications)
-                .HasForeignKey(fn => fn.FreelancerId);
-
-            modelBuilder.Entity<FreelancerNotification>()
-                .HasOne(fn => fn.Notification)
-                .WithMany(n => n.FreelancerNotifications)
-                .HasForeignKey(fn => fn.NotificationId);
-
-            // Client-Notification relationship
-            modelBuilder.Entity<ClientNotification>()
-                .HasKey(cn => new { cn.ClientId, cn.NotificationId });
-
-            modelBuilder.Entity<ClientNotification>()
-                .HasOne(cn => cn.Client)
-                .WithMany(c => c.Notifications)
-                .HasForeignKey(cn => cn.ClientId);
-
-            modelBuilder.Entity<ClientNotification>()
-                .HasOne(cn => cn.Notification)
-                .WithMany(n => n.ClientNotifications)
-                .HasForeignKey(cn => cn.NotificationId);
+                entity.HasMany(c => c.Notifications)
+                      .WithOne(n => n.Client)
+                      .HasForeignKey(n => n.ClientId);
+            });
 
             modelBuilder.Entity<Freelancer>(entity =>
             {
-                //entity.HasKey(f => f.Id);
+                entity.HasKey(f => f.Id);
 
                 entity.Property(f => f.Name).HasMaxLength(50);
 
-                // map relation with skills >> M:M
+                entity.HasMany(f => f.Notifications)
+                      .WithOne(n => n.Freelancer)
+                      .HasForeignKey(n => n.FreelancerId);
+
                 entity.HasMany(f => f.Skills)
                       .WithMany(s => s.freelancers)
-                      .UsingEntity<Dictionary<string, object>>("freelancerSkills",  // j 
+                      .UsingEntity<Dictionary<string, object>>("freelancerSkills",
                     j => j.HasOne<Skill>()
                           .WithMany()
                           .HasForeignKey("SkillId"),
@@ -133,7 +88,6 @@ namespace Shoghlana.EF
                      .WithMany(c => c.Jobs)
                      .HasForeignKey(j => j.CategoryId);
 
-                // map relation with skills >> M:M
                 entity.HasMany(j => j.skills)
                       .WithMany(s => s.jobs)
                       .UsingEntity<Dictionary<string, object>>("jobSkills",
@@ -153,7 +107,6 @@ namespace Shoghlana.EF
                      .WithMany(f => f.Portfolio)
                      .HasForeignKey(p => p.FreelancerId);
 
-                // map relation with skills >> M:M
                 entity.HasMany(p => p.skills)
                       .WithMany(s => s.projects)
                       .UsingEntity<Dictionary<string, object>>("projectSkills",
@@ -174,7 +127,6 @@ namespace Shoghlana.EF
                      .HasForeignKey(pI => pI.ProjectId);
             });
 
-
             modelBuilder.Entity<Proposal>(entity =>
             {
                 entity.HasKey(p => p.Id);
@@ -194,12 +146,11 @@ namespace Shoghlana.EF
                       .HasForeignKey(p => p.JobId);
             });
 
-
             modelBuilder.Entity<Rate>(entity =>
             {
                 entity.HasKey(r => r.Id);
 
-                entity.HasCheckConstraint("CK_VALUE_RANGE", "[Value] BETWEEN 1 AND 5");   // why warning??
+                entity.HasCheckConstraint("CK_VALUE_RANGE", "[Value] BETWEEN 1 AND 5");
 
                 entity.HasOne(r => r.Job)
                      .WithOne(j => j.Rate)
@@ -211,21 +162,23 @@ namespace Shoghlana.EF
                 entity.HasKey(c => c.Id);
             });
 
+            modelBuilder.Entity<ClientNotification>(entity =>
+            {
+                entity.HasKey(cn => cn.Id);
 
-            //modelBuilder.Entity<FreelancerSkills>(entity =>
-            //{
-            //    entity.HasKey(fS => new { fS.FreelancerId, fS.SkillId });
+                entity.HasOne(cn => cn.Client)
+                      .WithMany(c => c.Notifications)
+                      .HasForeignKey(cn => cn.ClientId);
+            });
 
-            //    entity.HasMany(fS => fS.)
-            //})
+            modelBuilder.Entity<FreelancerNotification>(entity =>
+            {
+                entity.HasKey(fn => fn.Id);
 
-
-            //modelBuilder.Entity<JobSkills>()
-            //   .HasKey(jS => new { jS.JobId, jS.SkillId });
-
-            //modelBuilder.Entity<ProjectSkills>()
-            //   .HasKey(pS => new { pS.ProjectId, pS.SkillId });
-
+                entity.HasOne(fn => fn.Freelancer)
+                      .WithMany(f => f.Notifications)
+                      .HasForeignKey(fn => fn.FreelancerId);
+            });
 
             #region Initial Data
 
@@ -237,17 +190,17 @@ namespace Shoghlana.EF
             );
 
             modelBuilder.Entity<Skill>().HasData
-         (
-             new List<Skill>()
-             {
-                 new Skill() { Id = 1, Title = "C#" },
-                 new Skill() { Id = 2, Title = "LINQ" },
-                 new Skill() { Id = 3, Title = "EF" },
-                 new Skill() { Id = 4, Title = "OOP" },
-                 new Skill() { Id = 5, Title = "Agile" },
-                 new Skill() { Id = 6, Title = "Blazor" },
-             }
-         );
+            (
+                new List<Skill>()
+                {
+                    new Skill() { Id = 1, Title = "C#" },
+                    new Skill() { Id = 2, Title = "LINQ" },
+                    new Skill() { Id = 3, Title = "EF" },
+                    new Skill() { Id = 4, Title = "OOP" },
+                    new Skill() { Id = 5, Title = "Agile" },
+                    new Skill() { Id = 6, Title = "Blazor" },
+                }
+            );
 
             #endregion
 

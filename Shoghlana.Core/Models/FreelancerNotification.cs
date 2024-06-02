@@ -12,8 +12,10 @@ namespace Shoghlana.Core.Models
 
         public Freelancer Freelancer { get; set; }
 
-        public int NotificationId { get; set; }
+        public int Id { get; set; }
+        public string Title { get; set; }
+        public DateTime sentTime { get; set; }
 
-        public Notification Notification { get; set; }
+        public string description { get; set; }
     }
 }
