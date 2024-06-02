@@ -12,8 +12,8 @@ using Shoghlana.EF;
 namespace Shoghlana.EF.Migrations
 {
     [DbContext(typeof(ApplicationDBContext))]
-    [Migration("20240602044845_init")]
-    partial class init
+    [Migration("20240602142044_addRoles")]
+    partial class addRoles
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -381,7 +381,6 @@ namespace Shoghlana.EF.Migrations
                         .HasColumnType("varbinary(max)");
 
                     b.Property<string>("Title")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
@@ -502,7 +501,7 @@ namespace Shoghlana.EF.Migrations
                             FreelancerId = 1,
                             MaxBudget = 500m,
                             MinBudget = 100m,
-                            PostTime = new DateTime(2024, 6, 2, 7, 48, 43, 883, DateTimeKind.Local).AddTicks(6731),
+                            PostTime = new DateTime(2024, 6, 2, 17, 20, 29, 137, DateTimeKind.Local).AddTicks(9157),
                             Status = 0,
                             Title = "Job1"
                         },
@@ -516,7 +515,7 @@ namespace Shoghlana.EF.Migrations
                             FreelancerId = 2,
                             MaxBudget = 700m,
                             MinBudget = 200m,
-                            PostTime = new DateTime(2024, 6, 2, 7, 48, 43, 883, DateTimeKind.Local).AddTicks(6782),
+                            PostTime = new DateTime(2024, 6, 2, 17, 20, 29, 137, DateTimeKind.Local).AddTicks(9217),
                             Status = 0,
                             Title = "Job2"
                         });
@@ -913,11 +912,45 @@ namespace Shoghlana.EF.Migrations
                         .WithOne("User")
                         .HasForeignKey("Shoghlana.Core.Models.ApplicationUser", "FreeLancerId");
 
+                    b.OwnsMany("Shoghlana.Core.Models.RefreshToken", "RefreshTokens", b1 =>
+                        {
+                            b1.Property<string>("ApplicationUserId")
+                                .HasColumnType("nvarchar(450)");
+
+                            b1.Property<int>("Id")
+                                .ValueGeneratedOnAdd()
+                                .HasColumnType("int");
+
+                            SqlServerPropertyBuilderExtensions.UseIdentityColumn(b1.Property<int>("Id"));
+
+                            b1.Property<DateTime>("CreatedOn")
+                                .HasColumnType("datetime2");
+
+                            b1.Property<DateTime>("ExpiresOn")
+                                .HasColumnType("datetime2");
+
+                            b1.Property<DateTime?>("RevokedOn")
+                                .HasColumnType("datetime2");
+
+                            b1.Property<string>("Token")
+                                .IsRequired()
+                                .HasColumnType("nvarchar(max)");
+
+                            b1.HasKey("ApplicationUserId", "Id");
+
+                            b1.ToTable("RefreshToken");
+
+                            b1.WithOwner()
+                                .HasForeignKey("ApplicationUserId");
+                        });
+
                     b.Navigation("Admin");
 
                     b.Navigation("Client");
 
                     b.Navigation("Freelancer");
+
+                    b.Navigation("RefreshTokens");
                 });
 
             modelBuilder.Entity("Shoghlana.Core.Models.ClientNotification", b =>

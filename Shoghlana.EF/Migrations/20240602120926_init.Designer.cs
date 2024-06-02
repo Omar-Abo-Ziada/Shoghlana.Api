@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Shoghlana.EF;
 
@@ -11,9 +12,11 @@ using Shoghlana.EF;
 namespace Shoghlana.EF.Migrations
 {
     [DbContext(typeof(ApplicationDBContext))]
-    partial class ApplicationDBContextModelSnapshot : ModelSnapshot
+    [Migration("20240602120926_init")]
+    partial class init
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -498,7 +501,7 @@ namespace Shoghlana.EF.Migrations
                             FreelancerId = 1,
                             MaxBudget = 500m,
                             MinBudget = 100m,
-                            PostTime = new DateTime(2024, 6, 2, 17, 20, 29, 137, DateTimeKind.Local).AddTicks(9157),
+                            PostTime = new DateTime(2024, 6, 2, 15, 9, 25, 316, DateTimeKind.Local).AddTicks(4614),
                             Status = 0,
                             Title = "Job1"
                         },
@@ -512,7 +515,7 @@ namespace Shoghlana.EF.Migrations
                             FreelancerId = 2,
                             MaxBudget = 700m,
                             MinBudget = 200m,
-                            PostTime = new DateTime(2024, 6, 2, 17, 20, 29, 137, DateTimeKind.Local).AddTicks(9217),
+                            PostTime = new DateTime(2024, 6, 2, 15, 9, 25, 316, DateTimeKind.Local).AddTicks(4672),
                             Status = 0,
                             Title = "Job2"
                         });
