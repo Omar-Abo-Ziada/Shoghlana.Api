@@ -6,8 +6,6 @@ using Shoghlana.Core.Interfaces;
 using Shoghlana.Core.Models;
 using Shoghlana.EF.Repositories;
 using Shoghlana.Api.Response;
-using Microsoft.AspNetCore.SignalR;
-using Shoghlana.Api.Hubs;
 
 namespace Shoghlana.Api.Controllers
 {
@@ -19,12 +17,10 @@ namespace Shoghlana.Api.Controllers
         private List<string> allowedExtensions = new List<string>() { ".jpg", ".png" };
 
         private long maxAllowedImageSize = 1_048_576;
-        private readonly IHubContext<NotificationHub> hubContext;
 
-        public ClientController(IUnitOfWork unitOfWork, IHubContext<NotificationHub> hubContext)
+        public ClientController(IUnitOfWork unitOfWork)
         {
             this.unitOfWork = unitOfWork;
-            this.hubContext = hubContext;
         }
 
         [HttpGet]
@@ -50,17 +46,6 @@ namespace Shoghlana.Api.Controllers
                     clientDTO.Country = client.Country;
 
                     clientsDTO.Add(clientDTO);
-
-                    var notificationDto = new NotificationDTO
-                    {
-                        Title = "New Client Registered",
-                        description = $"{client.Name} has registered.",
-                        sentTime = DateTime.Now,
-                        senderName = client.Name,
-                        senderImage = client.Image
-                    };
-
-                    hubContext.Clients.All.SendAsync("ReceiveNotification", notificationDto);
 
                 }
                 return new GeneralResponse()
@@ -140,10 +125,11 @@ namespace Shoghlana.Api.Controllers
             };
 
         }
-        [HttpPost]
 
+        [HttpPost]
         public async Task<ActionResult<GeneralResponse>> CreateClient([FromForm] ClientDTO clientDTO)
         {
+
             if (!ModelState.IsValid)
             {
                 return new GeneralResponse()
@@ -151,7 +137,7 @@ namespace Shoghlana.Api.Controllers
                     IsSuccess = false,
                     Status = 400,
                     Data = ModelState,
-                    Message = "Invalid Model State!"
+                    Message = "Invalid Model State !"
                 };
             }
 
@@ -161,7 +147,7 @@ namespace Shoghlana.Api.Controllers
                 {
                     IsSuccess = false,
                     Status = 400,
-                    Message = "Image is required!"
+                    Message = "Image is required"
                 };
             }
 
@@ -171,7 +157,7 @@ namespace Shoghlana.Api.Controllers
                 {
                     IsSuccess = false,
                     Status = 400,
-                    Message = "Only JPG and PNG image formats are allowed!"
+                    Message = "The allowed  Image Extensions => {jpg , png}",
                 };
             }
 
@@ -181,44 +167,29 @@ namespace Shoghlana.Api.Controllers
                 {
                     IsSuccess = false,
                     Status = 400,
-                    Message = "Image size exceeds the maximum allowed size (1 MB)!"
+                    Message = "The max Allowed Image Size => 1 MB ",
                 };
             }
-
             using var dataStream = new MemoryStream();
             clientDTO.Image.CopyTo(dataStream);
 
-            Client client = new Client()
-            {
-                Name = clientDTO.Name,
-                Image = dataStream.ToArray(),
-                Description = clientDTO.Description,
-                Country = clientDTO.Country,
-                Phone = clientDTO.Phone
-            };
-
+            Client client = new Client();
+            client.Name = clientDTO.Name;
+            client.Image = dataStream.ToArray();
+            client.Description = clientDTO.Description;
+            client.Country = clientDTO.Country;
+            client.Phone = clientDTO.Phone;
             unitOfWork.client.Add(client);
             unitOfWork.Save();
-
-            // Send notification
-            var notificationDto = new NotificationDTO
-            {
-                Title = "New Client Registered",
-                description = $"{client.Name} has registered.",
-                sentTime = DateTime.Now,
-                senderName = client.Name,
-                senderImage = client.Image
-            };
-
-            await hubContext.Clients.All.SendAsync("ReceiveNotification", notificationDto);
-
             return new GeneralResponse()
             {
                 IsSuccess = true,
                 Status = 201,
                 Data = client,
-                Message = "Client added successfully!"
+                Message = " Client Added Successfully"
             };
+
+
         }
 
         [HttpPut("{id}")]
