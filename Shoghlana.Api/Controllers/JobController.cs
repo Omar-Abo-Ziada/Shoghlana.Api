@@ -56,7 +56,7 @@ namespace Shoghlana.Api.Controllers
 
 
 
-        [HttpGet("{id:int}")]
+        [HttpGet("{id:int}")] 
         public ActionResult<GeneralResponse> Get(int id)
         {
             Job job = new Job();
@@ -113,6 +113,106 @@ namespace Shoghlana.Api.Controllers
                 Data = jobDTO,
                 Message = "Job is retrieved successfully"
             };
+            // rate?????
+        }
+
+
+
+        [HttpGet("freelancer")]  
+        public ActionResult<GeneralResponse> GetByFreelancerId([FromQuery] int id)
+        {
+            List<Job> jobs;
+
+            try
+            {
+                jobs = unitOfWork.job.FindAll(new string[] { "Client", "Category", "skills" }, j => j.FreelancerId == id)
+                                                        .ToList();
+            }
+            catch (Exception ex) 
+            {
+                return new GeneralResponse
+                {
+                    IsSuccess = false,
+                    Data = null,
+                    Message = ex.Message
+                };
+            }
+          
+
+            List<JobDTO> jobDTOs = mapper.Map<List<Job>, List<JobDTO>>(jobs);
+
+            for (int i = 0; i < jobs.Count; i++)
+            {
+                jobDTOs[i].clientName = jobs[i].Client.Name;
+                jobDTOs[i].categoryTitle = jobs[i].Category.Title;
+
+                foreach (JobSkills jobSkill in jobs[i].skills)
+                {
+                    Skill skill = unitOfWork.skill.GetById(jobSkill.SkillId);
+                    jobDTOs[i].skillsDTO.Add(new SkillDTO
+                    {
+                        Title = skill.Title,
+                        Id = skill.Id,
+                    });
+                }
+            }
+            return new GeneralResponse
+            {
+                IsSuccess = true,
+                Data = jobDTOs,
+                Message = "All jobs for this freelancer retrieved successfully"
+            };
+            // rate?????
+        }
+
+
+
+        [HttpGet("client")]
+        public ActionResult<GeneralResponse> GetByClientId([FromQuery] int id) 
+        {
+            List<Job> jobs;
+            try
+            {
+                 jobs = unitOfWork.job.FindAll(new string[] { "Freelancer", "Category", "skills" }, j => j.ClientId == id)
+                                         .ToList();
+            }
+           catch(Exception ex) 
+            {
+                return new GeneralResponse
+                {
+                    IsSuccess = false,
+                    Data = null,
+                    Message = ex.Message
+                };
+            }
+
+          
+                List<JobDTO> jobDTOs = mapper.Map<List<Job>, List<JobDTO>>(jobs);
+
+
+                for (int i = 0; i < jobs.Count; i++)
+                {
+                    jobDTOs[i].AcceptedFreelancerName = jobs[i].Freelancer.Name;
+                    jobDTOs[i].AcceptedFreelancerId = jobs[i].Freelancer.Id;
+                    jobDTOs[i].categoryTitle = jobs[i].Category.Title;
+
+                    foreach (JobSkills jobSkill in jobs[i].skills)
+                    {
+                        Skill skill = unitOfWork.skill.GetById(jobSkill.SkillId);
+                        jobDTOs[i].skillsDTO.Add(new SkillDTO
+                        {
+                            Title = skill.Title,
+                            Id = skill.Id,
+                        });
+                    }
+                }
+                return new GeneralResponse
+                {
+                    IsSuccess = true,
+                    Data = jobDTOs,
+                    Message = "All jobs for this client retrieved successfully"
+                };
+          
             // rate?????
         }
 
