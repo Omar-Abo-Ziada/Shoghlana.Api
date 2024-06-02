@@ -10,7 +10,7 @@ namespace Shoghlana.Api.Controllers
     [ApiController]
     public class CategoryController : ControllerBase
     {
-
+        //Category
 
         private readonly IUnitOfWork unitOfWork;
 
