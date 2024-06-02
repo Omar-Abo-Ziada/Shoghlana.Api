@@ -1,4 +1,8 @@
+
+﻿using AutoMapper;
+
 using AutoMapper;
+
 using Shoghlana.Core.DTO;
 using Shoghlana.Core.Models;
 
@@ -14,6 +18,14 @@ namespace Shoghlana.Api.Helpers
             CreateMap<SkillDTO, Skill>();
             CreateMap<Skill, SkillDTO>();
 
+
+            CreateMap<SkillDTO, Skill>();
+            CreateMap<Skill, SkillDTO>();
+
+            CreateMap<Rate , RateDTO>();
+            CreateMap<RateDTO, Rate>();
+
+
             CreateMap<Job, JobDTO>(); 
             CreateMap<JobDTO, Job>();
 
@@ -22,6 +34,7 @@ namespace Shoghlana.Api.Helpers
 
             CreateMap<ProposalImages, GetProposalImageDTO>();
             CreateMap<GetProposalImageDTO, ProposalImages>();
+
         }
     }
 }

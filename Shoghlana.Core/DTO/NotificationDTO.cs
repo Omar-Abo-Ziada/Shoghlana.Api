@@ -4,18 +4,19 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Shoghlana.Core.Models
+namespace Shoghlana.Core.DTO
 {
-    public class ClientNotification
+    public class NotificationDTO
     {
-        public int ClientId { get; set; }
-
-        public Client Client { get; set; }
-
-        public int Id { get; set; }
         public string Title { get; set; }
         public DateTime sentTime { get; set; }
 
         public string description { get; set; }
+
+
+        public string senderName { get; set; }
+        public byte[]? senderImage { get; set; }
+
+
     }
 }
