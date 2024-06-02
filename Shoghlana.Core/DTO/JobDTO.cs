@@ -36,6 +36,10 @@ namespace Shoghlana.Core.DTO
         public int ClientId { get; set; }
 
         public string? clientName { get; set; }
+
+        public int AcceptedFreelancerId { get; set; }
+
+        public string? AcceptedFreelancerName { get; set; }
         public int CategoryId { get; set; }
 
         public string? categoryTitle { get; set; }
