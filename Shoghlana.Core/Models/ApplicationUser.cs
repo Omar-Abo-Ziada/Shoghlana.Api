@@ -22,5 +22,9 @@ namespace Shoghlana.Core.Models
 
 
 
+        [ForeignKey("Admin")]
+        public int? AdminId { get; set; }
+
+        public Admin? Admin { get; set; }
     }
 }

@@ -2,14 +2,14 @@
 using Shoghlana.Core.Models;
 using System.ComponentModel.DataAnnotations;
 
-namespace Shoghlana.Api.DTOs
+namespace Shoghlana.Core.DTO
 {
     public class ProposalDTO
     {
         //  [Key]
-        //public int Id { get; set; }
+        public int Id { get; set; }
 
-        [Required(ErrorMessage ="Proposal Title is required")]
+        [Required(ErrorMessage = "Proposal Title is required")]
         public string Title { get; set; }
 
         [Required(ErrorMessage = "Proposal Description is required")]

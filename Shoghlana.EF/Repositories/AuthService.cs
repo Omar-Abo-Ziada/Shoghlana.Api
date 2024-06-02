@@ -22,14 +22,23 @@ namespace Shoghlana.EF.Repositories
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly RoleManager<IdentityRole> _roleManager;
         private readonly Jwt _jwt;
+
         private readonly IHubContext<NotificationHub> _hubContext;
 
         public AuthService(UserManager<ApplicationUser> userManager, IOptions<Jwt> jwt, RoleManager<IdentityRole> roleManager, IHubContext<NotificationHub> hubContext)
+
+        private readonly IUnitOfWork _unitOfWork;
+
+        public AuthService(UserManager<ApplicationUser> userManager, IOptions<Jwt> jwt, RoleManager<IdentityRole> roleManager, IUnitOfWork unitOfWork)
+
         {
             _userManager = userManager;
             _roleManager = roleManager;
             _jwt = jwt.Value;
+
             _hubContext = hubContext;
+    _unitOfWork = unitOfWork;
+
         }
 
 
@@ -48,6 +57,11 @@ namespace Shoghlana.EF.Repositories
             {
                 UserName = model.Username,
                 Email = model.Email,
+
+
+                PhoneNumber = model.PhoneNumber,
+
+
             };
 
             var result = await _userManager.CreateAsync(user, model.Password);
@@ -65,6 +79,20 @@ namespace Shoghlana.EF.Repositories
 
             // Determine the user's roles
             var roles = await _userManager.GetRolesAsync(user);
+
+
+            var jwtSecurityToken = await CreateJwtToken(freelanceuser);
+
+            Freelancer userToAddToDb = new Freelancer
+            {
+                Name= model.Username,
+                User=freelanceuser,
+                Title=""
+
+            };
+            _unitOfWork.freelancer.Add(userToAddToDb);
+            _unitOfWork.Save();
+            freelanceuser.FreeLancerId = userToAddToDb.Id;
 
             return new AuthModel
             {
@@ -142,7 +170,7 @@ namespace Shoghlana.EF.Repositories
 
         public async Task<AuthModel> GetTokenAsync(TokenRequestModel model)
         {
-            var authModel =new AuthModel();
+            var authModel = new AuthModel();
 
             var user = await _userManager.FindByEmailAsync(model.Email);
 

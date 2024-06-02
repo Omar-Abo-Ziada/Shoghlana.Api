@@ -9,18 +9,18 @@ namespace Shoghlana.Core.Models
 {
     public class JobSkills
     {
-       // public int Id { get; set; }
+        // public int Id { get; set; }
 
         //----------------------------
 
-        //[ForeignKey("Job")]
-        //public int? JobId { get; set; }
+        [ForeignKey("Job")]
+        public int JobId { get; set; }
 
-        //public Job Job { get; set; }
+        public Job Job { get; set; }
 
-        //[ForeignKey("Skill")]
-        //public int? SkillId { get; set; }
+        [ForeignKey("Skill")]
+        public int SkillId { get; set; }
 
-        //public Skill Skill { get; set; }
+        public Skill Skill { get; set; }
     }
 }

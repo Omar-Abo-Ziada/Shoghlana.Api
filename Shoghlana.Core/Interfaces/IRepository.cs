@@ -18,6 +18,10 @@ namespace Shoghlana.Core.Interfaces
 
         public Task<T> GetByIdAsync(int id);
 
+        public bool IsValid(int id);
+
+        public Task<bool> IsValidAsync(int id);
+
         public T Find(string[] includes = null, Expression<Func<T, bool>> criteria = null);
 
         public Task<T> FindAsync(Expression<Func<T, bool>> criteria, string[] includes = null);
