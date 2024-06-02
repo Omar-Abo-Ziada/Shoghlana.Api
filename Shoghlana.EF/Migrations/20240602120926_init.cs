@@ -82,7 +82,7 @@ namespace Shoghlana.EF.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     PersonalImageBytes = table.Column<byte[]>(type: "varbinary(max)", nullable: true),
                     Name = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
-                    Title = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Title = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Address = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Overview = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
@@ -401,6 +401,29 @@ namespace Shoghlana.EF.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "RefreshToken",
+                columns: table => new
+                {
+                    ApplicationUserId = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Token = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    ExpiresOn = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    CreatedOn = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    RevokedOn = table.Column<DateTime>(type: "datetime2", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_RefreshToken", x => new { x.ApplicationUserId, x.Id });
+                    table.ForeignKey(
+                        name: "FK_RefreshToken_AspNetUsers_ApplicationUserId",
+                        column: x => x.ApplicationUserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.NoAction);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "JobSkills",
                 columns: table => new
                 {
@@ -585,8 +608,8 @@ namespace Shoghlana.EF.Migrations
                 columns: new[] { "Id", "CategoryId", "ClientId", "Description", "ExperienceLevel", "FreelancerId", "MaxBudget", "MinBudget", "PostTime", "Title" },
                 values: new object[,]
                 {
-                    { 1, 1, 1, "Description for Job1", 0, 1, 500m, 100m, new DateTime(2024, 6, 2, 7, 48, 43, 883, DateTimeKind.Local).AddTicks(6731), "Job1" },
-                    { 2, 2, 2, "Description for Job2", 1, 2, 700m, 200m, new DateTime(2024, 6, 2, 7, 48, 43, 883, DateTimeKind.Local).AddTicks(6782), "Job2" }
+                    { 1, 1, 1, "Description for Job1", 0, 1, 500m, 100m, new DateTime(2024, 6, 2, 15, 9, 25, 316, DateTimeKind.Local).AddTicks(4614), "Job1" },
+                    { 2, 2, 2, "Description for Job2", 1, 2, 700m, 200m, new DateTime(2024, 6, 2, 15, 9, 25, 316, DateTimeKind.Local).AddTicks(4672), "Job2" }
                 });
 
             migrationBuilder.InsertData(
@@ -801,10 +824,10 @@ namespace Shoghlana.EF.Migrations
                 name: "Rates");
 
             migrationBuilder.DropTable(
-                name: "AspNetRoles");
+                name: "RefreshToken");
 
             migrationBuilder.DropTable(
-                name: "AspNetUsers");
+                name: "AspNetRoles");
 
             migrationBuilder.DropTable(
                 name: "Notification");
@@ -819,10 +842,13 @@ namespace Shoghlana.EF.Migrations
                 name: "Proposals");
 
             migrationBuilder.DropTable(
-                name: "Admin");
+                name: "AspNetUsers");
 
             migrationBuilder.DropTable(
                 name: "Jobs");
+
+            migrationBuilder.DropTable(
+                name: "Admin");
 
             migrationBuilder.DropTable(
                 name: "Categories");
