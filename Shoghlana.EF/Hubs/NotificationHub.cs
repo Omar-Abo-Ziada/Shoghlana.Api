@@ -18,7 +18,7 @@ namespace Shoghlana.Api.Hubs
 
         public override async Task OnConnectedAsync()
         {
-            // Retrieve user information
+          
             var user = await userManager.GetUserAsync(Context.User);
             if (user != null)
             {
@@ -29,7 +29,7 @@ namespace Shoghlana.Api.Hubs
 
         public override async Task OnDisconnectedAsync(Exception exception)
         {
-            // Retrieve user information
+           
             var user = await userManager.GetUserAsync(Context.User);
             if (user != null)
             {
