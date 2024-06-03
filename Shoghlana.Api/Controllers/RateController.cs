@@ -88,12 +88,12 @@ namespace Shoghlana.Api.Controllers
                 Job existingJob = unitOfWork.job.GetById(rateDTO.JobId);
                 if (existingJob == null)
                 {
-                    return BadRequest(new GeneralResponse()
+                    return new GeneralResponse()
                     {
                         IsSuccess = false,
                         Status = 400,
                         Message = "Job not found"
-                    });
+                    };
                 }
 
                 Rate rate = mapper.Map<Rate>(rateDTO);
@@ -107,7 +107,7 @@ namespace Shoghlana.Api.Controllers
                     {
                         var notificationDto = new NotificationDTO
                         {
-                            Title = "New rating added for the service",
+                            Title = " أضاف تقييم جديد للخدمة التي نفذتها",
                             sentTime = DateTime.Now,
                             description = existingJob.Title,
                             senderName = client.Name,
@@ -118,21 +118,21 @@ namespace Shoghlana.Api.Controllers
                     }
                 }
 
-                return Ok(new GeneralResponse()
+                return new GeneralResponse()
                 {
                     IsSuccess = true,
                     Status = 200,
                     Data = rateDTO,
                     Message = "Rate created successfully"
-                });
+                };
             }
 
-            return BadRequest(new GeneralResponse()
+            return new GeneralResponse()
             {
                 IsSuccess = false,
                 Status = 400,
                 Message = "Invalid rate data"
-            });
+            };
         }
 
         private async Task NotifyFreelancer(int freelancerId, NotificationDTO notificationDto)

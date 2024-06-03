@@ -9,5 +9,6 @@ namespace Shoghlana.Core.Interfaces
 {
     public interface ICategoryRepository : IRepository<Category>
     {
+        Category? GetCategorytWithJobs(int id);
     }
 }
