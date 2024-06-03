@@ -343,7 +343,7 @@ namespace Shoghlana.EF
                     ClientId = 1,
                     FreelancerId = 1,
                     CategoryId = 1
-                },
+                }, 
                 new Job
                 {
                     Id = 2,
@@ -358,6 +358,7 @@ namespace Shoghlana.EF
                     FreelancerId = 2,
                     CategoryId = 2
                 }
+                
             );
 
             modelBuilder.Entity<Project>().HasData(

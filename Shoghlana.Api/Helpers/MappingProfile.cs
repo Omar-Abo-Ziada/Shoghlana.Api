@@ -35,6 +35,10 @@ namespace Shoghlana.Api.Helpers
             CreateMap<ProposalImages, GetProposalImageDTO>();
             CreateMap<GetProposalImageDTO, ProposalImages>();
 
+            CreateMap<Category, CategoryDTO>();
+            CreateMap<CategoryDTO, Category>();
+            CreateMap<Category, GetTitleofCategoryDTO>();
+            CreateMap<GetTitleofCategoryDTO, Category>();
         }
     }
 }
