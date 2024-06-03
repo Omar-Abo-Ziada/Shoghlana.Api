@@ -51,22 +51,22 @@ namespace Shoghlana.EF.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "97b6e95a-fa8b-4ee2-908e-ff1568144312",
-                            ConcurrencyStamp = "9fd71cf6-6020-4016-bd29-042055bd81b9",
+                            Id = "968a96e0-0520-48f2-b8e7-50c3166d2587",
+                            ConcurrencyStamp = "aa86c70b-c17f-491c-90e9-8938c8f5f458",
                             Name = "Admin",
                             NormalizedName = "ADMIN"
                         },
                         new
                         {
-                            Id = "443298ac-375c-41fc-bbbf-98163d584f58",
-                            ConcurrencyStamp = "9bdb4e99-a0b1-45ac-a05e-300f078ced3c",
+                            Id = "f04ef93a-4a1e-4833-b47e-3e4f0738b4af",
+                            ConcurrencyStamp = "e93b79de-3a1a-4334-b736-5952b15d9dea",
                             Name = "Client",
                             NormalizedName = "CLIENT"
                         },
                         new
                         {
-                            Id = "b01afcc2-40e8-41fa-a348-45d1c4ab9a94",
-                            ConcurrencyStamp = "252eb24e-f4a8-42fc-a3b0-8871d29a6dc3",
+                            Id = "8b2a448c-cbc0-475e-a5dd-329d16cc05e5",
+                            ConcurrencyStamp = "2ed3cf34-0d7d-497f-9958-7287f0cb1247",
                             Name = "Freelancer",
                             NormalizedName = "FREELANCER"
                         });
@@ -401,8 +401,7 @@ namespace Shoghlana.EF.Migrations
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Overview")
                         .HasColumnType("nvarchar(max)");
@@ -545,7 +544,7 @@ namespace Shoghlana.EF.Migrations
                             FreelancerId = 1,
                             MaxBudget = 500m,
                             MinBudget = 100m,
-                            PostTime = new DateTime(2024, 6, 3, 0, 4, 59, 23, DateTimeKind.Local).AddTicks(3905),
+                            PostTime = new DateTime(2024, 6, 3, 14, 46, 33, 495, DateTimeKind.Local).AddTicks(5423),
                             Status = 0,
                             Title = "Job1"
                         },
@@ -559,7 +558,7 @@ namespace Shoghlana.EF.Migrations
                             FreelancerId = 2,
                             MaxBudget = 700m,
                             MinBudget = 200m,
-                            PostTime = new DateTime(2024, 6, 3, 0, 4, 59, 23, DateTimeKind.Local).AddTicks(3997),
+                            PostTime = new DateTime(2024, 6, 3, 14, 46, 33, 495, DateTimeKind.Local).AddTicks(5478),
                             Status = 0,
                             Title = "Job2"
                         });
