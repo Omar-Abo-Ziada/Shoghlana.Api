@@ -2,7 +2,17 @@ use ShoghlanaDB
 
 select * from Skills
 
+select * from AspNetUsers
+
+select * from AspNetUserRoles
+
+select * from AspNetRoles
+
+--delete  from AspNetUsers
+
 select * from Freelancers
+
+select * from Clients
 
 select * from freelancerSkills
 
@@ -23,5 +33,7 @@ select * from projectImages
 select * from Proposals
 
 select * from ProposalImages
+
+select * from RefreshToken
 
 
