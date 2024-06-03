@@ -20,14 +20,11 @@ namespace Shoghlana.Core.Models
 
         public Freelancer? Freelancer { get; set; }
 
-
-
         [ForeignKey("Admin")]
         public int? AdminId { get; set; }
 
         public Admin? Admin { get; set; }
 
         public List<RefreshToken>? RefreshTokens { get; set; }
-
     }
 }

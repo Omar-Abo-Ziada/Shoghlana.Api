@@ -22,9 +22,9 @@ namespace Shoghlana.Api.Controllers
             if (ModelState.IsValid)
             {
                 var result = await _authService.RegisterAsync(registerModel);
+
                 if (result.IsAuthenticated)
                 {
-                       
                     SetRefreshTokenInCookie(result.RefreshToken, result.RefreshTokenExpiration);
                     return new GeneralResponse
                     {
@@ -40,7 +40,8 @@ namespace Shoghlana.Api.Controllers
                     {
                         Data = registerModel,
                         IsSuccess = false,
-                        Message = result.Message
+                        Status = 400 ,
+                        Message = result.Message,
                     };
                 }
             }
@@ -51,11 +52,9 @@ namespace Shoghlana.Api.Controllers
                     Data = ModelState,
                     IsSuccess = false,
                     Message = ModelState.ToString()
-
                 };
             }
         }
-
 
         [HttpPost("Token")]
         public async Task<GeneralResponse> GetTokenAsync([FromBody] TokenRequestModel registerModel)
@@ -97,8 +96,6 @@ namespace Shoghlana.Api.Controllers
                 };
             }
         }
-
-
 
         [HttpPost("addrole")]
         public async Task<GeneralResponse> AddRoleAsync([FromBody] AddRoleModel model)
@@ -182,6 +179,5 @@ namespace Shoghlana.Api.Controllers
 
             Response.Cookies.Append("refreshToken", refreshToken, cookieOptions);
         }
-
     }
 }

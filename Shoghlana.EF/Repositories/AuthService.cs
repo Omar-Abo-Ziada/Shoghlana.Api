@@ -26,7 +26,9 @@ namespace Shoghlana.EF.Repositories
         private readonly Jwt _jwt;
         private readonly IHubContext<NotificationHub> _hubContext;
 
-        public AuthService(UserManager<ApplicationUser> userManager, IOptions<Jwt> jwt, RoleManager<IdentityRole> roleManager, IHubContext<NotificationHub> hubContext)
+        public AuthService
+        (UserManager<ApplicationUser> userManager, IOptions<Jwt> jwt,
+         RoleManager<IdentityRole> roleManager, IHubContext<NotificationHub> hubContext)
         {
             _userManager = userManager;
             _roleManager = roleManager;
@@ -34,13 +36,13 @@ namespace Shoghlana.EF.Repositories
             _hubContext = hubContext;
         }
 
-
         public async Task<AuthModel> RegisterAsync(RegisterModel model)
         {
             if (await _userManager.FindByEmailAsync(model.Email) is not null)
             {
                 return new AuthModel { Message = "Email is already registered!" };
             }
+
             if (await _userManager.FindByNameAsync(model.Username) is not null)
             {
                 return new AuthModel { Message = "Username is already registered!" };
@@ -51,6 +53,14 @@ namespace Shoghlana.EF.Repositories
                 UserName = model.Username,
 
                 Email = model.Email,
+
+                //PhoneNumber = model.PhoneNumber,
+
+                //NormalizedEmail = model.Email ,
+
+                //PasswordHash = model.Password,
+
+                // TODO the mail and password ? 
             };
 
             var result = await _userManager.CreateAsync(user, model.Password);
@@ -93,7 +103,6 @@ namespace Shoghlana.EF.Repositories
 
             await _hubContext.Clients.User(user.Id).SendAsync("ReceiveNotification", notification);
         }
-
 
         public async Task<string> AddRoleAsync(AddRoleModel model)
         {
@@ -142,7 +151,6 @@ namespace Shoghlana.EF.Repositories
             return jwtSecurityToken;
         }
 
-
         public async Task<AuthModel> GetTokenAsync(TokenRequestModel model)
         {
             var authModel = new AuthModel();
@@ -182,6 +190,7 @@ namespace Shoghlana.EF.Repositories
 
             return authModel;
         }
+
         public async Task<AuthModel> RefreshTokenAsync(string token)
         {
             var authModel = new AuthModel();
@@ -257,6 +266,5 @@ namespace Shoghlana.EF.Repositories
                 CreatedOn = DateTime.UtcNow
             };
         }
-
     }
 }

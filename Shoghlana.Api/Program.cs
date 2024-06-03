@@ -27,19 +27,19 @@ namespace Shoghlana.Api
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
 
-            builder.Services.AddIdentity<ApplicationUser, IdentityRole>().AddEntityFrameworkStores<ApplicationDBContext>();
-
-
+            builder.Services.AddIdentity<ApplicationUser, IdentityRole>()
+                            .AddEntityFrameworkStores<ApplicationDBContext>();
 
             builder.Services.Configure<Jwt>(builder.Configuration.GetSection("JWT"));
 
             builder.Services.AddDbContext<ApplicationDBContext>(options =>
-            options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection") ,
+            options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"),
             b => b.MigrationsAssembly(typeof(ApplicationDBContext).Assembly.FullName)));
 
             builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 
             builder.Services.AddScoped<IAuthService, AuthService>();
+
             builder.Services.AddAuthentication(options =>
             {
                 options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -58,7 +58,6 @@ namespace Shoghlana.Api
                        ValidIssuer = builder.Configuration["JWT:Issuer"],
                        ValidAudience = builder.Configuration["JWT:Audience"],
                        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["JWT:Key"]))
-                       
                    };
                });
 

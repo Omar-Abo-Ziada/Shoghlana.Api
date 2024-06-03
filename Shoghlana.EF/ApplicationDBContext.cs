@@ -9,8 +9,6 @@ using System.Collections.Generic;
 namespace Shoghlana.EF
 {
     public class ApplicationDBContext : IdentityDbContext<ApplicationUser>
-
-
     {
         public DbSet<Freelancer> Freelancers { get; set; }
         public DbSet<Client> Clients { get; set; }
@@ -319,8 +317,6 @@ namespace Shoghlana.EF
                     new Skill() { Id = 6, Title = "Blazor" },
                 }
             );
-
-
 
 
             modelBuilder.Entity<Client>().HasData(

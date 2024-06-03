@@ -9,8 +9,6 @@ namespace Shoghlana.Core.Models
 {
     public class AddRoleModel
     {
-
-
         [Required]
         public string UserId { get; set; }
 
