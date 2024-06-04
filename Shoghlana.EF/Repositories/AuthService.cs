@@ -78,6 +78,9 @@ namespace Shoghlana.EF.Repositories
 
             // Determine the user's roles
             var roles = await _userManager.GetRolesAsync(user);
+            var refreshToken = GenerateRefreshToken();
+            user.RefreshTokens?.Add(refreshToken);
+            await _userManager.UpdateAsync(user);
 
             return new AuthModel
             {
@@ -86,7 +89,9 @@ namespace Shoghlana.EF.Repositories
                 IsAuthenticated = true,
                 Roles = roles.ToList(),
                 Token = new JwtSecurityTokenHandler().WriteToken(jwtSecurityToken),
-                Username = user.UserName
+                Username = user.UserName,
+                RefreshToken = refreshToken.Token,
+                RefreshTokenExpiration = refreshToken.ExpiresOn
             };
         }
 
