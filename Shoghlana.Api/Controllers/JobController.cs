@@ -166,6 +166,80 @@ namespace Shoghlana.Api.Controllers
         }
 
 
+        [HttpGet("category/{id}")]
+        public ActionResult<GeneralResponse> GetJobsByCategoryId(int id)
+        {
+            Category category = unitOfWork.category.GetCategorytWithJobs(id);
+            if (category != null)
+            {
+
+                CategoryDTO categoryDTO = mapper.Map<CategoryDTO>(category);
+
+
+                return new GeneralResponse()
+                {
+                    IsSuccess = true,
+                    Status = 200,
+                    Data = categoryDTO
+                };
+
+            }
+            return new GeneralResponse()
+            {
+                IsSuccess = false,
+                Status = 400,
+                Message = "Category Not Found !"
+            };
+        }
+
+
+
+        [HttpGet("categories")]
+        public ActionResult<GeneralResponse> GetJobsByCategoryIds([FromQuery] List<int> ids)
+        {
+            List<Job> jobs = new List<Job>();
+            foreach(int id in ids) 
+            {
+                List<Job> tempJobs = new List<Job>();
+                try
+                {
+                   tempJobs = unitOfWork.job.FindAll(criteria: j => j.CategoryId == id)
+                                                   .ToList();
+                }
+                catch (Exception ex) 
+                {
+                    return new GeneralResponse()
+                    {
+                        IsSuccess = false,
+                        Data = null,
+                        Message = ex.Message
+                    };
+                }
+                if (tempJobs != null)
+                {
+                    jobs.AddRange(tempJobs);
+                }
+            }
+
+            if(jobs.Count > 0) 
+            {
+                return new GeneralResponse()
+                {
+                    IsSuccess = true,
+                    Data = jobs,
+                    Message = "All messages for this categories retrieved successfully"
+                };
+            }
+
+            return new GeneralResponse()
+            {
+                IsSuccess = false,
+                Data = null,
+                Message = "No jobs found for these Ids"
+            };
+          
+        }
+
 
         [HttpGet("client")]
         public ActionResult<GeneralResponse> GetByClientId([FromQuery] int id) 
