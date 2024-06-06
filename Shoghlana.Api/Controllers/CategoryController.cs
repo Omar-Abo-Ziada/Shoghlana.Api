@@ -80,34 +80,6 @@ namespace Shoghlana.Api.Controllers
 
         }
 
-        [HttpGet("jobs/{id}")]
-        public ActionResult<GeneralResponse> GetJobsByCategoryId(int id)
-        {
-            Category category = unitOfWork.category.GetCategorytWithJobs(id);
-            if (category != null)
-            {
-
-                CategoryDTO categoryDTO = mapper.Map<CategoryDTO>(category);
-
-
-                return new GeneralResponse()
-                {
-                    IsSuccess = true,
-                    Status = 200,
-                    Data = categoryDTO
-                };
-
-            }
-            return new GeneralResponse()
-            {
-                IsSuccess = false,
-                Status = 400,
-                Message = "Category Not Found !"
-            };
-
-
-
-        }
 
         [HttpPost]
         public ActionResult<GeneralResponse> CreateCategory(GetTitleofCategoryDTO getTitleofCategoryDTO)
