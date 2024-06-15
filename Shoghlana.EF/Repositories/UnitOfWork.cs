@@ -26,7 +26,7 @@ namespace Shoghlana.EF.Repositories
 
         // iProposalImageRepository IUnitOfWork.proposalImage => throw new NotImplementedException();
 
-
+            
         public UnitOfWork(ApplicationDBContext _context)
         {
             context = _context;

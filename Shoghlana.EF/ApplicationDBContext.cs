@@ -30,6 +30,7 @@ namespace Shoghlana.EF
         public DbSet<ProposalImages> ProposalImages { get; set; }
         public DbSet<Category> Categories { get; set; }
         public DbSet<Rate> Rates { get; set; }
+        //
       
 
         public ApplicationDBContext(DbContextOptions<ApplicationDBContext> options) : base(options) { }

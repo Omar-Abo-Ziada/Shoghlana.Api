@@ -187,17 +187,17 @@ namespace Shoghlana.EF.Repository
             return await query.ToListAsync();
         }
 
-        public T Add(T entity)
-        {
-            context.Set<T>().Add(entity);
-            return entity;
-        }
+            public T Add(T entity)
+            {
+                context.Set<T>().Add(entity);
+                return entity;
+            }
 
-        public async Task<T> AddAsync(T entity)
-        {
-            await context.Set<T>().AddAsync(entity);
-            return entity;
-        }
+            public async Task<T> AddAsync(T entity)
+            {
+                await context.Set<T>().AddAsync(entity);
+                return entity;
+            }
 
         public IEnumerable<T> AddRange(IEnumerable<T> entities)
         {
