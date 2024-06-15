@@ -20,19 +20,30 @@ namespace Shoghlana.Core.Interfaces
 
         IProjectImagesRepository projectImages { get; }
 
-        IProjectRepository project { get; }
+        IProjectRepository project { get;  }
 
         IProjectSkillsRepository projectSkills { get; }
 
         IProposalRepository proposal { get; }
-        iProposalImageRepository proposalImage { get; }
+
+        IProposalImageRepository proposalImage { get; }
 
         IRateRepository rate { get; }
 
         ISkillRepository skill { get; }
 
+        IClientNotificationRepository clientNotification { get; }
+
+        IFreelancerNotificationRepository freelancerNotification { get; }
+
+        IFreelancerSkillsRepository freelancerSkills { get; }
+
         public int Save();
 
-        //public void Dispose();
+        void BeginTransaction();
+
+        void Commit();
+
+        void Rollback();
     }
 }

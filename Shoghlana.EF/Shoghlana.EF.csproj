@@ -21,4 +21,8 @@
     <ProjectReference Include="..\Shoghlana.Core\Shoghlana.Core.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Configurations\" />
+  </ItemGroup>
+
 </Project>

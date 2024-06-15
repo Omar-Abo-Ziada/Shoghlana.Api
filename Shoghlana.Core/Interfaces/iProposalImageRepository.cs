@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Shoghlana.Core.Interfaces
 {
-    public interface iProposalImageRepository : IRepository<ProposalImages>
+    public interface IProposalImageRepository : IRepository<ProposalImages>
     {
 
     }
