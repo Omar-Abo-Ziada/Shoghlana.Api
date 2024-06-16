@@ -339,7 +339,6 @@ namespace Shoghlana.Api.Services.Implementaions
             };
         }
 
-
         public ActionResult<GeneralResponse> Delete(int id)
         {
             Project project = _unitOfWork.projectRepository.GetById(id);

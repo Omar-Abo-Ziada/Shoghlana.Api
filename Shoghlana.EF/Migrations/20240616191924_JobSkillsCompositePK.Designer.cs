@@ -12,8 +12,8 @@ using Shoghlana.EF;
 namespace Shoghlana.EF.Migrations
 {
     [DbContext(typeof(ApplicationDBContext))]
-    [Migration("20240603114634_newTest")]
-    partial class newTest
+    [Migration("20240616191924_JobSkillsCompositePK")]
+    partial class JobSkillsCompositePK
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -54,22 +54,22 @@ namespace Shoghlana.EF.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "968a96e0-0520-48f2-b8e7-50c3166d2587",
-                            ConcurrencyStamp = "aa86c70b-c17f-491c-90e9-8938c8f5f458",
+                            Id = "88bc3e52-97dd-4fdf-a92a-a607cb73de3f",
+                            ConcurrencyStamp = "364c023b-2bf9-43ce-b4f3-687ee8fa1d1b",
                             Name = "Admin",
                             NormalizedName = "ADMIN"
                         },
                         new
                         {
-                            Id = "f04ef93a-4a1e-4833-b47e-3e4f0738b4af",
-                            ConcurrencyStamp = "e93b79de-3a1a-4334-b736-5952b15d9dea",
+                            Id = "f00a10ff-acae-4832-9eb0-82e4befe0ba7",
+                            ConcurrencyStamp = "915dc2d7-cf43-49c0-9588-6f927da5a0c1",
                             Name = "Client",
                             NormalizedName = "CLIENT"
                         },
                         new
                         {
-                            Id = "8b2a448c-cbc0-475e-a5dd-329d16cc05e5",
-                            ConcurrencyStamp = "2ed3cf34-0d7d-497f-9958-7287f0cb1247",
+                            Id = "4fe832e6-8cbf-498e-8db0-a31f81ab5566",
+                            ConcurrencyStamp = "32caf5e8-522a-4e29-825b-b1e697766176",
                             Name = "Freelancer",
                             NormalizedName = "FREELANCER"
                         });
@@ -547,7 +547,7 @@ namespace Shoghlana.EF.Migrations
                             FreelancerId = 1,
                             MaxBudget = 500m,
                             MinBudget = 100m,
-                            PostTime = new DateTime(2024, 6, 3, 14, 46, 33, 495, DateTimeKind.Local).AddTicks(5423),
+                            PostTime = new DateTime(2024, 6, 16, 22, 19, 23, 430, DateTimeKind.Local).AddTicks(7841),
                             Status = 0,
                             Title = "Job1"
                         },
@@ -561,7 +561,7 @@ namespace Shoghlana.EF.Migrations
                             FreelancerId = 2,
                             MaxBudget = 700m,
                             MinBudget = 200m,
-                            PostTime = new DateTime(2024, 6, 3, 14, 46, 33, 495, DateTimeKind.Local).AddTicks(5478),
+                            PostTime = new DateTime(2024, 6, 16, 22, 19, 23, 430, DateTimeKind.Local).AddTicks(7956),
                             Status = 0,
                             Title = "Job2"
                         });
@@ -569,15 +569,15 @@ namespace Shoghlana.EF.Migrations
 
             modelBuilder.Entity("Shoghlana.Core.Models.JobSkills", b =>
                 {
-                    b.Property<int>("SkillId")
-                        .HasColumnType("int");
-
                     b.Property<int>("JobId")
                         .HasColumnType("int");
 
-                    b.HasKey("SkillId", "JobId");
+                    b.Property<int>("SkillId")
+                        .HasColumnType("int");
 
-                    b.HasIndex("JobId");
+                    b.HasKey("JobId", "SkillId");
+
+                    b.HasIndex("SkillId");
 
                     b.ToTable("JobSkills");
                 });
@@ -655,6 +655,18 @@ namespace Shoghlana.EF.Migrations
                     b.HasIndex("ProjectId");
 
                     b.ToTable("ProjectImages");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Image = new byte[] { 32, 33, 34, 35 }
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Image = new byte[] { 32, 33, 34, 35 }
+                        });
                 });
 
             modelBuilder.Entity("Shoghlana.Core.Models.ProjectSkills", b =>
@@ -762,20 +774,6 @@ namespace Shoghlana.EF.Migrations
                     b.HasIndex("ProposalId");
 
                     b.ToTable("ProposalImages");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            Image = new byte[] { 32, 33, 34, 35 },
-                            ProposalId = 1
-                        },
-                        new
-                        {
-                            Id = 2,
-                            Image = new byte[] { 32, 33, 34, 35 },
-                            ProposalId = 2
-                        });
                 });
 
             modelBuilder.Entity("Shoghlana.Core.Models.Rate", b =>

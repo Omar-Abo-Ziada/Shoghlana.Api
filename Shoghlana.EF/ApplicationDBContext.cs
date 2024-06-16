@@ -5,6 +5,7 @@ using Microsoft.EntityFrameworkCore.Query.SqlExpressions;
 using Shoghlana.Core.Enums;
 using Shoghlana.Core.Models;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 namespace Shoghlana.EF
 {
@@ -39,5 +40,30 @@ namespace Shoghlana.EF
 
             modelBuilder.ApplyConfigurationsFromAssembly(typeof(ApplicationDBContext).Assembly);
         }
+
+        ///<summary>
+        ///Enforce Validation on RunTime Before Sending Changes to DB 
+        ///  This method will enforce validation on all entities, 
+        ///  regardless of how they are added or modified, 
+        ///  including those configured via Fluent API.
+        /// </summary>
+        public override int SaveChanges()
+        {
+
+            var Entities = from e in ChangeTracker.Entries()
+                           where e.State == EntityState.Modified ||
+                           e.State == EntityState.Added //&&( e.Entity is Employee)  => can use certain conditions also if needed
+                           select e.Entity;
+
+            foreach (var Entity in Entities)
+            {
+                ValidationContext validationContext = new ValidationContext(Entity);
+                Validator.ValidateObject(Entity, validationContext, true);
+                //true: This parameter specifies whether to validate all properties (when true) or only required properties (when false).
+            }
+
+            return base.SaveChanges();
+        }
+
     }
 }
