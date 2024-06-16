@@ -1,11 +1,7 @@
-﻿using AutoMapper;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Shoghlana.Api.Response;
 using Shoghlana.Api.Services.Interfaces;
 using Shoghlana.Core.DTO;
-using Shoghlana.Core.Interfaces;
-using Shoghlana.Core.Models;
 
 namespace Shoghlana.Api.Controllers
 {
@@ -16,12 +12,10 @@ namespace Shoghlana.Api.Controllers
     public class JobController : ControllerBase
     {
         private readonly IJobService jobService;
-        private readonly IMapper mapper;
 
-        public JobController(IJobService jobService, IMapper _mapper)
+        public JobController(IJobService jobService)
         {
             this.jobService = jobService;
-            mapper = _mapper;
         }
 
         [HttpGet]
@@ -98,7 +92,7 @@ namespace Shoghlana.Api.Controllers
         [HttpDelete("{id:int}")]
         public ActionResult<GeneralResponse> delete(int id)
         {
-           return jobService.delete(id);
+            return jobService.delete(id);
         }
     }
 }
