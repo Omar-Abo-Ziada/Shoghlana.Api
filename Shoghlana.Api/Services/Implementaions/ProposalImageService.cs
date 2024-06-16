@@ -12,9 +12,5 @@ namespace Shoghlana.Api.Services.Implementaions
         {
 
         }
-
-        //**************************************
-
-
     }
 }

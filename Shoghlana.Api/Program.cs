@@ -103,9 +103,11 @@ namespace Shoghlana.Api
             // Registering the Generic Service inside the application container.
             builder.Services.AddScoped(typeof(IGenericService<>), typeof(GenericService<>));
 
-            // Registering the Proposal Service inside the application container.
+            // Registering the Services inside the application container.
             builder.Services.AddScoped<IProposalService, ProposalService>();
             builder.Services.AddScoped<IProposalImageService, ProposalImageService>();
+            builder.Services.AddScoped<ICategoryService, CategoryService>();
+            builder.Services.AddScoped<IClientService, ClientService>();
 
             builder.Services.AddAutoMapper(typeof(Program));
 
