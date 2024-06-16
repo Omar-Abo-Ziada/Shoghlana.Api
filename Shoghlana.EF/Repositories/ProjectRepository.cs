@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace Shoghlana.EF.Repositories
 {
-    public class ProjectRepository : Repository<Project> , IProjectRepository
+    public class ProjectRepository : GenericRepository<Project> , IProjectRepository
     {
         public ProjectRepository(ApplicationDBContext context) : base(context)
         {

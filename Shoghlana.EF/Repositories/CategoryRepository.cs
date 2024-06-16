@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace Shoghlana.EF.Repositories
 {
-    public class CategoryRepository : Repository<Category>, ICategoryRepository
+    public class CategoryRepository : GenericRepository<Category>, ICategoryRepository
     {
         public CategoryRepository(ApplicationDBContext context) : base(context) 
         {

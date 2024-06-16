@@ -8,37 +8,34 @@ namespace Shoghlana.Core.Interfaces
 {
     public interface IUnitOfWork : IDisposable
     {
-        ICategoryRepository category { get; }
+        IFreelancerRepository freelancerRepository { get; }
+        IFreelancerNotificationRepository freelancerNotificationRepository { get; }
+        IFreelancerSkillsRepository freelancerSkillsRepository { get; }
 
-        IClientRepository client { get; }
+        ICategoryRepository categoryRepository { get; }
 
-        IFreelancerRepository freelancer { get; }
+        IClientRepository clientRepository { get; }
+        IClientNotificationRepository clientNotificationRepository { get; }
 
-        IJobRepository job { get; }
+        IJobRepository jobRepository { get; }
+        IJobSkillsRepository jobSkillsRepository { get; }
 
-        IJobSkillsRepository jobSkills { get; }
+        IProjectRepository projectRepository { get; }
+        IProjectImagesRepository projectImagesRepository { get; }
+        IProjectSkillsRepository projectSkillsRepository { get; }
 
-        IProjectImagesRepository projectImages { get; }
+        IProposalRepository proposalRepository { get; }
+        IProposalImageRepository proposalImageRepository { get; }
 
-        IProjectRepository project { get;  }
+        ISkillRepository skillRepository { get; }
 
-        IProjectSkillsRepository projectSkills { get; }
+        IRateRepository rateRepository { get; }
 
-        IProposalRepository proposal { get; }
-
-        IProposalImageRepository proposalImage { get; }
-
-        IRateRepository rate { get; }
-
-        ISkillRepository skill { get; }
-
-        IClientNotificationRepository clientNotification { get; }
-
-        IFreelancerNotificationRepository freelancerNotification { get; }
-
-        IFreelancerSkillsRepository freelancerSkills { get; }
+        //------------------------------------------------------
 
         public int Save();
+
+        public  Task<int> SaveAsync();
 
         void BeginTransaction();
 

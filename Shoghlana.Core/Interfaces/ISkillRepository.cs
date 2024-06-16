@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Shoghlana.Core.Interfaces
 {
-    public interface ISkillRepository : IRepository<Skill>
+    public interface ISkillRepository : IGenericRepository<Skill>
     {
 
     }

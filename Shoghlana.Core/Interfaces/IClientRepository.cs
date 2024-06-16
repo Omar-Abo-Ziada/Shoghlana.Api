@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Shoghlana.Core.Interfaces
 {
-    public interface IClientRepository : IRepository<Client>
+    public interface IClientRepository : IGenericRepository<Client>
     {
         Client? GetClientWithJobs(int id);
     }

@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Shoghlana.Core.Interfaces
 {
-    public interface IJobRepository : IRepository<Job>
+    public interface IJobRepository : IGenericRepository<Job>
     {
 
     }

@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace Shoghlana.EF.Repositories
 {
-    public class proposalImageRepository : Repository<ProposalImages>, IProposalImageRepository
+    public class proposalImageRepository : GenericRepository<ProposalImages>, IProposalImageRepository
     {
         private readonly ApplicationDBContext context;
 

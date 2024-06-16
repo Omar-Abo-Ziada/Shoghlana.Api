@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace Shoghlana.EF.Repositories
 {
-    public class JobRepository : Repository<Job> , IJobRepository
+    public class JobRepository : GenericRepository<Job> , IJobRepository
     {
         public JobRepository(ApplicationDBContext context) : base(context)
         {

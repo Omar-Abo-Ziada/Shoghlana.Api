@@ -4,7 +4,7 @@ using Shoghlana.EF.Repository;
 
 namespace Shoghlana.EF.Repositories
 {
-    public class ClientNotificationRepository : Repository<ClientNotification>, IClientNotificationRepository
+    public class ClientNotificationRepository : GenericRepository<ClientNotification>, IClientNotificationRepository
     {
         public ClientNotificationRepository(ApplicationDBContext context) : base(context) { }
     }

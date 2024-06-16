@@ -1,269 +1,11 @@
-
-﻿//using AutoMapper;
-//using Microsoft.AspNetCore.Http;
-//using Microsoft.AspNetCore.Mvc;
-//using Shoghlana.Api.DTOs;
-//using Shoghlana.Api.Response;
-//using Shoghlana.Core.Interfaces;
-//using Shoghlana.Core.Models;
-
-//namespace Shoghlana.Api.Controllers
-//{
-//    [Route("api/[controller]")]
-//    [ApiController]
-//    public class ProposalController : ControllerBase
-//    {
-//        private readonly IMapper mapper;
-
-//        private readonly IUnitOfWork unitOfWork;
-
-//        public ProposalController(IMapper mapper, IUnitOfWork unitOfWork)
-//        {
-//            this.mapper = mapper;
-//            this.unitOfWork = unitOfWork;
-//        }
-
-//        //****************************************************************
-
-//        [HttpGet]
-//        public ActionResult<GeneralResponse> GetAll()
-//        {
-//            List<Freelancer> freelancers = unitOfWork.freelancer.GetAll().ToList();
-
-//            List<FreelancerDTO> freelancerDTOs = new List<FreelancerDTO>(freelancers.Count);
-
-//            foreach (Freelancer freelancer in freelancers)
-//            {
-//                FreelancerDTO freelancerDTO = new FreelancerDTO()
-//                {
-//                    Name = freelancer.Name,
-//                    Title = freelancer.Title,
-//                    Overview = freelancer.Overview,
-//                    Address = freelancer.Address,
-
-//                    PersonalImageBytes = freelancer.PersonalImageBytes,
-//                };
-
-//                FreelancerDTO freelancerDTO = mapper.Map<Freelancer, FreelancerDTO>(freelancer);
-
-//                freelancerDTOs.Add(freelancerDTO);
-//            }
-
-//            return new GeneralResponse()
-//            {
-//                IsSuccess = true,
-//                Status = 200,
-//                Data = freelancerDTOs,
-//            };
-//        }
-
-//        [HttpGet("{id:int}")]
-//        public ActionResult<GeneralResponse> GetById(int id)
-//        {
-//            Freelancer? freelancer = unitOfWork.freelancer.GetById(id);
-
-//            if (freelancer is null)
-//            {
-//                return new GeneralResponse()
-//                {
-//                    IsSuccess = false,
-//                    Status = 400, // bad request
-//                    Message = "There is no Freelancer found with this ID !"
-//                };
-//            }
-
-//            FreelancerDTO freelancerDTO = mapper.Map<Freelancer, FreelancerDTO>(freelancer);
-
-//            return new GeneralResponse()
-//            {
-//                IsSuccess = true,
-//                Status = 200,
-//                Data = freelancerDTO
-//            };
-//        }
-
-//        [HttpPost]
-//        public async Task<ActionResult<GeneralResponse>> AddAsync([FromForm] AddFreelancerDTO addedFreelancerDTO)
-//        {
-//            if (!ModelState.IsValid)
-//            {
-//                return new GeneralResponse()
-//                {
-//                    IsSuccess = false,
-//                    Status = 400,
-//                    Data = ModelState,
-//                    Message = "Invalid Model State !"
-//                };
-//            }
-
-//            if (addedFreelancerDTO.PersonalImageBytes is null)
-//            {
-//                return new GeneralResponse()
-//                {
-//                    IsSuccess = false,
-//                    Status = 400,
-//                    Message = "Personal Image is required"
-//                };
-//            }
-
-//            if (!allowedExtensions.Contains(Path.GetExtension(addedFreelancerDTO.PersonalImageBytes.FileName).ToLower()))
-//            {
-//                return new GeneralResponse()
-//                {
-//                    IsSuccess = false,
-//                    Status = 400,
-//                    Message = "The allowed Personal Image Extensions => {jpg , png}",
-//                };
-//            }
-
-//            if (addedFreelancerDTO.PersonalImageBytes.Length > maxAllowedPersonalImageSize)
-//            {
-//                return new GeneralResponse()
-//                {
-//                    IsSuccess = false,
-//                    Status = 400,
-//                    Message = "The max Allowed Personal Image Size => 1 MB ",
-//                };
-//            }
-
-//            using var dataStream = new MemoryStream();
-
-//            await addedFreelancerDTO.PersonalImageBytes.CopyToAsync(dataStream);
-
-//            Freelancer freelancer = new Freelancer()
-//            {
-//                Name = addedFreelancerDTO.Name,
-//                Title = addedFreelancerDTO.Title,
-//                Address = addedFreelancerDTO.Address,
-//                Overview = addedFreelancerDTO.Overview,
-//                PersonalImageBytes = dataStream.ToArray(),
-//            };
-
-//            Freelancer addedFreelancer = await unitOfWork.freelancer.AddAsync(freelancer);
-
-//            unitOfWork.Save();
-
-//            FreelancerDTO freelancerDTO = mapper.Map<Freelancer, FreelancerDTO>(freelancer);
-
-//            return new GeneralResponse()
-//            {
-//                IsSuccess = true,
-//                Status = 201,
-//                Data = freelancerDTO,
-//                Message = "Added Successfully"
-//            };
-//            //freelancer = mapper.Map<FreelancerDTO, Freelancer>(freelancerDTO);
-//        }
-
-//        [HttpPut("{id:int}")]
-//        public async Task<ActionResult<GeneralResponse>> UpdateAsync(int id, [FromForm] AddFreelancerDTO addedFreelancerDTO)
-//        {
-//            if (!ModelState.IsValid)
-//            {
-//                return new GeneralResponse()
-//                {
-//                    IsSuccess = false,
-//                    Status = 400,
-//                    Data = ModelState,
-//                    Message = "Invalid Model State !"
-//                };
-//            }
-
-//            Freelancer? freelancer = unitOfWork.freelancer.GetById(id);
-
-//            if (freelancer is null)
-//            {
-//                return new GeneralResponse()
-//                {
-//                    IsSuccess = false,
-//                    Status = 400,
-//                    Message = "There is no Freelancer found with this ID !"
-//                };
-//            }
-
-//            if (addedFreelancerDTO.PersonalImageBytes != null)
-//            {
-//                if (!allowedExtensions.Contains(Path.GetExtension(addedFreelancerDTO.PersonalImageBytes.FileName).ToLower()))
-//                {
-//                    return new GeneralResponse()
-//                    {
-//                        IsSuccess = false,
-//                        Status = 400,
-//                        Message = "The allowed Personal Image Extensions => {jpg , png}",
-//                    };
-//                }
-
-//                if (addedFreelancerDTO.PersonalImageBytes.Length > maxAllowedPersonalImageSize)
-//                {
-//                    return new GeneralResponse()
-//                    {
-//                        IsSuccess = false,
-//                        Status = 400,
-//                        Message = "The max Allowed Personal Image Size => 1 MB ",
-//                    };
-//                }
-
-//                using var dataStream = new MemoryStream();
-
-//                await addedFreelancerDTO.PersonalImageBytes.CopyToAsync(dataStream);
-
-//                freelancer.PersonalImageBytes = dataStream.ToArray();
-//            }
-
-//            freelancer.Name = addedFreelancerDTO.Name;
-//            freelancer.Title = addedFreelancerDTO.Title;
-//            freelancer.Overview = addedFreelancerDTO.Overview;
-//            freelancer.Address = addedFreelancerDTO.Address;
-
-//            unitOfWork.Save();
-
-//            FreelancerDTO freelancerDTO = mapper.Map<Freelancer, FreelancerDTO>(freelancer);
-
-//            return new GeneralResponse()
-//            {
-//                IsSuccess = true,
-//                Status = 200,
-//                Data = freelancerDTO
-//            };
-//        }
-
-//        [HttpDelete("{id:int}")]
-//        public ActionResult<GeneralResponse> Delete(int id)
-//        {
-//            Freelancer? freelancer = unitOfWork.freelancer.GetById(id);
-
-//            if (freelancer is null)
-//            {
-//                return new GeneralResponse()
-//                {
-//                    IsSuccess = false,
-//                    Status = 400,
-//                    Message = "There is no Freelancer found with this ID !"
-//                };
-//            }
-
-//            unitOfWork.freelancer.Delete(freelancer);
-
-//            unitOfWork.Save();
-
-//            return new GeneralResponse()
-//            {
-//                IsSuccess = true,
-//                Status = 204, // no content
-//                Message = $"The Freelancer with ID ({freelancer.Id}) is deleted successfully !"
-//            };
-//        }
-
-//    }
-//}
-
-﻿using AutoMapper;
+using AutoMapper;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Shoghlana.Core.DTO;
 using Shoghlana.Api.Response;
 using Shoghlana.Core.Interfaces;
 using Shoghlana.Core.Models;
+using Shoghlana.Api.Services.Interfaces;
 
 namespace Shoghlana.Api.Controllers
 {
@@ -273,24 +15,27 @@ namespace Shoghlana.Api.Controllers
     {
         private readonly IMapper mapper;
 
-        private readonly IUnitOfWork unitOfWork;
-
+        private readonly IProposalService proposalService;
+        private readonly IProposalImageService proposalImageService;
         private List<string> allowedExtensions = new List<string>() { ".jpg", ".png" };
 
         private long maxAllowedPersonalImageSize = 1_048_576;  // 1 MB = 1024 * 1024 bytes
 
-        public ProposalController(IMapper mapper, IUnitOfWork unitOfWork)
+        public ProposalController(IMapper mapper, IProposalService proposalService , IProposalImageService proposalImageService )
         {
             this.mapper = mapper;
-            this.unitOfWork = unitOfWork;
+
+            this.proposalService = proposalService;
+            this.proposalImageService = proposalImageService;
         }
 
         //****************************************************************
 
         [HttpGet]
-        public ActionResult<GeneralResponse> GetAll()
+        public async Task<ActionResult<GeneralResponse>> GetAll()
         {
-            List<Proposal> proposals = unitOfWork.proposal.FindAll(includes: ["Images"]).ToList();
+            List<Proposal> proposals = proposalService.FindAll(includes: ["Images"]).ToList();
+
 
             List<GetProposalDTO> getProposalDTOs = new List<GetProposalDTO>(proposals.Count);
 
@@ -312,7 +57,7 @@ namespace Shoghlana.Api.Controllers
         [HttpGet("{id:int}")]
         public ActionResult<GeneralResponse> GetById(int id)
         {
-            Proposal? proposal = unitOfWork.proposal.GetById(id);
+            Proposal? proposal = proposalService.GetById(id);
 
             if (proposal is null)
             {
@@ -335,9 +80,9 @@ namespace Shoghlana.Api.Controllers
         }
 
         [HttpGet("GetByJobId/{id:int}")]
-        public ActionResult<GeneralResponse> GetByJobId(int id)
+        public async Task<ActionResult<GeneralResponse>> GetByJobId(int id)
         {
-            Job job = unitOfWork.job.GetById(id);
+            Job job = await proposalService.GetJobByIdAsync(id);
 
             if (job is null)
             {
@@ -349,7 +94,7 @@ namespace Shoghlana.Api.Controllers
                 };
             }
 
-            List<Proposal> proposals = unitOfWork.proposal.FindAll(includes: null, criteria: p => p.JobId == id).ToList();
+            List<Proposal> proposals = proposalService.FindAll(includes: null, criteria: p => p.JobId == id).ToList();
 
             if (proposals.Count == 0)
             {
@@ -379,9 +124,9 @@ namespace Shoghlana.Api.Controllers
         }
 
         [HttpGet("GetByFreelancerId/{id:int}")]
-        public ActionResult<GeneralResponse> GetByFreelancerId(int id)
+        public async Task<ActionResult<GeneralResponse>> GetByFreelancerId(int id)
         {
-            Freelancer freelancer = unitOfWork.freelancer.GetById(id);
+            Freelancer freelancer = await proposalService.GetFreelancerByIdAsync(id);
 
             if (freelancer is null)
             {
@@ -393,7 +138,7 @@ namespace Shoghlana.Api.Controllers
                 };
             }
 
-            List<Proposal> proposals = unitOfWork.proposal.FindAll(includes: null, criteria: p => p.FreelancerId == id).ToList();
+            List<Proposal> proposals = proposalService.FindAll(includes: null, criteria: p => p.FreelancerId == id).ToList();
 
             if (proposals.Count == 0)
             {
@@ -436,7 +181,7 @@ namespace Shoghlana.Api.Controllers
                 };
             }
 
-            Job job = unitOfWork.job.GetById(addProposalDTO.JobId);
+            Job job = await proposalService.GetJobByIdAsync(addProposalDTO.JobId);
 
             if (job is null)
             {
@@ -448,7 +193,7 @@ namespace Shoghlana.Api.Controllers
                 };
             }
 
-            Freelancer freelancer = unitOfWork.freelancer.GetById(addProposalDTO.FreelancerId);
+            Freelancer freelancer = await proposalService.GetFreelancerByIdAsync(addProposalDTO.FreelancerId);
 
             if (freelancer is null)
             {
@@ -518,9 +263,9 @@ namespace Shoghlana.Api.Controllers
 
                 //proposal = mapper.Map<AddProposalDTO, Proposal>(addProposalDTO);
 
-                Proposal addedProposal = await unitOfWork.proposal.AddAsync(proposal);
+                Proposal addedProposal = await proposalService.AddAsync(proposal);
 
-                unitOfWork.Save();
+                proposalService.Save();
 
                 GetProposalDTO getProposalDTO = mapper.Map<Proposal, GetProposalDTO>(addedProposal);
 
@@ -553,9 +298,9 @@ namespace Shoghlana.Api.Controllers
 
                 //proposal = mapper.Map<AddProposalDTO, Proposal>(addProposalDTO);
 
-                Proposal addedProposal = await unitOfWork.proposal.AddAsync(proposal);
+                Proposal addedProposal = await proposalService.AddAsync(proposal);
 
-                unitOfWork.Save();
+                proposalService.Save();
 
                 GetProposalDTO getProposalDTO = mapper.Map<Proposal, GetProposalDTO>(proposal);
 
@@ -584,7 +329,7 @@ namespace Shoghlana.Api.Controllers
                 };
             }
 
-            Proposal proposal = unitOfWork.proposal.Find(includes: ["Images"], criteria: p => p.Id == id);
+            Proposal proposal = proposalService.Find(includes: ["Images"], criteria: p => p.Id == id);
 
             if (proposal is null)
             {
@@ -596,7 +341,7 @@ namespace Shoghlana.Api.Controllers
                 };
             }
 
-            Job job = unitOfWork.job.GetById(addProposalDTO.JobId);
+            Job job = await proposalService.GetJobByIdAsync(addProposalDTO.JobId);
 
             if (job is null)
             {
@@ -608,7 +353,7 @@ namespace Shoghlana.Api.Controllers
                 };
             }
 
-            Freelancer freelancer = unitOfWork.freelancer.GetById(addProposalDTO.FreelancerId);
+            Freelancer freelancer = await proposalService.GetFreelancerByIdAsync(addProposalDTO.FreelancerId);
 
             if (freelancer is null)
             {
@@ -626,19 +371,19 @@ namespace Shoghlana.Api.Controllers
                 {
                     image.ProposalId = null;
 
-                    unitOfWork.proposalImage.Delete(image);
+                    proposalImageService.Delete(image);
                 }
             }
 
             if (addProposalDTO.Images is not null && addProposalDTO.Images.Count > 0)
             {
-                //Proposal validProposal = unitOfWork.proposal.Find(includes: ["Images"], criteria: p => p.Id == id);
+                //Proposal validProposal = proposalService.Find(includes: ["Images"], criteria: p => p.Id == id);
 
                 //foreach (var image in validProposal.Images)
                 //{
                 //    image.ProposalId = null;
 
-                //    unitOfWork.ProposalImages.Delete(image);
+                //    proposalServiceImages.Delete(image);
                 //}
 
                 List<ProposalImages> proposalImages = new List<ProposalImages>();
@@ -695,9 +440,9 @@ namespace Shoghlana.Api.Controllers
 
                 //proposal = mapper.Map<AddProposalDTO, Proposal>(addProposalDTO);
 
-                unitOfWork.Save();
+                proposalService.Save();
 
-                Proposal editedProposal = unitOfWork.proposal.Find(includes: ["Images"], criteria: p => p.Id == proposal.Id);
+                Proposal editedProposal = proposalService.Find(includes: ["Images"], criteria: p => p.Id == proposal.Id);
 
                 GetProposalDTO getProposalDTO = mapper.Map<Proposal, GetProposalDTO>(editedProposal);
 
@@ -722,9 +467,9 @@ namespace Shoghlana.Api.Controllers
 
                 //proposal = mapper.Map<AddProposalDTO, Proposal>(addProposalDTO);
 
-                //Proposal editedProposal = await unitOfWork.proposal.AddAsync(proposal);
+                //Proposal editedProposal = await proposalService.AddAsync(proposal);
 
-                unitOfWork.Save();
+                proposalService.Save();
 
                 GetProposalDTO getProposalDTO = mapper.Map<Proposal, GetProposalDTO>(proposal);
 
@@ -741,7 +486,7 @@ namespace Shoghlana.Api.Controllers
         [HttpDelete("{id:int}")]
         public ActionResult<GeneralResponse> Delete(int id)
         {
-            Proposal proposal = unitOfWork.proposal.Find(includes: ["Images"], criteria: p => p.Id == id);
+            Proposal proposal = proposalService.Find(includes: ["Images"], criteria: p => p.Id == id);
 
             if (proposal == null)
             {
@@ -753,9 +498,9 @@ namespace Shoghlana.Api.Controllers
                 };
             }
 
-            unitOfWork.proposal.Delete(proposal);
+            proposalService.Delete(proposal);
 
-            unitOfWork.Save();
+            proposalService.Save();
 
             return new GeneralResponse()
             {
@@ -766,4 +511,3 @@ namespace Shoghlana.Api.Controllers
         }
     }
 }
-

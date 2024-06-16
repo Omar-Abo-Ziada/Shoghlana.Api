@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Shoghlana.Core.Interfaces
 {
-    public interface IFreelancerRepository : IRepository<Freelancer>
+    public interface IFreelancerRepository : IGenericRepository<Freelancer>
     {
     }
 }
