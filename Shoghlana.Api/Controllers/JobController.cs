@@ -2,6 +2,7 @@
 //using Microsoft.AspNetCore.Http;
 //using Microsoft.AspNetCore.Mvc;
 //using Shoghlana.Api.Response;
+//using Shoghlana.Api.Services.Interfaces;
 //using Shoghlana.Core.DTO;
 //using Shoghlana.Core.Interfaces;
 //using Shoghlana.Core.Models;
@@ -14,20 +15,19 @@
 
 //    public class JobController : ControllerBase
 //    {
-//        private readonly IUnitOfWork unitOfWork;
+//        private readonly IJobService jobService;
 //        private readonly IMapper mapper;
 
-//        public JobController(IUnitOfWork _unitOfWork, IMapper _mapper)
+//        public JobController(IJobService jobService, IMapper _mapper)
 //        {
-//            unitOfWork = _unitOfWork;
+//            this.jobService = jobService;
 //            mapper = _mapper;
 //        }
-
 
 //        [HttpGet]
 //        public ActionResult<GeneralResponse> GetAll()
 //        {
-//            List<Job> jobs = unitOfWork.job.FindAll(new string[] { "Client", "Category", "skills" }).ToList();
+//            List<Job> jobs = jobService.FindAll(["Client", "Category", "skills" ]).ToList();
 
 //            List<JobDTO> jobDTOs = mapper.Map<List<Job>, List<JobDTO>>(jobs);
 
@@ -39,6 +39,7 @@
 //                foreach (JobSkills jobSkill in jobs[i].skills)
 //                {
 //                    Skill skill = unitOfWork.skill.GetById(jobSkill.SkillId);
+
 //                    jobDTOs[i].skillsDTO.Add(new SkillDTO
 //                    {
 //                        Title = skill.Title,
@@ -46,6 +47,7 @@
 //                    });
 //                }
 //            }
+
 //            return new GeneralResponse
 //            {
 //                IsSuccess = true,
@@ -54,16 +56,14 @@
 //            };
 //        }
 
-
-
-//        [HttpGet("{id:int}")] 
+//        [HttpGet("{id:int}")]
 //        public ActionResult<GeneralResponse> Get(int id)
 //        {
 //            Job job = new Job();
 //            JobDTO jobDTO = new JobDTO();
 //            try
 //            {
-//                job = unitOfWork.job.Find( criteria: j => j.Id == id, includes: new string[] { "Proposals", "skills", "Category", "Client" });
+//                job = jobService.Find(criteria: j => j.Id == id, includes: new string[] { "Proposals", "skills", "Category", "Client" });
 
 //                jobDTO = mapper.Map<Job, JobDTO>(job);
 //                jobDTO.clientName = job.Client.Name;
@@ -72,6 +72,7 @@
 //                foreach (Proposal proposal in job.Proposals)
 //                {
 //                    Freelancer freelancer = unitOfWork.freelancer.GetById(proposal.FreelancerId);
+
 //                    jobDTO.freelancersDTO.Add(new FreelancerDTO
 //                    {
 //                        Name = freelancer.Name,
@@ -87,7 +88,6 @@
 
 //                foreach (JobSkills jobSkill in job.skills)
 //                {
-
 //                    Skill skill = unitOfWork.skill.GetById(jobSkill.SkillId);
 
 //                    jobDTO.skillsDTO.Add(new SkillDTO
@@ -116,19 +116,17 @@
 //            // rate?????
 //        }
 
-
-
-//        [HttpGet("freelancer")]  
+//        [HttpGet("freelancer")]
 //        public ActionResult<GeneralResponse> GetByFreelancerId([FromQuery] int id)
 //        {
 //            List<Job> jobs;
 
 //            try
 //            {
-//                jobs = unitOfWork.job.FindAll(new string[] { "Client", "Category", "skills" }, j => j.FreelancerId == id)
+//                jobs = jobService.FindAll(new string[] { "Client", "Category", "skills" }, j => j.FreelancerId == id)
 //                                                        .ToList();
 //            }
-//            catch (Exception ex) 
+//            catch (Exception ex)
 //            {
 //                return new GeneralResponse
 //                {
@@ -137,13 +135,13 @@
 //                    Message = ex.Message
 //                };
 //            }
-          
 
 //            List<JobDTO> jobDTOs = mapper.Map<List<Job>, List<JobDTO>>(jobs);
 
 //            for (int i = 0; i < jobs.Count; i++)
 //            {
 //                jobDTOs[i].clientName = jobs[i].Client.Name;
+
 //                jobDTOs[i].categoryTitle = jobs[i].Category.Title;
 
 //                foreach (JobSkills jobSkill in jobs[i].skills)
@@ -165,16 +163,13 @@
 //            // rate?????
 //        }
 
-
 //        [HttpGet("category/{id}")]
 //        public ActionResult<GeneralResponse> GetJobsByCategoryId(int id)
 //        {
 //            Category category = unitOfWork.category.GetCategorytWithJobs(id);
 //            if (category != null)
 //            {
-
 //                CategoryDTO categoryDTO = mapper.Map<CategoryDTO>(category);
-
 
 //                return new GeneralResponse()
 //                {
@@ -182,8 +177,8 @@
 //                    Status = 200,
 //                    Data = categoryDTO
 //                };
-
 //            }
+
 //            return new GeneralResponse()
 //            {
 //                IsSuccess = false,
@@ -192,21 +187,20 @@
 //            };
 //        }
 
-
-
 //        [HttpGet("categories")]
 //        public ActionResult<GeneralResponse> GetJobsByCategoryIds([FromQuery] List<int> ids)
 //        {
 //            List<Job> jobs = new List<Job>();
-//            foreach(int id in ids) 
+
+//            foreach (int id in ids)
 //            {
 //                List<Job> tempJobs = new List<Job>();
 //                try
 //                {
-//                   tempJobs = unitOfWork.job.FindAll(criteria: j => j.CategoryId == id)
-//                                                   .ToList();
+//                    tempJobs = jobService.FindAll(criteria: j => j.CategoryId == id)
+//                                                    .ToList();
 //                }
-//                catch (Exception ex) 
+//                catch (Exception ex)
 //                {
 //                    return new GeneralResponse()
 //                    {
@@ -221,7 +215,7 @@
 //                }
 //            }
 
-//            if(jobs.Count > 0) 
+//            if (jobs.Count > 0)
 //            {
 //                return new GeneralResponse()
 //                {
@@ -237,20 +231,18 @@
 //                Data = null,
 //                Message = "No jobs found for these Ids"
 //            };
-          
 //        }
 
-
 //        [HttpGet("client")]
-//        public ActionResult<GeneralResponse> GetByClientId([FromQuery] int id) 
+//        public ActionResult<GeneralResponse> GetByClientId([FromQuery] int id)
 //        {
 //            List<Job> jobs;
 //            try
 //            {
-//                 jobs = unitOfWork.job.FindAll(new string[] { "Freelancer", "Category", "skills" }, j => j.ClientId == id)
-//                                         .ToList();
+//                jobs = jobService.FindAll(new string[] { "Freelancer", "Category", "skills" }, j => j.ClientId == id)
+//                                        .ToList();
 //            }
-//           catch(Exception ex) 
+//            catch (Exception ex)
 //            {
 //                return new GeneralResponse
 //                {
@@ -260,36 +252,33 @@
 //                };
 //            }
 
-          
-//                List<JobDTO> jobDTOs = mapper.Map<List<Job>, List<JobDTO>>(jobs);
+//            List<JobDTO> jobDTOs = mapper.Map<List<Job>, List<JobDTO>>(jobs);
 
+//            for (int i = 0; i < jobs.Count; i++)
+//            {
+//                jobDTOs[i].AcceptedFreelancerName = jobs[i].Freelancer.Name;
+//                jobDTOs[i].AcceptedFreelancerId = jobs[i].Freelancer.Id;
+//                jobDTOs[i].categoryTitle = jobs[i].Category.Title;
 
-//                for (int i = 0; i < jobs.Count; i++)
+//                foreach (JobSkills jobSkill in jobs[i].skills)
 //                {
-//                    jobDTOs[i].AcceptedFreelancerName = jobs[i].Freelancer.Name;
-//                    jobDTOs[i].AcceptedFreelancerId = jobs[i].Freelancer.Id;
-//                    jobDTOs[i].categoryTitle = jobs[i].Category.Title;
-
-//                    foreach (JobSkills jobSkill in jobs[i].skills)
+//                    Skill skill = unitOfWork.skill.GetById(jobSkill.SkillId);
+//                    jobDTOs[i].skillsDTO.Add(new SkillDTO
 //                    {
-//                        Skill skill = unitOfWork.skill.GetById(jobSkill.SkillId);
-//                        jobDTOs[i].skillsDTO.Add(new SkillDTO
-//                        {
-//                            Title = skill.Title,
-//                            Id = skill.Id,
-//                        });
-//                    }
+//                        Title = skill.Title,
+//                        Id = skill.Id,
+//                    });
 //                }
-//                return new GeneralResponse
-//                {
-//                    IsSuccess = true,
-//                    Data = jobDTOs,
-//                    Message = "All jobs for this client retrieved successfully"
-//                };
-          
+//            }
+//            return new GeneralResponse
+//            {
+//                IsSuccess = true,
+//                Data = jobDTOs,
+//                Message = "All jobs for this client retrieved successfully"
+//            };
+
 //            // rate?????
 //        }
-
 
 //        [HttpPost]
 //        public ActionResult<GeneralResponse> Add(JobDTO jobDto)
@@ -298,15 +287,15 @@
 
 //            //foreach(SkillDTO skillDTO in jobDto.skillsDTO) 
 //            //{
-//            //    JobSkills skill = unitOfWork.jobSkills.Find(js => {js.SkillId == skillDTO.Id && js.JobId ==  });
+//            //    JobSkills skill = jobServiceSkills.Find(js => {js.SkillId == skillDTO.Id && js.JobId ==  });
 
 //            //    job.skills.Add(skill);
 //            //}
 
 //            try
 //            {
-//                unitOfWork.job.Add(job);
-//                unitOfWork.Save();
+//                jobService.Add(job);
+//                jobService.Save();
 
 //                foreach (SkillDTO skillDTO in jobDto.skillsDTO)
 //                {
@@ -316,8 +305,8 @@
 //                        JobId = job.Id
 //                    });
 //                }
-//                unitOfWork.job.Update(job);
-//                unitOfWork.Save();
+//                jobService.Update(job);
+//                jobService.Save();
 //            }
 
 //            catch (Exception ex)
@@ -337,11 +326,10 @@
 //            };
 //        }
 
-
 //        [HttpPut]
 //        public ActionResult<GeneralResponse> update(JobDTO jobDto)
 //        {
-//            Job job = unitOfWork.job.GetById(jobDto.Id);
+//            Job job = jobService.GetById(jobDto.Id);
 //            //  job = mapper.Map<JobDTO, Job>(jobDto);
 //            job.Description = jobDto.Description;
 //            job.Title = jobDto.Title;
@@ -350,10 +338,11 @@
 //            job.ExperienceLevel = jobDto.ExperienceLevel;
 //            job.CategoryId = jobDto.CategoryId;
 
-//            List<JobSkills> jobSkills = unitOfWork.jobSkills
+//            List<JobSkills> jobSkills = jobServiceSkills
 //                                   .FindAll(criteria: js => js.JobId == jobDto.Id)
 //                                   .ToList();
-//            unitOfWork.jobSkills.DeleteRange(jobSkills);
+
+//            jobServiceSkills.DeleteRange(jobSkills);
 
 //            List<JobSkills> skills = new List<JobSkills>();
 //            foreach (SkillDTO skillDto in jobDto.skillsDTO)
@@ -364,13 +353,13 @@
 //                    JobId = jobDto.Id
 //                });
 //            }
-//            job.skills = skills;
 
+//            job.skills = skills;
 
 //            try
 //            {
-//                unitOfWork.job.Update(job);
-//                unitOfWork.Save();
+//                jobService.Update(job);
+//                jobService.Save();
 //                return new GeneralResponse
 //                {
 //                    IsSuccess = true,
@@ -389,19 +378,17 @@
 //            }
 //        }
 
-
-
 //        [HttpDelete("{id:int}")]
 //        public ActionResult<GeneralResponse> delete(int id)
 //        {
-//            Job job = unitOfWork.job.GetById(id);
-//            List<JobSkills> jobSkills = unitOfWork.jobSkills
+//            Job job = jobService.GetById(id);
+//            List<JobSkills> jobSkills = jobServiceSkills
 //                                       .FindAll(criteria: js => js.JobId == id)
 //                                       .ToList();
 
 //            if (jobSkills.Count > 0)
 //            {
-//                unitOfWork.jobSkills.DeleteRange(jobSkills);
+//                jobServiceSkills.DeleteRange(jobSkills);
 //            }
 
 
@@ -432,8 +419,8 @@
 
 //            try
 //            {
-//                unitOfWork.job.Delete(job);
-//                unitOfWork.Save();
+//                jobService.Delete(job);
+//                jobService.Save();
 //                return new GeneralResponse
 //                {
 //                    IsSuccess = true,
