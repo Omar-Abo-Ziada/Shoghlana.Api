@@ -8,6 +8,7 @@ using Shoghlana.EF.Repositories;
 using Shoghlana.Api.Response;
 using Microsoft.AspNetCore.SignalR;
 using Shoghlana.Api.Hubs;
+using AutoMapper;
 
 namespace Shoghlana.Api.Controllers
 {
@@ -20,11 +21,13 @@ namespace Shoghlana.Api.Controllers
 
         private long maxAllowedImageSize = 1_048_576;
         private readonly IHubContext<NotificationHub> hubContext;
+        private readonly IMapper mapper;
 
-        public ClientController(IUnitOfWork unitOfWork, IHubContext<NotificationHub> hubContext)
+        public ClientController(IUnitOfWork unitOfWork, IHubContext<NotificationHub> hubContext, IMapper mapper)
         {
             this.unitOfWork = unitOfWork;
             this.hubContext = hubContext;
+            this.mapper = mapper;
         }
 
         [HttpGet]
@@ -78,10 +81,10 @@ namespace Shoghlana.Api.Controllers
             };
         }
 
-        [HttpGet("{id}")]
+        [HttpGet("{id:int}")]
         public ActionResult<GeneralResponse> GetById(int id)
         {
-            Client client = unitOfWork.client.GetById(id);
+            Client client = unitOfWork.client.Find(criteria: c => c.Id == id , includes: new string[] { "Jobs" }); 
 
             if (client != null)
             {
@@ -92,6 +95,20 @@ namespace Shoghlana.Api.Controllers
                 clientsDTO.Phone = client.Phone;
                 clientsDTO.Description = client.Description;
                 clientsDTO.Country = client.Country;
+                clientsDTO.JobsCount = client.JobsCount;
+                clientsDTO.CompletedJobsCount = client.CompletedJobsCount;
+                clientsDTO.Id = client.Id;
+                clientsDTO.RegisterationTime = client.RegisterationTime;
+                if(client?.Jobs?.Count > 0)
+                {
+                    foreach (Job job in client.Jobs)
+                    {
+                        JobDTO jobDTO = new JobDTO();
+                        jobDTO = mapper.Map<Job,JobDTO>(job);
+                        clientsDTO.Jobs.Add(jobDTO);
+                    }
+                }
+
                 return new GeneralResponse()
                 {
                     IsSuccess = true,

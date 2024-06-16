@@ -8,6 +8,7 @@ namespace Shoghlana.Core.Models
 {
     public class ClientNotification
     {
+        
         public int ClientId { get; set; }
 
         public Client Client { get; set; }

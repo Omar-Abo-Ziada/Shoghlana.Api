@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace Shoghlana.EF.Migrations
 {
     /// <inheritdoc />
-    public partial class newTest : Migration
+    public partial class init : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -64,6 +64,7 @@ namespace Shoghlana.EF.Migrations
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
+                    RegisterationTime = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValue: new DateTime(2024, 6, 16, 4, 32, 10, 267, DateTimeKind.Local).AddTicks(3990)),
                     Description = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Image = table.Column<byte[]>(type: "varbinary(max)", nullable: true),
                     Country = table.Column<string>(type: "nvarchar(max)", nullable: true),
@@ -123,7 +124,7 @@ namespace Shoghlana.EF.Migrations
                         column: x => x.RoleId,
                         principalTable: "AspNetRoles",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.NoAction);
                 });
 
             migrationBuilder.CreateTable(
@@ -144,7 +145,7 @@ namespace Shoghlana.EF.Migrations
                         column: x => x.ClientId,
                         principalTable: "Clients",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.NoAction);
                 });
 
             migrationBuilder.CreateTable(
@@ -209,7 +210,7 @@ namespace Shoghlana.EF.Migrations
                         column: x => x.FreelancerId,
                         principalTable: "Freelancers",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.NoAction);
                 });
 
             migrationBuilder.CreateTable(
@@ -287,13 +288,13 @@ namespace Shoghlana.EF.Migrations
                         column: x => x.FreelancerId,
                         principalTable: "Freelancers",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.NoAction);
                     table.ForeignKey(
                         name: "FK_FreelancerSkills_Skills_SkillId",
                         column: x => x.SkillId,
                         principalTable: "Skills",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.NoAction);
                 });
 
             migrationBuilder.CreateTable(
@@ -314,7 +315,7 @@ namespace Shoghlana.EF.Migrations
                         column: x => x.UserId,
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.NoAction);
                 });
 
             migrationBuilder.CreateTable(
@@ -334,7 +335,7 @@ namespace Shoghlana.EF.Migrations
                         column: x => x.UserId,
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.NoAction);
                 });
 
             migrationBuilder.CreateTable(
@@ -352,13 +353,13 @@ namespace Shoghlana.EF.Migrations
                         column: x => x.RoleId,
                         principalTable: "AspNetRoles",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.NoAction);
                     table.ForeignKey(
                         name: "FK_AspNetUserRoles_AspNetUsers_UserId",
                         column: x => x.UserId,
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.NoAction);
                 });
 
             migrationBuilder.CreateTable(
@@ -378,7 +379,7 @@ namespace Shoghlana.EF.Migrations
                         column: x => x.UserId,
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.NoAction);
                 });
 
             migrationBuilder.CreateTable(
@@ -401,7 +402,7 @@ namespace Shoghlana.EF.Migrations
                         column: x => x.ApplicationUserId,
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.NoAction);
                 });
 
             migrationBuilder.CreateTable(
@@ -419,13 +420,13 @@ namespace Shoghlana.EF.Migrations
                         column: x => x.JobId,
                         principalTable: "Jobs",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.NoAction);
                     table.ForeignKey(
                         name: "FK_JobSkills_Skills_SkillId",
                         column: x => x.SkillId,
                         principalTable: "Skills",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.NoAction);
                 });
 
             migrationBuilder.CreateTable(
@@ -452,7 +453,7 @@ namespace Shoghlana.EF.Migrations
                         column: x => x.FreelancerId,
                         principalTable: "Freelancers",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.NoAction);
                     table.ForeignKey(
                         name: "FK_Proposals_Jobs_JobId",
                         column: x => x.JobId,
@@ -515,13 +516,13 @@ namespace Shoghlana.EF.Migrations
                         column: x => x.ProjectId,
                         principalTable: "Projects",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.NoAction);
                     table.ForeignKey(
                         name: "FK_ProjectSkills_Skills_SkillId",
                         column: x => x.SkillId,
                         principalTable: "Skills",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.NoAction);
                 });
 
             migrationBuilder.CreateTable(
@@ -548,9 +549,9 @@ namespace Shoghlana.EF.Migrations
                 columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
                 values: new object[,]
                 {
-                    { "8b2a448c-cbc0-475e-a5dd-329d16cc05e5", "2ed3cf34-0d7d-497f-9958-7287f0cb1247", "Freelancer", "FREELANCER" },
-                    { "968a96e0-0520-48f2-b8e7-50c3166d2587", "aa86c70b-c17f-491c-90e9-8938c8f5f458", "Admin", "ADMIN" },
-                    { "f04ef93a-4a1e-4833-b47e-3e4f0738b4af", "e93b79de-3a1a-4334-b736-5952b15d9dea", "Client", "CLIENT" }
+                    { "238cbc53-997e-4972-b6e7-811b609beacc", "746b36e2-ac4f-430f-8ae9-90851b35b20f", "Client", "CLIENT" },
+                    { "6d5f2807-8345-4a4b-b68e-98abf0a4ee17", "fa961262-be43-409e-81d7-42135fcabef9", "Freelancer", "FREELANCER" },
+                    { "8b4ed1de-ae9f-46bc-a268-5df2111399f3", "7d3fd063-2459-43a8-8969-2d83f8d02a93", "Admin", "ADMIN" }
                 });
 
             migrationBuilder.InsertData(
@@ -599,8 +600,8 @@ namespace Shoghlana.EF.Migrations
                 columns: new[] { "Id", "CategoryId", "ClientId", "Description", "ExperienceLevel", "FreelancerId", "MaxBudget", "MinBudget", "PostTime", "Title" },
                 values: new object[,]
                 {
-                    { 1, 1, 1, "Description for Job1", 0, 1, 500m, 100m, new DateTime(2024, 6, 3, 14, 46, 33, 495, DateTimeKind.Local).AddTicks(5423), "Job1" },
-                    { 2, 2, 2, "Description for Job2", 1, 2, 700m, 200m, new DateTime(2024, 6, 3, 14, 46, 33, 495, DateTimeKind.Local).AddTicks(5478), "Job2" }
+                    { 1, 1, 1, "Description for Job1", 0, 1, 500m, 100m, new DateTime(2024, 6, 16, 4, 32, 10, 272, DateTimeKind.Local).AddTicks(947), "Job1" },
+                    { 2, 2, 2, "Description for Job2", 1, 2, 700m, 200m, new DateTime(2024, 6, 16, 4, 32, 10, 272, DateTimeKind.Local).AddTicks(1014), "Job2" }
                 });
 
             migrationBuilder.InsertData(

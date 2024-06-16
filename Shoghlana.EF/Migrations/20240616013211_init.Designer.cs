@@ -12,8 +12,8 @@ using Shoghlana.EF;
 namespace Shoghlana.EF.Migrations
 {
     [DbContext(typeof(ApplicationDBContext))]
-    [Migration("20240603114634_newTest")]
-    partial class newTest
+    [Migration("20240616013211_init")]
+    partial class init
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -54,22 +54,22 @@ namespace Shoghlana.EF.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "968a96e0-0520-48f2-b8e7-50c3166d2587",
-                            ConcurrencyStamp = "aa86c70b-c17f-491c-90e9-8938c8f5f458",
+                            Id = "8b4ed1de-ae9f-46bc-a268-5df2111399f3",
+                            ConcurrencyStamp = "7d3fd063-2459-43a8-8969-2d83f8d02a93",
                             Name = "Admin",
                             NormalizedName = "ADMIN"
                         },
                         new
                         {
-                            Id = "f04ef93a-4a1e-4833-b47e-3e4f0738b4af",
-                            ConcurrencyStamp = "e93b79de-3a1a-4334-b736-5952b15d9dea",
+                            Id = "238cbc53-997e-4972-b6e7-811b609beacc",
+                            ConcurrencyStamp = "746b36e2-ac4f-430f-8ae9-90851b35b20f",
                             Name = "Client",
                             NormalizedName = "CLIENT"
                         },
                         new
                         {
-                            Id = "8b2a448c-cbc0-475e-a5dd-329d16cc05e5",
-                            ConcurrencyStamp = "2ed3cf34-0d7d-497f-9958-7287f0cb1247",
+                            Id = "6d5f2807-8345-4a4b-b68e-98abf0a4ee17",
+                            ConcurrencyStamp = "fa961262-be43-409e-81d7-42135fcabef9",
                             Name = "Freelancer",
                             NormalizedName = "FREELANCER"
                         });
@@ -350,6 +350,11 @@ namespace Shoghlana.EF.Migrations
                     b.Property<string>("Phone")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<DateTime>("RegisterationTime")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime2")
+                        .HasDefaultValue(new DateTime(2024, 6, 16, 4, 32, 10, 267, DateTimeKind.Local).AddTicks(3990));
+
                     b.HasKey("Id");
 
                     b.ToTable("Clients");
@@ -358,12 +363,14 @@ namespace Shoghlana.EF.Migrations
                         new
                         {
                             Id = 1,
-                            Name = "Client1"
+                            Name = "Client1",
+                            RegisterationTime = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
                         },
                         new
                         {
                             Id = 2,
-                            Name = "Client2"
+                            Name = "Client2",
+                            RegisterationTime = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
                         });
                 });
 
@@ -547,7 +554,7 @@ namespace Shoghlana.EF.Migrations
                             FreelancerId = 1,
                             MaxBudget = 500m,
                             MinBudget = 100m,
-                            PostTime = new DateTime(2024, 6, 3, 14, 46, 33, 495, DateTimeKind.Local).AddTicks(5423),
+                            PostTime = new DateTime(2024, 6, 16, 4, 32, 10, 272, DateTimeKind.Local).AddTicks(947),
                             Status = 0,
                             Title = "Job1"
                         },
@@ -561,7 +568,7 @@ namespace Shoghlana.EF.Migrations
                             FreelancerId = 2,
                             MaxBudget = 700m,
                             MinBudget = 200m,
-                            PostTime = new DateTime(2024, 6, 3, 14, 46, 33, 495, DateTimeKind.Local).AddTicks(5478),
+                            PostTime = new DateTime(2024, 6, 16, 4, 32, 10, 272, DateTimeKind.Local).AddTicks(1014),
                             Status = 0,
                             Title = "Job2"
                         });

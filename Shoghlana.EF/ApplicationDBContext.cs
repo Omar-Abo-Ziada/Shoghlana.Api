@@ -50,6 +50,8 @@ namespace Shoghlana.EF
                 entity.HasMany(c => c.Notifications)
                       .WithOne(n => n.Client)
                       .HasForeignKey(n => n.ClientId);
+
+                entity.Property(c => c.RegisterationTime).HasDefaultValue(DateTime.Now);
             });
 
             //modelBuilder.Entity<Freelancer>(entity =>
