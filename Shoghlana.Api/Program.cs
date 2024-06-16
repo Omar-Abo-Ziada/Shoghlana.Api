@@ -108,6 +108,7 @@ namespace Shoghlana.Api
             builder.Services.AddScoped<IProposalImageService, ProposalImageService>();
             builder.Services.AddScoped<ICategoryService, CategoryService>();
             builder.Services.AddScoped<IClientService, ClientService>();
+            builder.Services.AddScoped<IFreelancerService, FreelancerService>();
 
             builder.Services.AddAutoMapper(typeof(Program));
 
