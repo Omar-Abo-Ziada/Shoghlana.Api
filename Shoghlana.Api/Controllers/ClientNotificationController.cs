@@ -11,7 +11,6 @@ namespace Shoghlana.Api.Controllers
     [ApiController]
     public class ClientNotificationController : ControllerBase
     {
-
         private readonly IUnitOfWork unitOfWork;
         private readonly IMapper mapper;
         private readonly IHubContext<NotificationHub> hubContext;
