@@ -1,11 +1,7 @@
-using AutoMapper;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Shoghlana.Core.DTO;
 using Shoghlana.Api.Response;
-using Shoghlana.Core.Interfaces;
-using Shoghlana.Core.Models;
 using Shoghlana.Api.Services.Interfaces;
+using Shoghlana.Core.DTO;
 
 namespace Shoghlana.Api.Controllers
 {
@@ -65,7 +61,7 @@ namespace Shoghlana.Api.Controllers
 
         // TODO : Try To use Async in Find to reduce waiting time
         [HttpPut("{id:int}")]
-        public async Task<ActionResult<GeneralResponse>> Update(int id, [FromForm] AddProposalDTO addProposalDTO)
+        public async Task<ActionResult<GeneralResponse>> UpdateAsync(int id, [FromForm] AddProposalDTO addProposalDTO)
         {
             if (!ModelState.IsValid)
             {

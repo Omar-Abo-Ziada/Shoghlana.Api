@@ -1,12 +1,6 @@
-﻿using Microsoft.AspNetCore.Identity;
-using Shoghlana.Core.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Shoghlana.Core.Models;
 
-namespace Shoghlana.Core.Interfaces
+namespace Shoghlana.Api.Services.Interfaces
 {
     public interface IAuthService 
     {

@@ -1,7 +1,6 @@
-﻿ using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Shoghlana.Api.Response;
-using Shoghlana.Core.Interfaces;
+using Shoghlana.Api.Services.Interfaces;
 using Shoghlana.Core.Models;
 
 namespace Shoghlana.Api.Controllers
@@ -133,7 +132,6 @@ namespace Shoghlana.Api.Controllers
 
                 };
             }
-
         }
 
         [HttpGet("refreshToken")]

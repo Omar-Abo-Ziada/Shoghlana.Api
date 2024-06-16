@@ -1,23 +1,20 @@
 ﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.SignalR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
+using Shoghlana.Api.Hubs;
+using Shoghlana.Api.Services.Interfaces;
+using Shoghlana.Core.DTO;
 using Shoghlana.Core.Helpers;
 using Shoghlana.Core.Interfaces;
 using Shoghlana.Core.Models;
-using System;
-using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
-using System.Linq;
 using System.Security.Claims;
 using System.Security.Cryptography;
 using System.Text;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.SignalR;
-using Shoghlana.Api.Hubs;
-using Shoghlana.Core.DTO;
 
-namespace Shoghlana.EF.Repositories
+namespace Shoghlana.Api.Services.Implementaions
 {
     public class AuthService : IAuthService
     {
