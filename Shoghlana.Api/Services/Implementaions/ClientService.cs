@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SignalR;
 using Shoghlana.Api.Hubs;
 using Shoghlana.Api.Response;
@@ -7,6 +8,7 @@ using Shoghlana.Api.Services.Interfaces;
 using Shoghlana.Core.DTO;
 using Shoghlana.Core.Interfaces;
 using Shoghlana.Core.Models;
+using Shoghlana.EF.Repositories;
 
 namespace Shoghlana.Api.Services.Implementaions
 {
@@ -17,10 +19,13 @@ namespace Shoghlana.Api.Services.Implementaions
         private long maxAllowedImageSize = 1_048_576;
 
         private readonly IHubContext<NotificationHub> hubContext;
+        private readonly IMapper mapper;
 
-        public ClientService(IUnitOfWork unitOfWork, IGenericRepository<Client> repository , IHubContext<NotificationHub> hubContext) : base(unitOfWork, repository)
+        public ClientService(IUnitOfWork unitOfWork, IGenericRepository<Client> repository , IHubContext<NotificationHub> hubContext,
+            IMapper mapper) : base(unitOfWork, repository)
         {
             this.hubContext = hubContext;
+            this.mapper = mapper;
         }
 
         [HttpGet]
@@ -75,7 +80,9 @@ namespace Shoghlana.Api.Services.Implementaions
         [HttpGet("{id}")]
         public ActionResult<GeneralResponse> GetById(int id)
         {
-            Client? client = _unitOfWork.clientRepository.GetById(id);
+            //Client? client = _unitOfWork.clientRepository.GetById(id);
+            Client? client = _unitOfWork.clientRepository.Find(criteria: c => c.Id == id, includes: new string[] { "Jobs" });
+
 
             if (client != null)
             {
@@ -86,6 +93,20 @@ namespace Shoghlana.Api.Services.Implementaions
                 clientsDTO.Phone = client.Phone;
                 clientsDTO.Description = client.Description;
                 clientsDTO.Country = client.Country;
+                clientsDTO.JobsCount = client.JobsCount;
+                clientsDTO.CompletedJobsCount = client.CompletedJobsCount;
+                clientsDTO.Id = client.Id;
+                clientsDTO.RegisterationTime = client.RegisterationTime;
+                if (client?.Jobs?.Count > 0)
+                {
+                    foreach (Job job in client.Jobs)
+                    {
+                        JobDTO jobDTO = new JobDTO();
+                        jobDTO = mapper.Map<Job, JobDTO>(job);
+                        clientsDTO.Jobs.Add(jobDTO);
+                    }
+                }
+             
                 return new GeneralResponse()
                 {
                     IsSuccess = true,
