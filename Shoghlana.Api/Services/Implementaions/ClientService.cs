@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SignalR;
 using Shoghlana.Api.Hubs;
 using Shoghlana.Api.Response;
@@ -17,10 +18,13 @@ namespace Shoghlana.Api.Services.Implementaions
         private long maxAllowedImageSize = 1_048_576;
 
         private readonly IHubContext<NotificationHub> hubContext;
+        private readonly IMapper mapper;
 
-        public ClientService(IUnitOfWork unitOfWork, IGenericRepository<Client> repository , IHubContext<NotificationHub> hubContext) : base(unitOfWork, repository)
+        public ClientService(IUnitOfWork unitOfWork, IGenericRepository<Client> repository , IHubContext<NotificationHub> hubContext,
+            IMapper mapper) : base(unitOfWork, repository)
         {
             this.hubContext = hubContext;
+            this.mapper = mapper;
         }
 
         [HttpGet]
@@ -86,6 +90,20 @@ namespace Shoghlana.Api.Services.Implementaions
                 clientsDTO.Phone = client.Phone;
                 clientsDTO.Description = client.Description;
                 clientsDTO.Country = client.Country;
+                clientsDTO.JobsCount = client.JobsCount;
+                clientsDTO.CompletedJobsCount = client.CompletedJobsCount;
+                clientsDTO.Id = client.Id;
+                clientsDTO.RegisterationTime = client.RegisterationTime;
+                if (client?.Jobs?.Count > 0)
+                {
+                    foreach (Job job in client.Jobs)
+                    {
+                        JobDTO jobDTO = new JobDTO();
+                        jobDTO = mapper.Map<Job, JobDTO>(job);
+                        clientsDTO.Jobs.Add(jobDTO);
+                    }
+                }
+             
                 return new GeneralResponse()
                 {
                     IsSuccess = true,
