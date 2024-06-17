@@ -8,6 +8,7 @@ using Shoghlana.Api.Services.Interfaces;
 using Shoghlana.Core.DTO;
 using Shoghlana.Core.Interfaces;
 using Shoghlana.Core.Models;
+using Shoghlana.EF.Repositories;
 
 namespace Shoghlana.Api.Services.Implementaions
 {
@@ -79,7 +80,9 @@ namespace Shoghlana.Api.Services.Implementaions
         [HttpGet("{id}")]
         public ActionResult<GeneralResponse> GetById(int id)
         {
-            Client? client = _unitOfWork.clientRepository.GetById(id);
+            //Client? client = _unitOfWork.clientRepository.GetById(id);
+            Client? client = _unitOfWork.clientRepository.Find(criteria: c => c.Id == id, includes: new string[] { "Jobs" });
+
 
             if (client != null)
             {
