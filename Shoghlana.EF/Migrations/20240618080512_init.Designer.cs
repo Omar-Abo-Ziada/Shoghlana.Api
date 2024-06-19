@@ -12,8 +12,8 @@ using Shoghlana.EF;
 namespace Shoghlana.EF.Migrations
 {
     [DbContext(typeof(ApplicationDBContext))]
-    [Migration("20240616191924_JobSkillsCompositePK")]
-    partial class JobSkillsCompositePK
+    [Migration("20240618080512_init")]
+    partial class init
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -54,22 +54,22 @@ namespace Shoghlana.EF.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "88bc3e52-97dd-4fdf-a92a-a607cb73de3f",
-                            ConcurrencyStamp = "364c023b-2bf9-43ce-b4f3-687ee8fa1d1b",
+                            Id = "988c583b-7e80-42ed-8090-5abf0afc3d77",
+                            ConcurrencyStamp = "b42d3397-34e0-462e-9b9a-1a53c55dbae9",
                             Name = "Admin",
                             NormalizedName = "ADMIN"
                         },
                         new
                         {
-                            Id = "f00a10ff-acae-4832-9eb0-82e4befe0ba7",
-                            ConcurrencyStamp = "915dc2d7-cf43-49c0-9588-6f927da5a0c1",
+                            Id = "d40d630a-cf96-4259-80b6-be1c14f0c8ce",
+                            ConcurrencyStamp = "fd6b4632-178b-483c-ac51-97fb18d29b83",
                             Name = "Client",
                             NormalizedName = "CLIENT"
                         },
                         new
                         {
-                            Id = "4fe832e6-8cbf-498e-8db0-a31f81ab5566",
-                            ConcurrencyStamp = "32caf5e8-522a-4e29-825b-b1e697766176",
+                            Id = "9e0ae0e2-e1ba-4e6a-ae2f-23e4c86623b5",
+                            ConcurrencyStamp = "d96a740a-7322-4a47-aa06-173dbe0206a1",
                             Name = "Freelancer",
                             NormalizedName = "FREELANCER"
                         });
@@ -350,6 +350,9 @@ namespace Shoghlana.EF.Migrations
                     b.Property<string>("Phone")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<DateTime>("RegisterationTime")
+                        .HasColumnType("datetime2");
+
                     b.HasKey("Id");
 
                     b.ToTable("Clients");
@@ -358,12 +361,14 @@ namespace Shoghlana.EF.Migrations
                         new
                         {
                             Id = 1,
-                            Name = "Client1"
+                            Name = "Client1",
+                            RegisterationTime = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
                         },
                         new
                         {
                             Id = 2,
-                            Name = "Client2"
+                            Name = "Client2",
+                            RegisterationTime = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
                         });
                 });
 
@@ -547,7 +552,7 @@ namespace Shoghlana.EF.Migrations
                             FreelancerId = 1,
                             MaxBudget = 500m,
                             MinBudget = 100m,
-                            PostTime = new DateTime(2024, 6, 16, 22, 19, 23, 430, DateTimeKind.Local).AddTicks(7841),
+                            PostTime = new DateTime(2024, 6, 18, 11, 5, 5, 291, DateTimeKind.Local).AddTicks(7658),
                             Status = 0,
                             Title = "Job1"
                         },
@@ -561,7 +566,7 @@ namespace Shoghlana.EF.Migrations
                             FreelancerId = 2,
                             MaxBudget = 700m,
                             MinBudget = 200m,
-                            PostTime = new DateTime(2024, 6, 16, 22, 19, 23, 430, DateTimeKind.Local).AddTicks(7956),
+                            PostTime = new DateTime(2024, 6, 18, 11, 5, 5, 291, DateTimeKind.Local).AddTicks(7725),
                             Status = 0,
                             Title = "Job2"
                         });

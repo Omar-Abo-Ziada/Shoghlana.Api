@@ -96,6 +96,7 @@ namespace Shoghlana.Api
             builder.Services.AddScoped<ISkillRepository, SkillRepository>();
 
             builder.Services.AddScoped<IRateRepository, RateRepository>();
+            builder.Services.AddScoped<IApplicationUserRepository, ApplicationUserRepository>();
 
             // Registering the Generic Repository inside the application container.
             builder.Services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
@@ -113,6 +114,7 @@ namespace Shoghlana.Api
             builder.Services.AddScoped<IProjectService, ProjectService>();
             builder.Services.AddScoped<IRateService, RateService>();
             builder.Services.AddScoped<IProposalImageService, ProposalImageService>();
+           // builder.Services.AddScoped<IGoogleAuthService, GoogleAuthService>();
 
             builder.Services.AddAutoMapper(typeof(Program));
 

@@ -26,6 +26,8 @@ namespace Shoghlana.EF.Repositories
         public IDbContextTransaction transaction { get; private set; }
         public IJobRepository jobRepository { get; private set; }
         public IJobSkillsRepository jobSkillsRepository { get; private set; }
+        public IApplicationUserRepository ApplicationUserRepository { get; private set; } 
+
 
         public UnitOfWork
         (ApplicationDBContext context, IFreelancerRepository freelancerRepository,
@@ -33,7 +35,7 @@ namespace Shoghlana.EF.Repositories
         IClientRepository clientRepository, IClientNotificationRepository clientNotificationRepository, ICategoryRepository categoryRepository,
         IProjectRepository projectRepository, IProjectImagesRepository projectImagesRepository, IJobRepository jobRepository,
         IProjectSkillsRepository projectSkillsRepository, IProposalRepository proposalRepository, IJobSkillsRepository jobSkillsRepository,
-        IProposalImageRepository proposalImageRepository, ISkillRepository skillRepository, IRateRepository rateRepository)
+        IProposalImageRepository proposalImageRepository, ISkillRepository skillRepository, IRateRepository rateRepository, IApplicationUserRepository applicationUserRepository)
         {
             this.context = context;
             this.freelancerRepository = freelancerRepository;
@@ -51,6 +53,7 @@ namespace Shoghlana.EF.Repositories
             this.proposalImageRepository = proposalImageRepository;
             this.skillRepository = skillRepository;
             this.rateRepository = rateRepository;
+            this.ApplicationUserRepository = applicationUserRepository;
         }
 
         // returns num of affected entities in db

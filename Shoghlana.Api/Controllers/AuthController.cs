@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Shoghlana.Api.Response;
 using Shoghlana.Api.Services.Interfaces;
+using Shoghlana.Core.DTO;
 using Shoghlana.Core.Models;
 
 namespace Shoghlana.Api.Controllers
@@ -10,9 +11,12 @@ namespace Shoghlana.Api.Controllers
     public class AuthController : ControllerBase
     {
         private readonly IAuthService _authService;
+      //  private readonly IGoogleAuthService googleAuthService;
+
         public AuthController(IAuthService authService)
         {
             _authService = authService;
+           // this.googleAuthService = googleAuthService;
         }
 
         [HttpPost("Register")]
@@ -53,6 +57,30 @@ namespace Shoghlana.Api.Controllers
                     Message = ModelState.ToString()
                 };
             }
+        }
+
+
+        [HttpPost("googleRegister")]
+        public async Task<GeneralResponse> GoogleRegisterAsync(GoogleSignupDto googleSignupDto)
+        {
+           // GoogleSignupDto googleSignupDto = new GoogleSignupDto();
+            if(!ModelState.IsValid)
+            {
+                List<string> errors = new List<string>();
+                errors = ModelState.Values.SelectMany(v => v.Errors)
+                                          .Select(e => e.ErrorMessage) 
+                                          .ToList();
+
+                return await Task.FromResult(new GeneralResponse()
+                {
+                    IsSuccess = false,
+                    Data = errors,
+                    Message = "Invalid model state"
+                });
+            }
+
+           return  await _authService.RegisterAsync(googleSignupDto); 
+
         }
 
         [HttpPost("Token")]
