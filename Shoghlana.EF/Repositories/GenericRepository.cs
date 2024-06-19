@@ -1,4 +1,6 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Azure;
+using Microsoft.EntityFrameworkCore;
+using Shoghlana.Core.DTO;
 using Shoghlana.Core.Enums;
 using Shoghlana.Core.Interfaces;
 using System;
@@ -112,6 +114,102 @@ namespace Shoghlana.EF.Repository
             }
 
             return await query.ToListAsync();
+        }
+
+        public int GetCount()
+        {
+            return dbSet.Count();
+        }
+
+        //----------------------------------------------------------
+
+        public PaginatedListDTO<T> FindPaginated(int page, int pageSize, string[] includes = null, Expression<Func<T, bool>> criteria = null)
+        {
+            IQueryable<T> query = dbSet;
+
+            if (criteria != null)
+            {
+                query = query.Where(criteria);
+            }
+
+            if (includes != null)
+            {
+                foreach (var include in includes)
+                {
+                    query = query.Include(include);
+                }
+            }
+
+            int totalFilteredItems = query.Count();
+
+            if (page < 1)
+            {
+                page = 1;
+            }
+
+            int totalPages = (int)Math.Ceiling(totalFilteredItems / (double)pageSize);
+
+            if (page > totalPages)
+            {
+                page = totalPages;
+            }
+
+            var items = query.Skip((page - 1) * pageSize)
+                             .Take(pageSize)
+                             .ToList();
+
+            return new PaginatedListDTO<T>
+            {
+                TotalItems = totalFilteredItems,
+                TotalPages = totalPages,
+                CurrentPage = page,
+                Items = items
+            };
+        }
+
+        public async Task<PaginatedListDTO<T>> FindPaginatedAsync(int page, int pageSize, string[] includes = null, Expression<Func<T, bool>> criteria = null)
+        {
+            IQueryable<T> query = dbSet;
+
+            if (criteria != null)
+            {
+                query = query.Where(criteria);
+            }
+
+            if (includes != null)
+            {
+                foreach (var include in includes)
+                {
+                    query = query.Include(include);
+                }
+            }
+
+            int totalFilteredItems = await query.CountAsync();
+
+            int totalPages = (int)Math.Ceiling(totalFilteredItems / (double)pageSize);
+
+            // Add a check to ensure the page number is within a valid range
+            if (page < 1)
+            {
+                page = 1;
+            }
+
+            if (page > totalPages)
+            {
+                page = totalPages;
+            }
+
+            var items = await query.Skip((page - 1) * pageSize)
+                                   .Take(pageSize)
+                                   .ToListAsync();
+
+            return new PaginatedListDTO<T>
+            {
+                TotalItems = totalFilteredItems,
+                TotalPages = totalPages,
+                CurrentPage = page,
+                Items = items
+            };
         }
 
         //----------------------------------------------------------
