@@ -12,8 +12,8 @@ using Shoghlana.EF;
 namespace Shoghlana.EF.Migrations
 {
     [DbContext(typeof(ApplicationDBContext))]
-    [Migration("20240616191924_JobSkillsCompositePK")]
-    partial class JobSkillsCompositePK
+    [Migration("20240618235316_Jobs_ClientID")]
+    partial class Jobs_ClientID
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -54,22 +54,22 @@ namespace Shoghlana.EF.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "88bc3e52-97dd-4fdf-a92a-a607cb73de3f",
-                            ConcurrencyStamp = "364c023b-2bf9-43ce-b4f3-687ee8fa1d1b",
+                            Id = "17732e3f-5b88-467d-826f-b88430b5f0b2",
+                            ConcurrencyStamp = "e7f055d1-97b3-49a9-be21-5b2f586522f2",
                             Name = "Admin",
                             NormalizedName = "ADMIN"
                         },
                         new
                         {
-                            Id = "f00a10ff-acae-4832-9eb0-82e4befe0ba7",
-                            ConcurrencyStamp = "915dc2d7-cf43-49c0-9588-6f927da5a0c1",
+                            Id = "aa088447-8a04-49df-8897-dd86f754369a",
+                            ConcurrencyStamp = "16687aaa-e22f-48a0-b581-b78746fb4095",
                             Name = "Client",
                             NormalizedName = "CLIENT"
                         },
                         new
                         {
-                            Id = "4fe832e6-8cbf-498e-8db0-a31f81ab5566",
-                            ConcurrencyStamp = "32caf5e8-522a-4e29-825b-b1e697766176",
+                            Id = "b1507d85-b4da-4a29-bc21-bfd0dd795842",
+                            ConcurrencyStamp = "55aa8cb3-5c6a-440c-8048-9c51135b3303",
                             Name = "Freelancer",
                             NormalizedName = "FREELANCER"
                         });
@@ -316,12 +316,38 @@ namespace Shoghlana.EF.Migrations
                         new
                         {
                             Id = 1,
-                            Title = "Category1"
+                            Description = "تشمل كافة الخدمات المتعلقة بالتصميم الجرافيكي، التصميم الصناعي، وتصميم الويب.",
+                            Title = "خدمات التصميم"
                         },
                         new
                         {
                             Id = 2,
-                            Title = "Category2"
+                            Description = "تشمل كتابة وتطوير التطبيقات والبرمجيات لمختلف الأنظمة والأجهزة.",
+                            Title = "خدمات برمجية"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            Description = "تشمل كتابة المقالات، الترجمة الفورية، وكتابة المحتوى للمواقع والمدونات.",
+                            Title = "خدمات الكتابة والترجمة"
+                        },
+                        new
+                        {
+                            Id = 4,
+                            Description = "تشمل إدارة حملات التسويق الرقمي، الإعلانات على وسائل التواصل الاجتماعي، وتحليلات السوق.",
+                            Title = "خدمات التسويق الرقمي"
+                        },
+                        new
+                        {
+                            Id = 5,
+                            Description = "تشمل دعم المستخدمين، إصلاح الأعطال التقنية، وتحسين أداء النظم والشبكات.",
+                            Title = "خدمات الدعم الفني والتقني"
+                        },
+                        new
+                        {
+                            Id = 6,
+                            Description = "تشمل تقديم دورات تدريبية، تصميم مناهج تعليمية، وتطوير الموارد التعليمية.",
+                            Title = "خدمات التعليم والتدريب"
                         });
                 });
 
@@ -334,10 +360,12 @@ namespace Shoghlana.EF.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Country")
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
 
                     b.Property<string>("Description")
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
 
                     b.Property<byte[]>("Image")
                         .HasColumnType("varbinary(max)");
@@ -348,7 +376,11 @@ namespace Shoghlana.EF.Migrations
                         .HasColumnType("nvarchar(50)");
 
                     b.Property<string>("Phone")
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(20)
+                        .HasColumnType("nvarchar(20)");
+
+                    b.Property<DateTime>("RegisterationTime")
+                        .HasColumnType("datetime2");
 
                     b.HasKey("Id");
 
@@ -358,12 +390,164 @@ namespace Shoghlana.EF.Migrations
                         new
                         {
                             Id = 1,
-                            Name = "Client1"
+                            Country = "المملكة العربية السعودية",
+                            Description = "مبرمج ومطور تطبيقات متخصص في تطوير الويب",
+                            Name = "عبد الرحمن أحمد",
+                            Phone = "+966123456789",
+                            RegisterationTime = new DateTime(2023, 12, 19, 2, 53, 14, 545, DateTimeKind.Local).AddTicks(9850)
                         },
                         new
                         {
                             Id = 2,
-                            Name = "Client2"
+                            Country = "مصر",
+                            Description = "مصممة جرافيك محترفة تعمل في تصميم اللوجوهات والبوسترات",
+                            Name = "فاطمة محمد",
+                            Phone = "+201234567890",
+                            RegisterationTime = new DateTime(2023, 6, 19, 2, 53, 14, 545, DateTimeKind.Local).AddTicks(9927)
+                        },
+                        new
+                        {
+                            Id = 3,
+                            Country = "الإمارات العربية المتحدة",
+                            Description = "مسوق رقمي محترف بخبرة في إدارة الحملات الإعلانية عبر وسائل التواصل الاجتماعي",
+                            Name = "علي العبدالله",
+                            Phone = "+971123456789",
+                            RegisterationTime = new DateTime(2024, 3, 19, 2, 53, 14, 545, DateTimeKind.Local).AddTicks(9932)
+                        },
+                        new
+                        {
+                            Id = 4,
+                            Country = "الأردن",
+                            Description = "كاتبة محتوى متخصصة في الكتابة الإبداعية والمقالات الفنية",
+                            Name = "مريم حسن",
+                            Phone = "+962123456789",
+                            RegisterationTime = new DateTime(2023, 9, 19, 2, 53, 14, 545, DateTimeKind.Local).AddTicks(9936)
+                        },
+                        new
+                        {
+                            Id = 5,
+                            Country = "العراق",
+                            Description = "مصور فوتوغرافي متخصص في تصوير الأحداث والمناسبات الخاصة",
+                            Name = "يوسف خالد",
+                            Phone = "+964123456789",
+                            RegisterationTime = new DateTime(2023, 11, 19, 2, 53, 14, 545, DateTimeKind.Local).AddTicks(9941)
+                        },
+                        new
+                        {
+                            Id = 6,
+                            Country = "السعودية",
+                            Description = "مديرة مشروع محترفة في إدارة المشاريع التقنية والتطوير البرمجي",
+                            Name = "لمى عبدالله",
+                            Phone = "+966123456789",
+                            RegisterationTime = new DateTime(2024, 2, 19, 2, 53, 14, 545, DateTimeKind.Local).AddTicks(9944)
+                        },
+                        new
+                        {
+                            Id = 7,
+                            Country = "مصر",
+                            Description = "مسوق محتوى إبداعي يعمل على ترويج المحتوى الرقمي للشركات الناشئة",
+                            Name = "عمر أحمد",
+                            Phone = "+201234567890",
+                            RegisterationTime = new DateTime(2023, 7, 19, 2, 53, 14, 545, DateTimeKind.Local).AddTicks(9949)
+                        },
+                        new
+                        {
+                            Id = 8,
+                            Country = "لبنان",
+                            Description = "مطورة تطبيقات محترفة تعمل في تطوير تطبيقات الهواتف الذكية",
+                            Name = "رنا محمود",
+                            Phone = "+961123456789",
+                            RegisterationTime = new DateTime(2023, 10, 19, 2, 53, 14, 545, DateTimeKind.Local).AddTicks(9953)
+                        },
+                        new
+                        {
+                            Id = 9,
+                            Country = "الأردن",
+                            Description = "مدير تسويق متخصص في إدارة استراتيجيات التسويق الرقمي",
+                            Name = "أحمد علي",
+                            Phone = "+962123456789",
+                            RegisterationTime = new DateTime(2024, 1, 19, 2, 53, 14, 545, DateTimeKind.Local).AddTicks(9956)
+                        },
+                        new
+                        {
+                            Id = 10,
+                            Country = "السعودية",
+                            Description = "خبيرة في تصميم وإدارة مواقع الويب للشركات الصغيرة والمتوسطة",
+                            Name = "هدى صالح",
+                            Phone = "+966123456789",
+                            RegisterationTime = new DateTime(2023, 8, 19, 2, 53, 14, 545, DateTimeKind.Local).AddTicks(9960)
+                        },
+                        new
+                        {
+                            Id = 11,
+                            Country = "الإمارات العربية المتحدة",
+                            Description = "محاسبة مالية محترفة تعمل في مجال إعداد التقارير المالية",
+                            Name = "سلمى عبدالله",
+                            Phone = "+971123456789",
+                            RegisterationTime = new DateTime(2024, 3, 19, 2, 53, 14, 545, DateTimeKind.Local).AddTicks(9964)
+                        },
+                        new
+                        {
+                            Id = 12,
+                            Country = "مصر",
+                            Description = "مهندس معماري متخصص في تصميم المباني السكنية",
+                            Name = "محمد حسن",
+                            Phone = "+201234567890",
+                            RegisterationTime = new DateTime(2023, 11, 19, 2, 53, 14, 545, DateTimeKind.Local).AddTicks(9968)
+                        },
+                        new
+                        {
+                            Id = 13,
+                            Country = "العراق",
+                            Description = "طبيبة مختصة في طب الأطفال والأمراض النفسية",
+                            Name = "زينب عبدالله",
+                            Phone = "+964123456789",
+                            RegisterationTime = new DateTime(2024, 4, 19, 2, 53, 14, 545, DateTimeKind.Local).AddTicks(9974)
+                        },
+                        new
+                        {
+                            Id = 14,
+                            Country = "لبنان",
+                            Description = "مصمم جرافيك مبدع يعمل في تصميم الإعلانات التجارية",
+                            Name = "أحمد حسين",
+                            Phone = "+961123456789",
+                            RegisterationTime = new DateTime(2023, 9, 19, 2, 53, 14, 545, DateTimeKind.Local).AddTicks(9978)
+                        },
+                        new
+                        {
+                            Id = 15,
+                            Country = "الأردن",
+                            Description = "مترجمة محترفة تعمل في ترجمة النصوص الطبية والعلمية",
+                            Name = "فاطمة علي",
+                            Phone = "+962123456789",
+                            RegisterationTime = new DateTime(2024, 1, 19, 2, 53, 14, 545, DateTimeKind.Local).AddTicks(9982)
+                        },
+                        new
+                        {
+                            Id = 16,
+                            Country = "السعودية",
+                            Description = "مطور ويب محترف في تطوير التطبيقات الإلكترونية",
+                            Name = "عبدالله محمود",
+                            Phone = "+966123456789",
+                            RegisterationTime = new DateTime(2023, 7, 19, 2, 53, 14, 545, DateTimeKind.Local).AddTicks(9986)
+                        },
+                        new
+                        {
+                            Id = 17,
+                            Country = "مصر",
+                            Description = "مهندسة معمارية متخصصة في تصميم المنشآت الصناعية",
+                            Name = "ريم عبدالله",
+                            Phone = "+201234567890",
+                            RegisterationTime = new DateTime(2023, 10, 19, 2, 53, 14, 545, DateTimeKind.Local).AddTicks(9990)
+                        },
+                        new
+                        {
+                            Id = 18,
+                            Country = "لبنان",
+                            Description = "محاسب مالي يتمتع بخبرة واسعة في المحاسبة المالية",
+                            Name = "عمر حسن",
+                            Phone = "+961123456789",
+                            RegisterationTime = new DateTime(2024, 2, 19, 2, 53, 14, 545, DateTimeKind.Local).AddTicks(9994)
                         });
                 });
 
@@ -423,20 +607,82 @@ namespace Shoghlana.EF.Migrations
                         new
                         {
                             Id = 1,
-                            Name = "أحمد محمد",
-                            Title = "مطور الواجهة الخلفية"
+                            Address = "القاهرة، مصر",
+                            Name = "محمد أحمد",
+                            Overview = "مطور محترف بخبرة في تطوير تطبيقات الويب والهواتف الذكية",
+                            Title = "مطور تطبيقات متخصص"
                         },
                         new
                         {
                             Id = 2,
-                            Name = "علي سليمان",
-                            Title = "مطور الواجهة الأمامية"
+                            Address = "الرياض، السعودية",
+                            Name = "فاطمة علي",
+                            Overview = "مصممة ذات خبرة عالية في تصميم الشعارات والبوسترات",
+                            Title = "مصممة جرافيك محترفة"
                         },
                         new
                         {
                             Id = 3,
-                            Name = "وائل عبد الرحيم",
-                            Title = "مطور الواجهة الخلفية"
+                            Address = "القاهرة، مصر",
+                            Name = "أحمد خالد",
+                            Overview = "مبرمج ذو خبرة في تطوير التطبيقات المتقدمة باستخدام تقنيات الذكاء الاصطناعي",
+                            Title = "مبرمج متخصص في الذكاء الاصطناعي"
+                        },
+                        new
+                        {
+                            Id = 4,
+                            Address = "دبي، الإمارات",
+                            Name = "سارة حسين",
+                            Overview = "مصممة جرافيك بخبرة في التصميم التجريدي والفنون الإبداعية",
+                            Title = "مصممة تجريدية ومبدعة"
+                        },
+                        new
+                        {
+                            Id = 5,
+                            Address = "الإسكندرية، مصر",
+                            Name = "عبد الرحمن محمود",
+                            Overview = "مطور محترف بخبرة في بناء وتطوير المواقع الإلكترونية الكبيرة والمعقدة",
+                            Title = "مطور مواقع إلكترونية متقدم"
+                        },
+                        new
+                        {
+                            Id = 6,
+                            Address = "جدة، السعودية",
+                            Name = "ريما عبدالله",
+                            Overview = "مصممة جرافيك بخبرة واسعة في تصميم الشعارات والهويات التجارية",
+                            Title = "مصممة جرافيك احترافية"
+                        },
+                        new
+                        {
+                            Id = 7,
+                            Address = "القاهرة، مصر",
+                            Name = "محمود علي",
+                            Overview = "مطور متخصص بخبرة في تطوير تطبيقات الهواتف الذكية باستخدام أحدث التقنيات",
+                            Title = "مطور تطبيقات متخصص في الهواتف الذكية"
+                        },
+                        new
+                        {
+                            Id = 8,
+                            Address = "الرياض، السعودية",
+                            Name = "نور عبدالله",
+                            Overview = "مطورة بخبرة في تطوير تطبيقات الويب والهواتف الذكية بتقنيات متقدمة",
+                            Title = "مطورة تطبيقات محترفة"
+                        },
+                        new
+                        {
+                            Id = 9,
+                            Address = "الإسكندرية، مصر",
+                            Name = "ليلى محمد",
+                            Overview = "مصممة جرافيك وفنانة بخبرة في تصميم الرسومات والفنون التشكيلية",
+                            Title = "مصممة جرافيك وفنانة مبدعة"
+                        },
+                        new
+                        {
+                            Id = 10,
+                            Address = "المنامة، البحرين",
+                            Name = "علي الحسيني",
+                            Overview = "مطور بخبرة في تطوير تطبيقات الويب والهواتف الذكية باللغات المتعددة",
+                            Title = "مطور تطبيقات إلكترونية"
                         });
                 });
 
@@ -495,7 +741,7 @@ namespace Shoghlana.EF.Migrations
                     b.Property<int?>("CategoryId")
                         .HasColumnType("int");
 
-                    b.Property<int?>("ClientId")
+                    b.Property<int>("ClientId")
                         .HasColumnType("int");
 
                     b.Property<string>("Description")
@@ -509,10 +755,10 @@ namespace Shoghlana.EF.Migrations
                         .HasColumnType("int");
 
                     b.Property<decimal>("MaxBudget")
-                        .HasColumnType("Money");
+                        .HasColumnType("decimal(18,2)");
 
                     b.Property<decimal>("MinBudget")
-                        .HasColumnType("Money");
+                        .HasColumnType("decimal(18,2)");
 
                     b.Property<DateTime>("PostTime")
                         .HasColumnType("datetime2");
@@ -542,28 +788,70 @@ namespace Shoghlana.EF.Migrations
                             Id = 1,
                             CategoryId = 1,
                             ClientId = 1,
-                            Description = "Description for Job1",
+                            Description = "تصميم وأعمال فنية احترافية",
                             ExperienceLevel = 0,
                             FreelancerId = 1,
                             MaxBudget = 500m,
                             MinBudget = 100m,
-                            PostTime = new DateTime(2024, 6, 16, 22, 19, 23, 430, DateTimeKind.Local).AddTicks(7841),
+                            PostTime = new DateTime(2024, 6, 19, 2, 53, 14, 548, DateTimeKind.Local).AddTicks(8766),
                             Status = 0,
-                            Title = "Job1"
+                            Title = "تصميم شعار احترافي ومميز"
                         },
                         new
                         {
                             Id = 2,
-                            CategoryId = 2,
+                            CategoryId = 1,
                             ClientId = 2,
-                            Description = "Description for Job2",
+                            Description = "تصميم وأعمال فنية إدارية",
                             ExperienceLevel = 1,
                             FreelancerId = 2,
                             MaxBudget = 700m,
                             MinBudget = 200m,
-                            PostTime = new DateTime(2024, 6, 16, 22, 19, 23, 430, DateTimeKind.Local).AddTicks(7956),
+                            PostTime = new DateTime(2024, 6, 19, 2, 53, 14, 548, DateTimeKind.Local).AddTicks(8825),
                             Status = 0,
-                            Title = "Job2"
+                            Title = "تصميم بوستر إعلاني لمواقع التواصل"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            CategoryId = 1,
+                            ClientId = 3,
+                            Description = "تصميم بطاقات أعمال",
+                            ExperienceLevel = 2,
+                            FreelancerId = 3,
+                            MaxBudget = 600m,
+                            MinBudget = 150m,
+                            PostTime = new DateTime(2024, 6, 19, 2, 53, 14, 548, DateTimeKind.Local).AddTicks(8832),
+                            Status = 0,
+                            Title = "تصميم كارت شخصي احترافي للطباعة"
+                        },
+                        new
+                        {
+                            Id = 4,
+                            CategoryId = 2,
+                            ClientId = 4,
+                            Description = "برمجة وتطوير المواقع والتطبيقات",
+                            ExperienceLevel = 1,
+                            FreelancerId = 4,
+                            MaxBudget = 800m,
+                            MinBudget = 300m,
+                            PostTime = new DateTime(2024, 6, 19, 2, 53, 14, 548, DateTimeKind.Local).AddTicks(8882),
+                            Status = 0,
+                            Title = "تركيب لوحة تحكم مجانية مدى الحياة"
+                        },
+                        new
+                        {
+                            Id = 5,
+                            CategoryId = 3,
+                            ClientId = 5,
+                            Description = "برمجة مواقع الإنترنت",
+                            ExperienceLevel = 0,
+                            FreelancerId = 5,
+                            MaxBudget = 700m,
+                            MinBudget = 200m,
+                            PostTime = new DateTime(2024, 6, 19, 2, 53, 14, 548, DateTimeKind.Local).AddTicks(8889),
+                            Status = 0,
+                            Title = "تصميم موقع تعريفي للشركات"
                         });
                 });
 
@@ -707,7 +995,7 @@ namespace Shoghlana.EF.Migrations
                     b.Property<int>("FreelancerId")
                         .HasColumnType("int");
 
-                    b.Property<int?>("JobId")
+                    b.Property<int>("JobId")
                         .HasColumnType("int");
 
                     b.Property<decimal>("Price")
@@ -842,32 +1130,252 @@ namespace Shoghlana.EF.Migrations
                         new
                         {
                             Id = 1,
-                            Title = "C#"
+                            Title = "تصميم الجرافيك"
                         },
                         new
                         {
                             Id = 2,
-                            Title = "LINQ"
+                            Title = "الرسم الصناعي"
                         },
                         new
                         {
                             Id = 3,
-                            Title = "EF"
+                            Title = "تصميم الويب"
                         },
                         new
                         {
                             Id = 4,
-                            Title = "OOP"
+                            Title = "تصميم الهوية التجارية"
                         },
                         new
                         {
                             Id = 5,
-                            Title = "Agile"
+                            Title = "تصميم المنتجات"
                         },
                         new
                         {
                             Id = 6,
-                            Title = "Blazor"
+                            Title = "تصميم الشعارات"
+                        },
+                        new
+                        {
+                            Id = 7,
+                            Title = "تطوير تطبيقات الجوال"
+                        },
+                        new
+                        {
+                            Id = 8,
+                            Title = "تطوير الويب"
+                        },
+                        new
+                        {
+                            Id = 9,
+                            Title = "تطوير الألعاب"
+                        },
+                        new
+                        {
+                            Id = 10,
+                            Title = "برمجة الحاسوب"
+                        },
+                        new
+                        {
+                            Id = 11,
+                            Title = "كتابة المحتوى"
+                        },
+                        new
+                        {
+                            Id = 12,
+                            Title = "كتابة المقالات"
+                        },
+                        new
+                        {
+                            Id = 13,
+                            Title = "الترجمة"
+                        },
+                        new
+                        {
+                            Id = 14,
+                            Title = "التدقيق اللغوي"
+                        },
+                        new
+                        {
+                            Id = 15,
+                            Title = "الكتابة الفنية"
+                        },
+                        new
+                        {
+                            Id = 16,
+                            Title = "التسويق الرقمي"
+                        },
+                        new
+                        {
+                            Id = 17,
+                            Title = "تحسين محركات البحث (SEO)"
+                        },
+                        new
+                        {
+                            Id = 18,
+                            Title = "الإعلانات عبر وسائل التواصل الاجتماعي"
+                        },
+                        new
+                        {
+                            Id = 19,
+                            Title = "التسويق بالبريد الإلكتروني"
+                        },
+                        new
+                        {
+                            Id = 20,
+                            Title = "التسويق بالمحتوى"
+                        },
+                        new
+                        {
+                            Id = 21,
+                            Title = "الدعم الفني"
+                        },
+                        new
+                        {
+                            Id = 22,
+                            Title = "إدارة الشبكات"
+                        },
+                        new
+                        {
+                            Id = 23,
+                            Title = "صيانة الأنظمة"
+                        },
+                        new
+                        {
+                            Id = 24,
+                            Title = "دعم سطح المكتب"
+                        },
+                        new
+                        {
+                            Id = 25,
+                            Title = "خدمات الحوسبة السحابية"
+                        },
+                        new
+                        {
+                            Id = 26,
+                            Title = "تطوير البرامج التعليمية"
+                        },
+                        new
+                        {
+                            Id = 27,
+                            Title = "تصميم المناهج الدراسية"
+                        },
+                        new
+                        {
+                            Id = 28,
+                            Title = "تطوير التعليم الإلكتروني"
+                        },
+                        new
+                        {
+                            Id = 29,
+                            Title = "تصميم الدروس التعليمية"
+                        },
+                        new
+                        {
+                            Id = 30,
+                            Title = "تعليم عبر الإنترنت"
+                        },
+                        new
+                        {
+                            Id = 31,
+                            Title = "تصميم الإعلانات"
+                        },
+                        new
+                        {
+                            Id = 32,
+                            Title = "تصميم واجهات المستخدم (UI)"
+                        },
+                        new
+                        {
+                            Id = 33,
+                            Title = "تجربة المستخدم (UX)"
+                        },
+                        new
+                        {
+                            Id = 34,
+                            Title = "نمذجة ثلاثية الأبعاد (3D)"
+                        },
+                        new
+                        {
+                            Id = 35,
+                            Title = "تصميم الشخصيات"
+                        },
+                        new
+                        {
+                            Id = 36,
+                            Title = "تطوير التطبيقات بواسطة React.js"
+                        },
+                        new
+                        {
+                            Id = 37,
+                            Title = "تطوير التطبيقات بواسطة Node.js"
+                        },
+                        new
+                        {
+                            Id = 38,
+                            Title = "تطوير التطبيقات بواسطة Ruby on Rails"
+                        },
+                        new
+                        {
+                            Id = 39,
+                            Title = "تطوير التطبيقات بواسطة SQL"
+                        },
+                        new
+                        {
+                            Id = 40,
+                            Title = "تطوير التطبيقات بواسطة Django"
+                        },
+                        new
+                        {
+                            Id = 41,
+                            Title = "كتابة المقالات القانونية"
+                        },
+                        new
+                        {
+                            Id = 42,
+                            Title = "الكتابة الإبداعية"
+                        },
+                        new
+                        {
+                            Id = 43,
+                            Title = "التحقق القانوني"
+                        },
+                        new
+                        {
+                            Id = 44,
+                            Title = "التعريب"
+                        },
+                        new
+                        {
+                            Id = 45,
+                            Title = "تحليل السوق"
+                        },
+                        new
+                        {
+                            Id = 46,
+                            Title = "التحليلات الإحصائية"
+                        },
+                        new
+                        {
+                            Id = 47,
+                            Title = "التسويق بالأداء"
+                        },
+                        new
+                        {
+                            Id = 48,
+                            Title = "التسويق بالشراكة"
+                        },
+                        new
+                        {
+                            Id = 49,
+                            Title = "التسويق الإلكتروني"
+                        },
+                        new
+                        {
+                            Id = 50,
+                            Title = "إدارة الحملات الإعلانية"
                         });
                 });
 
@@ -1026,7 +1534,9 @@ namespace Shoghlana.EF.Migrations
 
                     b.HasOne("Shoghlana.Core.Models.Client", "Client")
                         .WithMany("Jobs")
-                        .HasForeignKey("ClientId");
+                        .HasForeignKey("ClientId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("Shoghlana.Core.Models.Freelancer", "Freelancer")
                         .WithMany("WorkingHistory")
@@ -1105,7 +1615,9 @@ namespace Shoghlana.EF.Migrations
 
                     b.HasOne("Shoghlana.Core.Models.Job", "Job")
                         .WithMany("Proposals")
-                        .HasForeignKey("JobId");
+                        .HasForeignKey("JobId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Freelancer");
 

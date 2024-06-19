@@ -9,9 +9,6 @@ namespace Shoghlana.Core.DTO
         //  [Key]
         public int Id { get; set; }
 
-        [Required(ErrorMessage = "Proposal Title is required")]
-        public string Title { get; set; }
-
         [Required(ErrorMessage = "Proposal Description is required")]
         public string Description { get; set; }
 
@@ -22,14 +19,8 @@ namespace Shoghlana.Core.DTO
 
         //---------------------------------
 
-        //  [ForeignKey("Freelancer")]
         public int? FreelancerId { get; set; }
 
-        //public Freelancer Freelancer { get; set; }
-
-        //  [ForeignKey("Job")]
         public int? JobId { get; set; }
-
-        //public Job Job { get; set; }
     }
 }

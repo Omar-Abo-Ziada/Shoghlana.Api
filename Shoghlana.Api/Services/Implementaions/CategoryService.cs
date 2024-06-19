@@ -27,10 +27,11 @@ namespace Shoghlana.Api.Services.Implementaions
 
             if (categories != null)
             {
-                List<GetTitleofCategoryDTO> categoryDTOs = new List<GetTitleofCategoryDTO>();
+                var categoryDTOs = new List<CategoryDTO>();
                 foreach (Category category in categories)
                 {
-                    GetTitleofCategoryDTO categoryDTO = mapper.Map<GetTitleofCategoryDTO>(category);
+                    var categoryDTO = mapper.Map<CategoryDTO>(category);
+
                     categoryDTOs.Add(categoryDTO);
                 }
 
