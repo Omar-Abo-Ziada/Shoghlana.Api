@@ -25,9 +25,9 @@ namespace Shoghlana.Core.DTO
 
         public List<SkillDTO> Skills { get; set; } = new List<SkillDTO>();
 
-        public List<FreelancerDTO> Freelancers { get; set; } = new List<FreelancerDTO>();
+        //public List<FreelancerDTO> Freelancers { get; set; } = new List<FreelancerDTO>();
 
-        public List<ProposalDTO> Proposals { get; set; } = new List<ProposalDTO>();
+        public List<GetProposalDTO> Proposals { get; set; } = new List<GetProposalDTO>();
 
         public int ProposalsCount { get; set; } 
 
