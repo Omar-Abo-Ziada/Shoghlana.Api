@@ -29,7 +29,7 @@ namespace Shoghlana.Api.Controllers
         }
 
         [HttpGet("freelancer/{id:int}")]
-        public ActionResult<GeneralResponse> GetFreelancerId(int id)
+        public ActionResult<GeneralResponse> GetByFreelancerId(int id)
         {
             return projectService.GetByfreelancerIdId(id);
         }
