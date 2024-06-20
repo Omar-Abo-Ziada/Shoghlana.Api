@@ -29,12 +29,13 @@ namespace Shoghlana.Api.Services.Implementaions
         private readonly IHubContext<NotificationHub> _hubContext;
         private readonly IUnitOfWork _unitOfWork;
         private readonly IFreelancerService _freelancerService;
+        private readonly IClientService clientService;
         private readonly GoogleAuthConfig _googleAuthConfig;
 
         public AuthService
         (UserManager<ApplicationUser> userManager, IOptions<Jwt> jwt,
          RoleManager<IdentityRole> roleManager, IHubContext<NotificationHub> hubContext, IUnitOfWork unitOfWork,
-         IFreelancerService freelancerService, IOptions<GoogleAuthConfig> GoogleAuthConfig)
+         IFreelancerService freelancerService, IOptions<GoogleAuthConfig> GoogleAuthConfig, IClientService clientService)
         {
             _userManager = userManager;
             _roleManager = roleManager;
@@ -42,6 +43,7 @@ namespace Shoghlana.Api.Services.Implementaions
             _hubContext = hubContext;
             _unitOfWork = unitOfWork;
             _freelancerService = freelancerService;
+            this.clientService = clientService;
             _googleAuthConfig = GoogleAuthConfig.Value;
         }
 
@@ -312,33 +314,75 @@ namespace Shoghlana.Api.Services.Implementaions
                 //});
 
 
-                Freelancer freelancer = new Freelancer()  // consider it is a freelancer for testing
+                if (googleSignupDto.role == (int) Core.Enums.UserRole.Freelancer)
                 {
-                    Name = googleSignupDto.firstName
-                    // convert img from string to bytes and save it in freelancer
-                };
-
-                try
-                {
-                    _freelancerService.Add(freelancer);   // add + save inside the same method
-                }
-                catch (Exception ex)
-                {
-                    return new GeneralResponse()
+                    Freelancer freelancer  = new Freelancer() 
                     {
-                        IsSuccess = false,
-                        Data = null,
-                        Message = ex.Message
+                        Name = googleSignupDto.firstName
+                        // convert img from string to bytes and save it in freelancer
+                    };
+
+                    try
+                    {
+                        _freelancerService.Add(freelancer);   // add + save inside the same method
+                    }
+                    catch (Exception ex)
+                    {
+                        return new GeneralResponse()
+                        {
+                            IsSuccess = false,
+                            Data = null,
+                            Message = ex.Message
+                        };
+                    }
+
+                    User = new ApplicationUser()
+                    {
+                        UserName = googleSignupDto.firstName,     // should add guid as suffix as gmail allow username duplication but identity user doesnot
+                        Email = googleSignupDto.email,
+                        FreeLancerId = freelancer.Id,
+                        EmailConfirmed = true                      // as he registered using gmail
                     };
                 }
 
-                User = new ApplicationUser()
+                else
                 {
-                    UserName = googleSignupDto.firstName,     // should add guid as suffix as gmail allow username duplication but identity user doesnot
-                    Email = googleSignupDto.email,
-                    FreeLancerId = freelancer.Id,
-                    EmailConfirmed = true                      // as he registered using gmail
-                };
+                    Client client = new Client()
+                    {
+                        Name = googleSignupDto.firstName
+                        // convert img from string to bytes and save it in freelancer
+                    };
+
+                    try
+                    {
+                        clientService.Add(client);   // add + save inside the same method
+                    }
+                    catch (Exception ex)
+                    {
+                        return new GeneralResponse()
+                        {
+                            IsSuccess = false,
+                            Data = null,
+                            Message = ex.Message
+                        };
+                    }
+
+                    User = new ApplicationUser()
+                    {
+                        UserName = googleSignupDto.firstName,     // should add guid as suffix as gmail allow username duplication but identity user doesnot
+                        Email = googleSignupDto.email,
+                        ClientId = client.Id,
+                        EmailConfirmed = true                      // as he registered using gmail
+                    };
+
+                    
+                }
+
+             
+
+            
+                
+              
 
                 try
                 {
@@ -348,7 +392,7 @@ namespace Shoghlana.Api.Services.Implementaions
                 catch (Exception ex)
                 {
                     return await Task.FromResult(new GeneralResponse()
-                    {
+                    { 
                         IsSuccess = false,
                         Data = ex.Message,
                         Message = "Error on account creation"
