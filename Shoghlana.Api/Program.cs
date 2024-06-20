@@ -11,6 +11,7 @@ using Shoghlana.Core.Helpers;
 using Shoghlana.Core.Interfaces;
 using Shoghlana.Core.Models;
 using Shoghlana.EF;
+using Shoghlana.EF.Configurations;
 using Shoghlana.EF.Repositories;
 using Shoghlana.EF.Repository;
 using System.Text;
@@ -70,6 +71,8 @@ namespace Shoghlana.Api
                    };
                });
 
+            // registering Ioptions<GoogleAuthConfig>
+            builder.Services.Configure<GoogleAuthConfig>(builder.Configuration.GetSection("google"));
 
             // Registering the Unit of work inside the application container.
             builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();

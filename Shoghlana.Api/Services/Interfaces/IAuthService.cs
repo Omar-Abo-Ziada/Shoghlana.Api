@@ -21,6 +21,8 @@ namespace Shoghlana.Api.Services.Interfaces
         // google authentication
         Task<ApplicationUser> GetByIdAsync(string id);
         Task<ApplicationUser> GetByEmailAsync(string email);
-        Task<GeneralResponse> RegisterAsync(GoogleSignupDto googleSignupDto);
+        Task<GeneralResponse> GoogleAuthentication(GoogleSignupDto googleSignupDto);
+        Task<GeneralResponse> IsGmailTokenValidAsync(string GmailToken);
+
     }
 }

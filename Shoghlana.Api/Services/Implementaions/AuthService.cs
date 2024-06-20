@@ -11,6 +11,7 @@ using Shoghlana.Core.DTO;
 using Shoghlana.Core.Helpers;
 using Shoghlana.Core.Interfaces;
 using Shoghlana.Core.Models;
+using Shoghlana.EF.Configurations;
 using Shoghlana.EF.Repositories;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
@@ -28,11 +29,12 @@ namespace Shoghlana.Api.Services.Implementaions
         private readonly IHubContext<NotificationHub> _hubContext;
         private readonly IUnitOfWork _unitOfWork;
         private readonly IFreelancerService _freelancerService;
+        private readonly GoogleAuthConfig _googleAuthConfig;
 
         public AuthService
         (UserManager<ApplicationUser> userManager, IOptions<Jwt> jwt,
          RoleManager<IdentityRole> roleManager, IHubContext<NotificationHub> hubContext, IUnitOfWork unitOfWork,
-         IFreelancerService freelancerService)
+         IFreelancerService freelancerService, IOptions<GoogleAuthConfig> GoogleAuthConfig)
         {
             _userManager = userManager;
             _roleManager = roleManager;
@@ -40,6 +42,7 @@ namespace Shoghlana.Api.Services.Implementaions
             _hubContext = hubContext;
             _unitOfWork = unitOfWork;
             _freelancerService = freelancerService;
+            _googleAuthConfig = GoogleAuthConfig.Value;
         }
 
         public async Task<AuthModel> RegisterAsync(RegisterModel model) 
@@ -294,9 +297,10 @@ namespace Shoghlana.Api.Services.Implementaions
         }
 
 
-        public async Task<GeneralResponse> RegisterAsync(GoogleSignupDto googleSignupDto)
+        public async Task<GeneralResponse> GoogleAuthentication(GoogleSignupDto googleSignupDto)
         {
-            ApplicationUser? User = await _unitOfWork.ApplicationUserRepository.GetByEmailAsync(googleSignupDto.email);
+            ApplicationUser? User = await _unitOfWork.ApplicationUserRepository
+                                          .GetByEmailAsync(googleSignupDto.email);
             if (User == null)
             {
                 //// apply login logic here
@@ -338,6 +342,7 @@ namespace Shoghlana.Api.Services.Implementaions
 
                 try
                 {
+                    // should add role 
                     await _unitOfWork.ApplicationUserRepository.InsertAsync(User);
                 }
                 catch (Exception ex)
@@ -396,21 +401,38 @@ namespace Shoghlana.Api.Services.Implementaions
             //    await _userManager.UpdateAsync(User);
             //}
 
-            return authModel;
-
+            return new GeneralResponse()
+            {
+                IsSuccess = true,
+                Data = authModel,
+                Message = "Successfully authenticated using gmail"
+            };
 
         }
 
 
 
-        public async Task<GeneralResponse> IsGmailTokenValid(string GmailToken)
+        public async Task<GeneralResponse> IsGmailTokenValidAsync(string GmailToken) 
         {
             ValidationSettings settings = new GoogleJsonWebSignature.ValidationSettings
             {
                 Audience = new string[] { _googleAuthConfig.ClientId }
             };
 
-            Payload payload = await GoogleJsonWebSignature.ValidateAsync(GmailToken, settings); // validate that aud of token matches clienId of my project on google cloud api
+            Payload payload = new Payload();
+            try
+            {
+               payload = await GoogleJsonWebSignature.ValidateAsync(GmailToken, settings); // validate that aud of token matches clienId of my project on google cloud api
+            }
+            catch(Exception ex)
+            {
+                return new GeneralResponse
+                {
+                    IsSuccess = false,
+                    Data = null,
+                    Message = "Invalid gmail token"
+                };
+            }
             if (payload == null)
             {
                 return new GeneralResponse

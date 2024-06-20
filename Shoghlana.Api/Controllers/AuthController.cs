@@ -60,8 +60,8 @@ namespace Shoghlana.Api.Controllers
         }
 
 
-        [HttpPost("googleRegister")]
-        public async Task<GeneralResponse> GoogleRegisterAsync(GoogleSignupDto googleSignupDto)
+        [HttpPost("GoogleAuthentication")]
+        public async Task<GeneralResponse> GoogleAuthentication(GoogleSignupDto googleSignupDto)
         {
            // GoogleSignupDto googleSignupDto = new GoogleSignupDto();
             if(!ModelState.IsValid)
@@ -79,8 +79,14 @@ namespace Shoghlana.Api.Controllers
                 });
             }
 
-           return  await _authService.RegisterAsync(googleSignupDto); 
+             var result = await _authService.IsGmailTokenValidAsync(googleSignupDto.idToken);
 
+            if(result.IsSuccess)
+            {
+                return await _authService.GoogleAuthentication(googleSignupDto);
+            }
+
+            return result;
         }
 
         [HttpPost("Token")]

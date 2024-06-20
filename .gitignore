@@ -364,4 +364,4 @@ FodyWeavers.xsd
 
 
 # Ignore ASP.NET Core appsettings files
-appsettings.json
+# appsettings.json
