@@ -1,4 +1,5 @@
 ﻿using Shoghlana.Core.Models;
+using System.IdentityModel.Tokens.Jwt;
 
 namespace Shoghlana.Api.Services.Interfaces
 {
@@ -13,5 +14,6 @@ namespace Shoghlana.Api.Services.Interfaces
         Task<AuthModel> RefreshTokenAsync(string token);
 
         Task<bool> RevokeTokenAsync(string token);
+        Task<JwtSecurityToken> CreateJwtToken(ApplicationUser user);
     }
 }

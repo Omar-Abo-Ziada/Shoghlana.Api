@@ -51,22 +51,22 @@ namespace Shoghlana.EF.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "88bc3e52-97dd-4fdf-a92a-a607cb73de3f",
-                            ConcurrencyStamp = "364c023b-2bf9-43ce-b4f3-687ee8fa1d1b",
+                            Id = "87ec4915-6bd8-4a53-839d-2410c0a06340",
+                            ConcurrencyStamp = "ab066f62-0c4e-4831-b78b-76a1e73f0536",
                             Name = "Admin",
                             NormalizedName = "ADMIN"
                         },
                         new
                         {
-                            Id = "f00a10ff-acae-4832-9eb0-82e4befe0ba7",
-                            ConcurrencyStamp = "915dc2d7-cf43-49c0-9588-6f927da5a0c1",
+                            Id = "d87beb8b-f1a5-490f-9c12-76658b53d228",
+                            ConcurrencyStamp = "d8730fe3-62a8-4f6f-8628-aedf52159966",
                             Name = "Client",
                             NormalizedName = "CLIENT"
                         },
                         new
                         {
-                            Id = "4fe832e6-8cbf-498e-8db0-a31f81ab5566",
-                            ConcurrencyStamp = "32caf5e8-522a-4e29-825b-b1e697766176",
+                            Id = "582a643c-701b-4182-b7c7-4308a47bfebf",
+                            ConcurrencyStamp = "477f029f-b5ec-47a8-96c7-e37781ae2d76",
                             Name = "Freelancer",
                             NormalizedName = "FREELANCER"
                         });
@@ -347,6 +347,9 @@ namespace Shoghlana.EF.Migrations
                     b.Property<string>("Phone")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<DateTime>("RegisterationTime")
+                        .HasColumnType("datetime2");
+
                     b.HasKey("Id");
 
                     b.ToTable("Clients");
@@ -355,12 +358,14 @@ namespace Shoghlana.EF.Migrations
                         new
                         {
                             Id = 1,
-                            Name = "Client1"
+                            Name = "Client1",
+                            RegisterationTime = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
                         },
                         new
                         {
                             Id = 2,
-                            Name = "Client2"
+                            Name = "Client2",
+                            RegisterationTime = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
                         });
                 });
 
@@ -544,7 +549,7 @@ namespace Shoghlana.EF.Migrations
                             FreelancerId = 1,
                             MaxBudget = 500m,
                             MinBudget = 100m,
-                            PostTime = new DateTime(2024, 6, 16, 22, 19, 23, 430, DateTimeKind.Local).AddTicks(7841),
+                            PostTime = new DateTime(2024, 6, 18, 17, 31, 55, 95, DateTimeKind.Local).AddTicks(6864),
                             Status = 0,
                             Title = "Job1"
                         },
@@ -558,7 +563,7 @@ namespace Shoghlana.EF.Migrations
                             FreelancerId = 2,
                             MaxBudget = 700m,
                             MinBudget = 200m,
-                            PostTime = new DateTime(2024, 6, 16, 22, 19, 23, 430, DateTimeKind.Local).AddTicks(7956),
+                            PostTime = new DateTime(2024, 6, 18, 17, 31, 55, 95, DateTimeKind.Local).AddTicks(6923),
                             Status = 0,
                             Title = "Job2"
                         });

@@ -37,7 +37,8 @@ namespace Shoghlana.Api
             builder.Services.AddSwaggerGen();
 
             builder.Services.AddIdentity<ApplicationUser, IdentityRole>()
-                            .AddEntityFrameworkStores<ApplicationDBContext>();
+                            .AddEntityFrameworkStores<ApplicationDBContext>()
+                            .AddDefaultTokenProviders();
 
             builder.Services.Configure<Jwt>(builder.Configuration.GetSection("JWT"));
 
@@ -69,6 +70,9 @@ namespace Shoghlana.Api
                        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["JWT:Key"]))
                    };
                });
+
+            builder.Services.Configure<MailSettings>(builder.Configuration.GetSection("MailSettings"));
+            builder.Services.AddScoped<IMailService, MailService>();
 
 
             // Registering the Unit of work inside the application container.
