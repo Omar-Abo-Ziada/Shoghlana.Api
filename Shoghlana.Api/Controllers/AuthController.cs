@@ -1,8 +1,10 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
 using Shoghlana.Api.Response;
 using Shoghlana.Api.Services.Interfaces;
 using Shoghlana.Core.DTO;
 using Shoghlana.Core.Models;
+using System.Net;
 
 namespace Shoghlana.Api.Controllers
 {
@@ -11,11 +13,17 @@ namespace Shoghlana.Api.Controllers
     public class AuthController : ControllerBase
     {
         private readonly IAuthService _authService;
-      //  private readonly IGoogleAuthService googleAuthService;
-
-        public AuthController(IAuthService authService)
+        private readonly IMailService _mailService;
+        private readonly UserManager<ApplicationUser> _userManager;
+        public AuthController(IAuthService authService, UserManager<ApplicationUser> userManager, IMailService mailService)
         {
             _authService = authService;
+            _userManager = userManager;
+            _mailService = mailService;
+
+      //  private readonly IGoogleAuthService googleAuthService;
+
+       
            // this.googleAuthService = googleAuthService;
         }
 
@@ -24,17 +32,18 @@ namespace Shoghlana.Api.Controllers
         {
             if (ModelState.IsValid)
             {
-                var result = await _authService.RegisterAsync(registerModel);
 
-                if (result.IsAuthenticated)
+                var result = await _authService.RegisterAsync(registerModel);
+              
+                if (result.IsAuthenticated )
                 {
                     SetRefreshTokenInCookie(result.RefreshToken, result.RefreshTokenExpiration);
+
                     return new GeneralResponse
                     {
                         Data = result,
                         IsSuccess = true,
                         Message = "Authenticated",
-                        Token = result.Token
                     };
                 }
                 else
@@ -43,7 +52,7 @@ namespace Shoghlana.Api.Controllers
                     {
                         Data = registerModel,
                         IsSuccess = false,
-                        Status = 400 ,
+                        Status = 400,
                         Message = result.Message,
                     };
                 }
@@ -58,6 +67,8 @@ namespace Shoghlana.Api.Controllers
                 };
             }
         }
+
+        
 
 
         [HttpPost("GoogleAuthentication")]
@@ -95,7 +106,8 @@ namespace Shoghlana.Api.Controllers
             if (ModelState.IsValid)
             {
                 var result = await _authService.GetTokenAsync(registerModel);
-                if (result.IsAuthenticated)
+                ApplicationUser user = await _userManager.FindByEmailAsync(registerModel.Email);
+                if (result.IsAuthenticated && user.EmailConfirmed )
                 {
                     if (!string.IsNullOrEmpty(result.RefreshToken))
                         SetRefreshTokenInCookie(result.RefreshToken, result.RefreshTokenExpiration);

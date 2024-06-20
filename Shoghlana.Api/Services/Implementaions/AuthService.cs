@@ -83,7 +83,7 @@ namespace Shoghlana.Api.Services.Implementaions
             // Send a welcome notification to the user
             await SendWelcomeNotificationAsync(user);
 
-            var jwtSecurityToken = await CreateJwtToken(user);
+         //   var jwtSecurityToken = await CreateJwtToken(user);
 
             // Determine the user's roles
             var roles = await _userManager.GetRolesAsync(user);
@@ -94,10 +94,10 @@ namespace Shoghlana.Api.Services.Implementaions
             return new AuthModel
             {
                 Email = user.Email,
-                ExpiresOn = jwtSecurityToken.ValidTo,
+               // ExpiresOn = jwtSecurityToken.ValidTo,
                 IsAuthenticated = true,
                 Roles = roles.ToList(),
-                Token = new JwtSecurityTokenHandler().WriteToken(jwtSecurityToken),
+             //   Token = new JwtSecurityTokenHandler().WriteToken(jwtSecurityToken),
                 Username = user.UserName,
                 RefreshToken = refreshToken.Token,
                 RefreshTokenExpiration = refreshToken.ExpiresOn
@@ -133,7 +133,7 @@ namespace Shoghlana.Api.Services.Implementaions
             return result.Succeeded ? string.Empty : "Sonething went wrong";
         }
 
-        private async Task<JwtSecurityToken> CreateJwtToken(ApplicationUser user)
+        public async Task<JwtSecurityToken> CreateJwtToken(ApplicationUser user)
         {
             var userClaims = await _userManager.GetClaimsAsync(user);
             var roles = await _userManager.GetRolesAsync(user);
@@ -281,6 +281,7 @@ namespace Shoghlana.Api.Services.Implementaions
             };
         }
 
+        
 
 
         // google authentication
