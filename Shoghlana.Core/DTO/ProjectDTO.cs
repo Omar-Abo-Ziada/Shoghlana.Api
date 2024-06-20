@@ -25,14 +25,12 @@ namespace Shoghlana.Core.DTO
         [Required(ErrorMessage = "Poster is required")]
         public IFormFile? Poster { get; set; }
 
-        public List<ImageDTO>? Images { get; set; }
+        public List<ImageDTO>? Images { get; set; } = new List<ImageDTO> { };
 
-        public List<SkillDTO>? Skills { get; set; }
+        public List<SkillDTO>? Skills { get; set; } = new List<SkillDTO> { };
 
         public DateTime? TimePublished { get; set; }
 
         public int? FreelancerId { get; set; }
-
-
     }
 }

@@ -18,7 +18,7 @@ namespace Shoghlana.EF.Configurations
             builder.HasKey(e => new { e.SkillId, e.ProjectId });
 
             builder.HasOne(ps => ps.Project)
-                      .WithMany(p => p.skills)
+                      .WithMany(p => p.Skills)
                       .HasForeignKey(ps => ps.ProjectId);
 
             builder.HasOne(ps => ps.Skill)
