@@ -17,6 +17,5 @@ namespace Shoghlana.Core.Interfaces
         public Task<PaginatedListDTO<Job>> GetPaginatedJobsAsync
         (int MinBudget, int MaxBudget, int CategoryId, int ClientId, int FreelancerId,
          int page, int pageSize, string[] includes = null);
-
     }
 }

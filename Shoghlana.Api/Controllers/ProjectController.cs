@@ -28,6 +28,12 @@ namespace Shoghlana.Api.Controllers
             return projectService.GetById(id);
         }
 
+        [HttpGet("freelancer/{id:int}")]
+        public ActionResult<GeneralResponse> GetByFreelancerId(int id)
+        {
+            return projectService.GetByfreelancerIdId(id);
+        }
+
         [HttpPost]
         public async Task<ActionResult<GeneralResponse>> AddAsync([FromForm] ProjectDTO projectDTO)
         {

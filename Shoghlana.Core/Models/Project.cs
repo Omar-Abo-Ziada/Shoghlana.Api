@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Shoghlana.Core.DTO;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -10,7 +11,6 @@ namespace Shoghlana.Core.Models
 {
     public class Project
     {
-        //  [Key]
         public int Id { get; set; }
 
         public string Title { get; set; }
@@ -21,15 +21,14 @@ namespace Shoghlana.Core.Models
 
         public byte[] Poster { get; set; }
 
-        public List<ProjectImages>? Images { get; set; }
+        public List<ProjectImages>? Images { get; set; } = new List<ProjectImages> { }; 
 
-        public List<ProjectSkills>? skills { get; set; }
+        public List<ProjectSkills>? Skills { get; set; } = new List<ProjectSkills> { };
 
-        public DateTime? TimePublished { get; set; }
+        public DateTime? TimePublished { get; set; } = DateTime.Now;
 
-        //---------------------------------------------
+        //---------------------------------------------------
 
-        //  [ForeignKey("Freelancer")]
         public int? FreelancerId { get; set; }
 
         public Freelancer Freelancer { get; set; }

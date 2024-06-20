@@ -66,12 +66,12 @@ namespace Shoghlana.EF.Repositories
 
             int totalPages = (int)Math.Ceiling(totalFilteredItems / (double)pageSize);
 
-            if (page > totalPages)
-            {
-                page = totalPages;
-            }
+            //if (page > totalPages)
+            //{
+            //    page = totalPages;
+            //}
 
-            if (page == 0)
+            if (totalPages == 0)
             {
                 return new PaginatedListDTO<Job>
                 {
@@ -170,7 +170,6 @@ namespace Shoghlana.EF.Repositories
                 CurrentPage = page,
                 Items = items
             };
-
         }
     }
 }
