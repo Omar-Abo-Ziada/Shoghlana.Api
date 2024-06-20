@@ -39,5 +39,11 @@ namespace Shoghlana.Core.Enums
 
         Descending = 2,
     }
+
+    public enum UserRole
+    {
+        Freelancer = 0,
+        Client = 1
+    }
 }
 //

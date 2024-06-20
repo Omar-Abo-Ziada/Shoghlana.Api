@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Shoghlana.Core.Enums;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -15,5 +16,6 @@ namespace Shoghlana.Core.DTO
       //  public string name { get; set; } 
         public string? photoUrl { get; set; }
         public string firstName { get; set; }
+        public int role { get; set; }
     }
 }
