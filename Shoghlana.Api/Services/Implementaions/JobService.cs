@@ -64,7 +64,6 @@ namespace Shoghlana.Api.Services.Implementaions
             };
         }
 
-
         public ActionResult<GeneralResponse> GetPaginatedJobs
          (int MinBudget, int MaxBudget, int CategoryId, int ClientId, int FreelancerId, int page, int pageSize, string[] includes = null)
         {
@@ -190,47 +189,6 @@ namespace Shoghlana.Api.Services.Implementaions
             }
 
             jobDTO = mapper.Map<Job, JobDTO>(job);
-
-            //try
-            //{
-
-                //foreach (Proposal proposal in job.Proposals)
-                //{
-                //    Freelancer? freelancer = _unitOfWork.freelancerRepository.GetById(proposal.FreelancerId);
-
-                //    jobDTO.Freelancers.Add(new FreelancerDTO
-                //    {
-                //        Name = freelancer.Name,
-                //        Id = freelancer.Id
-                //    });
-
-                //    jobDTO.Proposals.Add(new ProposalDTO
-                //    {
-                //        Description = proposal.Description,
-                //        Id = proposal.Id
-                //    });
-                //}
-
-                //foreach (JobSkills jobSkill in job.skills)
-                //{
-                //    Skill? skill = _unitOfWork.skillRepository.GetById(jobSkill.SkillId);
-
-                //    jobDTO.Skills.Add(new SkillDTO
-                //    {
-                //        Title = skill.Title,
-                //        Id = skill.Id
-                //    });
-                //}
-            //}
-            //catch (Exception ex)
-            //{
-            //    return new GeneralResponse()
-            //    {
-            //        IsSuccess = false,
-            //        Data = null,
-            //        Message = ex.Message
-            //    };
-            //}
 
             return new GeneralResponse
             {
@@ -392,6 +350,7 @@ namespace Shoghlana.Api.Services.Implementaions
                     });
                 }
             }
+
             return new GeneralResponse
             {
                 IsSuccess = true,
