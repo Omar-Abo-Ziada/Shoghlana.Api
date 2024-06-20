@@ -4,10 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Shoghlana.Core.DTO
+namespace Shoghlana.EF.Configurations
 {
-    public class GetTitleofCategoryDTO
+    public class GoogleAuthConfig
     {
-        public string Title { get; set; }
+        public string ClientId { get; set; }
     }
 }

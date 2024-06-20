@@ -14,8 +14,11 @@ namespace Shoghlana.Core.Models
         [Key]
         //  [Key]
         public int Id { get; set; }
+
         public string Name { get; set; }
+
         public DateTime RegisterationTime { get; set; }
+
         public string? Description { get; set; }
 
         public byte[]? Image { get; set; }

@@ -55,14 +55,19 @@ namespace Shoghlana.EF
                            e.State == EntityState.Added //&&( e.Entity is Employee)  => can use certain conditions also if needed
                            select e.Entity;
 
+            bool IsValid = true;
             foreach (var Entity in Entities)
             {
                 ValidationContext validationContext = new ValidationContext(Entity);
-                Validator.ValidateObject(Entity, validationContext, true);
-                //true: This parameter specifies whether to validate all properties (when true) or only required properties (when false).
+               IsValid =  Validator.TryValidateObject(Entity, validationContext , new List<ValidationResult>()); 
+                //true: This parameter specifies whether to validate all properties (when true) or only required properties (when false). >> in case of using validate object()
             }
+            if(IsValid)
+            {
+                return base.SaveChanges();
+            }
+            return 0;  // indication for 0 entries added or updated >> saving didnot happen due to validation errors >> when call savechanges() check return != 0
 
-            return base.SaveChanges();
         }
 
     }

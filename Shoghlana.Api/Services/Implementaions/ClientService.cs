@@ -40,7 +40,7 @@ namespace Shoghlana.Api.Services.Implementaions
                 foreach (Client client in clients)
                 {
                     GetClientDTO clientDTO = new GetClientDTO();
-
+                    clientDTO.Id = client.Id;
                     clientDTO.Name = client.Name;
                     clientDTO.Image = client.Image;
                     clientDTO.Description = client.Description;
@@ -227,7 +227,7 @@ namespace Shoghlana.Api.Services.Implementaions
                 senderImage = client.Image
             };
 
-            await hubContext.Clients.All.SendAsync("ReceiveNotification", notificationDto);
+            await hubContext.Clients.All.SendAsync("ReceiveNotification", notificationDto);  // todo why send notifi.. for all clients , for this client instead ??? 
 
             return new GeneralResponse()
             {

@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Shoghlana.EF;
 
@@ -11,9 +12,11 @@ using Shoghlana.EF;
 namespace Shoghlana.EF.Migrations
 {
     [DbContext(typeof(ApplicationDBContext))]
-    partial class ApplicationDBContextModelSnapshot : ModelSnapshot
+    [Migration("20240619000941_JobData")]
+    partial class JobData
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -51,25 +54,22 @@ namespace Shoghlana.EF.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "87ec4915-6bd8-4a53-839d-2410c0a06340",
-                            ConcurrencyStamp = "ab066f62-0c4e-4831-b78b-76a1e73f0536",
-
+                            Id = "965ec63a-f4f9-4ceb-a7bb-6a28e3b8bf28",
+                            ConcurrencyStamp = "836ff1f7-8b35-4482-8155-821ce4b9bace",
                             Name = "Admin",
                             NormalizedName = "ADMIN"
                         },
                         new
                         {
-                            Id = "d87beb8b-f1a5-490f-9c12-76658b53d228",
-                            ConcurrencyStamp = "d8730fe3-62a8-4f6f-8628-aedf52159966",
-
+                            Id = "923a5659-53bc-47de-b20c-367f0deb3611",
+                            ConcurrencyStamp = "8f585296-7dc1-4323-b5f1-dc8d55119ed2",
                             Name = "Client",
                             NormalizedName = "CLIENT"
                         },
                         new
                         {
-                            Id = "582a643c-701b-4182-b7c7-4308a47bfebf",
-                            ConcurrencyStamp = "477f029f-b5ec-47a8-96c7-e37781ae2d76",
-
+                            Id = "165bc26e-84f4-4dfd-8c8a-ab65cfad5938",
+                            ConcurrencyStamp = "7fdea4c6-6776-4b1d-928b-007907f4ce8b",
                             Name = "Freelancer",
                             NormalizedName = "FREELANCER"
                         });
@@ -382,12 +382,6 @@ namespace Shoghlana.EF.Migrations
                     b.Property<DateTime>("RegisterationTime")
                         .HasColumnType("datetime2");
 
-                    b.Property<DateTime>("RegisterationTime")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime>("RegisterationTime")
-                        .HasColumnType("datetime2");
-
                     b.HasKey("Id");
 
                     b.ToTable("Clients");
@@ -396,7 +390,6 @@ namespace Shoghlana.EF.Migrations
                         new
                         {
                             Id = 1,
-
                             Country = "المملكة العربية السعودية",
                             Description = "مبرمج ومطور تطبيقات متخصص في تطوير الويب",
                             Name = "عبد الرحمن أحمد",
@@ -406,7 +399,6 @@ namespace Shoghlana.EF.Migrations
                         new
                         {
                             Id = 2,
-
                             Country = "مصر",
                             Description = "مصممة جرافيك محترفة تعمل في تصميم اللوجوهات والبوسترات",
                             Name = "فاطمة محمد",
@@ -801,8 +793,7 @@ namespace Shoghlana.EF.Migrations
                             FreelancerId = 1,
                             MaxBudget = 500m,
                             MinBudget = 100m,
-                            PostTime = new DateTime(2024, 6, 18, 17, 31, 55, 95, DateTimeKind.Local).AddTicks(6864),
-
+                            PostTime = new DateTime(2024, 6, 19, 3, 9, 39, 835, DateTimeKind.Local).AddTicks(7386),
                             Status = 0,
                             Title = "تصميم شعار احترافي ومميز"
                         },
@@ -816,8 +807,7 @@ namespace Shoghlana.EF.Migrations
                             FreelancerId = 2,
                             MaxBudget = 700m,
                             MinBudget = 200m,
-                            PostTime = new DateTime(2024, 6, 18, 17, 31, 55, 95, DateTimeKind.Local).AddTicks(6923),
-
+                            PostTime = new DateTime(2024, 6, 19, 3, 9, 39, 835, DateTimeKind.Local).AddTicks(7485),
                             Status = 0,
                             Title = "تصميم بوستر إعلاني لمواقع التواصل"
                         },
