@@ -96,7 +96,7 @@ namespace Shoghlana.Api.Services.Implementaions
 
             if (existingJob.FreelancerId.HasValue)
             {
-                Client? client = _unitOfWork.clientRepository.GetById(existingJob.ClientId.Value);
+                Client? client = _unitOfWork.clientRepository.GetById((int)existingJob.ClientId);
 
                 if (client is not null)
                 {

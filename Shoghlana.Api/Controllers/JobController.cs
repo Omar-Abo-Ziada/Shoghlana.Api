@@ -2,6 +2,8 @@
 using Shoghlana.Api.Response;
 using Shoghlana.Api.Services.Interfaces;
 using Shoghlana.Core.DTO;
+using Shoghlana.Core.Models;
+using System.Linq.Expressions;
 
 namespace Shoghlana.Api.Controllers
 {
@@ -12,6 +14,10 @@ namespace Shoghlana.Api.Controllers
     public class JobController : ControllerBase
     {
         private readonly IJobService jobService;
+
+        private const int defaultPageNumber = 1;
+
+        private const int defaultPageSize = 5;
 
         public JobController(IJobService jobService)
         {
@@ -24,19 +30,34 @@ namespace Shoghlana.Api.Controllers
             return jobService.GetAll();
         }
 
+        [HttpGet("pagination")]
+        public ActionResult<GeneralResponse> GetPaginatedJobs
+          (int MinBudget, int MaxBudget, int CategoryId, int ClientId, int FreelancerId ,int page = defaultPageNumber, int pageSize = defaultPageSize,string[] includes = null)
+        {
+            return jobService
+             .GetPaginatedJobs(MinBudget, MaxBudget, CategoryId, ClientId, FreelancerId, page, pageSize, includes);
+        }
+
+        [HttpGet("paginationAsync")]
+        public async Task<ActionResult<GeneralResponse>> GetPaginatedJobsAsync
+          (int MinBudget, int MaxBudget, int CategoryId, int ClientId, int FreelancerId, int page = defaultPageNumber, int pageSize = defaultPageSize, string[] includes = null)
+        {
+            return await jobService.GetPaginatedJobsAsync(MinBudget, MaxBudget, CategoryId, ClientId, FreelancerId, page, pageSize, includes);
+        }
+            
         [HttpGet("{id:int}")]
         public ActionResult<GeneralResponse> Get(int id)
         {
             return jobService.Get(id);
         }
 
-        [HttpGet("freelancer")]
-        public ActionResult<GeneralResponse> GetByFreelancerId([FromQuery] int id)
+        [HttpGet("freelancer/{id:int}")]
+        public ActionResult<GeneralResponse> GetByFreelancerId(int id)
         {
             return jobService.GetByFreelancerId(id);
         }
 
-        [HttpGet("category/{id}")]
+        [HttpGet("category/{id:int}")]
         public ActionResult<GeneralResponse> GetJobsByCategoryId(int id)
         {
             return jobService.GetJobsByCategoryId(id);
@@ -48,7 +69,7 @@ namespace Shoghlana.Api.Controllers
             return jobService.GetJobsByCategoryIds(ids);
         }
 
-        [HttpGet("client")]
+        [HttpGet("client/{id:int}")]
         public ActionResult<GeneralResponse> GetByClientId([FromQuery] int id)
         {
             return jobService.GetByClientId(id);

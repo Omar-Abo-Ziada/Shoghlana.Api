@@ -32,8 +32,6 @@ namespace Shoghlana.EF.Configurations
                       .HasForeignKey(p => p.JobId);
 
 
-
-
             builder.HasData(
                 new Proposal { Id = 1, Price = 300, Status = ProposalStatus.Waiting, FreelancerId = 1, JobId = 1 },
                 new Proposal { Id = 2, Price = 400, Status = ProposalStatus.Waiting, FreelancerId = 2, JobId = 2 }

@@ -1,12 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Shoghlana.Core.Models;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Reflection.Emit;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Shoghlana.EF.Configurations
 {
@@ -14,14 +9,14 @@ namespace Shoghlana.EF.Configurations
     {
         public void Configure(EntityTypeBuilder<Category> builder)
         {
-            builder.HasKey(c => c.Id);
-
-
             builder.HasData(
-                new Category { Id = 1, Title = "Category1" },
-                new Category { Id = 2, Title = "Category2" }
+                new Category { Id = 1, Title = "خدمات التصميم", Description = "تشمل كافة الخدمات المتعلقة بالتصميم الجرافيكي، التصميم الصناعي، وتصميم الويب." },
+                new Category { Id = 2, Title = "خدمات برمجية", Description = "تشمل كتابة وتطوير التطبيقات والبرمجيات لمختلف الأنظمة والأجهزة." },
+                new Category { Id = 3, Title = "خدمات الكتابة والترجمة", Description = "تشمل كتابة المقالات، الترجمة الفورية، وكتابة المحتوى للمواقع والمدونات." },
+                new Category { Id = 4, Title = "خدمات التسويق الرقمي", Description = "تشمل إدارة حملات التسويق الرقمي، الإعلانات على وسائل التواصل الاجتماعي، وتحليلات السوق." },
+                new Category { Id = 5, Title = "خدمات الدعم الفني والتقني", Description = "تشمل دعم المستخدمين، إصلاح الأعطال التقنية، وتحسين أداء النظم والشبكات." },
+                new Category { Id = 6, Title = "خدمات التعليم والتدريب", Description = "تشمل تقديم دورات تدريبية، تصميم مناهج تعليمية، وتطوير الموارد التعليمية." }
             );
-
         }
     }
 }

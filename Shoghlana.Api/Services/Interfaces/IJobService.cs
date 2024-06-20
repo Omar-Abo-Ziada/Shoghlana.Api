@@ -5,12 +5,20 @@ using Shoghlana.Api.Services.Implementaions;
 using Shoghlana.Core.DTO;
 using Shoghlana.Core.Models;
 using Shoghlana.EF.Repositories;
+using System.Drawing.Printing;
+using System.Linq.Expressions;
 
 namespace Shoghlana.Api.Services.Interfaces
 {
     public interface IJobService : IGenericService<Job>
     {
         public ActionResult<GeneralResponse> GetAll();
+
+        public ActionResult<GeneralResponse> GetPaginatedJobs
+        (int MinBudget, int MaxBudget, int CategoryId, int ClientId, int FreelancerId,int page, int pageSize, string[] includes = null);
+
+        public Task<ActionResult<GeneralResponse>> GetPaginatedJobsAsync
+        (int MinBudget, int MaxBudget, int CategoryId, int ClientId, int FreelancerId,int page, int pageSize, string[] includes = null);
 
         public ActionResult<GeneralResponse> Get(int id);
 

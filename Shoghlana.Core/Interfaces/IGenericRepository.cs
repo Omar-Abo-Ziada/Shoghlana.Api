@@ -1,4 +1,5 @@
-﻿using Shoghlana.Core.Enums;
+﻿using Shoghlana.Core.DTO;
+using Shoghlana.Core.Enums;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -25,6 +26,14 @@ namespace Shoghlana.Core.Interfaces
         public IEnumerable<T> FindAll(string[] includes = null, Expression<Func<T, bool>> criteria = null);
 
         public Task<IEnumerable<T>> FindAllAsync(string[] includes = null, Expression<Func<T, bool>> criteria = null);
+
+        public int GetCount();
+
+        //-------------------------------------------------------------------------
+
+        public PaginatedListDTO<T> FindPaginated(int page , int pageSize ,string[] includes = null, Expression<Func<T, bool>> criteria = null);
+
+        public Task<PaginatedListDTO<T>> FindPaginatedAsync(int page, int pageSize ,string[] includes = null, Expression<Func<T, bool>> criteria = null);
 
         //-------------------------------------------------------------------------
 
