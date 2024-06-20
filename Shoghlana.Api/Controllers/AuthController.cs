@@ -28,29 +28,7 @@ namespace Shoghlana.Api.Controllers
             {
 
                 var result = await _authService.RegisterAsync(registerModel);
-                //ApplicationUser user = await _userManager.FindByEmailAsync(registerModel.Email);
-                //if (user == null || string.IsNullOrEmpty(user.Email))
-                //{
-                //    return new GeneralResponse
-                //    {
-                //        IsSuccess = false,
-                //        Status = 400,
-                //        Data = ModelState,
-                //        Message = "Invalid Mail Address or there is no user"
-                //    };
-                //}
-                //else
-                //{
-                //    var token = await _userManager.GenerateEmailConfirmationTokenAsync(user);
-                //    string confirmationLink = Url.Action("ConfirmEmail", "Auth", new { userEmail = user.Email, token }, Request.Scheme);
-
-                //    string subject = "Email Confirmation";
-                //    string body = $"<h1>Welcome to Shoghlana!</h1>" +
-                //                  $"<p>Please confirm your email by clicking on the link below:</p>" +
-                //                  $"<a href='{confirmationLink}'>Confirm Email</a>";
-
-                //    await _mailService.SendEmailAsync(user.Email, subject, body);
-                //}
+              
                 if (result.IsAuthenticated )
                 {
                     SetRefreshTokenInCookie(result.RefreshToken, result.RefreshTokenExpiration);
@@ -60,7 +38,6 @@ namespace Shoghlana.Api.Controllers
                         Data = result,
                         IsSuccess = true,
                         Message = "Authenticated",
-                        //Token = result.Token
                     };
                 }
                 else
@@ -85,49 +62,7 @@ namespace Shoghlana.Api.Controllers
             }
         }
 
-        //[HttpGet("ConfirmEmail")]
-
-        //public async Task<GeneralResponse> ConfirmEmail(string userEmail, string token)
-        //{
-        //    var user = await _userManager.FindByEmailAsync(userEmail);
-        //    if (user == null)
-        //    {
-        //        return new GeneralResponse
-        //        {
-        //            IsSuccess = false,
-        //            Status = 400,
-        //            Data = null,
-        //            Message = "Invalid mail address"
-        //        };
-        //    }
-
-        //    var result = await _userManager.ConfirmEmailAsync(user, token);
-        //    if (result.Succeeded)
-        //    {
-        //        user.EmailConfirmed = true;
-        //        var jwtSecurityToken = await _authService.CreateJwtToken(user);
-                
-        //        await _userManager.UpdateAsync(user);
-        //        return new GeneralResponse()
-        //        {
-        //            IsSuccess = true,
-        //            Data = user.Email,
-        //            Status = 200,
-        //            Message = "Email confirmed successfully",
-        //            Token = jwtSecurityToken.ToString()
-        //            };
-        //    }
-        //    else
-        //    {
-        //        return new GeneralResponse()
-        //        {
-        //            IsSuccess = false,
-        //            Status = 400,
-        //            Data = result.Errors,
-        //            Message = "Error confirming email"
-        //        };
-        //    }
-        //}
+        
 
         [HttpPost("Token")]
         public async Task<GeneralResponse> GetTokenAsync([FromBody] TokenRequestModel registerModel)
