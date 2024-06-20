@@ -1,18 +1,23 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using Google.Apis.Auth;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.SignalR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using Shoghlana.Api.Hubs;
+using Shoghlana.Api.Response;
 using Shoghlana.Api.Services.Interfaces;
 using Shoghlana.Core.DTO;
 using Shoghlana.Core.Helpers;
 using Shoghlana.Core.Interfaces;
 using Shoghlana.Core.Models;
+using Shoghlana.EF.Configurations;
+using Shoghlana.EF.Repositories;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Security.Cryptography;
 using System.Text;
+using static Google.Apis.Auth.GoogleJsonWebSignature;
 
 namespace Shoghlana.Api.Services.Implementaions
 {
@@ -22,18 +27,25 @@ namespace Shoghlana.Api.Services.Implementaions
         private readonly RoleManager<IdentityRole> _roleManager;
         private readonly Jwt _jwt;
         private readonly IHubContext<NotificationHub> _hubContext;
+        private readonly IUnitOfWork _unitOfWork;
+        private readonly IFreelancerService _freelancerService;
+        private readonly GoogleAuthConfig _googleAuthConfig;
 
         public AuthService
         (UserManager<ApplicationUser> userManager, IOptions<Jwt> jwt,
-         RoleManager<IdentityRole> roleManager, IHubContext<NotificationHub> hubContext)
+         RoleManager<IdentityRole> roleManager, IHubContext<NotificationHub> hubContext, IUnitOfWork unitOfWork,
+         IFreelancerService freelancerService, IOptions<GoogleAuthConfig> GoogleAuthConfig)
         {
             _userManager = userManager;
             _roleManager = roleManager;
             _jwt = jwt.Value;
             _hubContext = hubContext;
+            _unitOfWork = unitOfWork;
+            _freelancerService = freelancerService;
+            _googleAuthConfig = GoogleAuthConfig.Value;
         }
 
-        public async Task<AuthModel> RegisterAsync(RegisterModel model)
+        public async Task<AuthModel> RegisterAsync(RegisterModel model) 
         {
             if (await _userManager.FindByEmailAsync(model.Email) is not null)
             {
@@ -268,5 +280,177 @@ namespace Shoghlana.Api.Services.Implementaions
                 CreatedOn = DateTime.UtcNow
             };
         }
+
+
+
+        // google authentication
+
+        public async Task<ApplicationUser> GetByIdAsync(string id) 
+        {
+            return await _unitOfWork.ApplicationUserRepository.GetByIdAsync(id);
+        }
+
+
+        public async Task<ApplicationUser> GetByEmailAsync(string email)
+        {
+            return await _unitOfWork.ApplicationUserRepository.GetByEmailAsync(email);
+        }
+
+
+        public async Task<GeneralResponse> GoogleAuthentication(GoogleSignupDto googleSignupDto)
+        {
+            ApplicationUser? User = await _unitOfWork.ApplicationUserRepository
+                                          .GetByEmailAsync(googleSignupDto.email);
+            if (User == null)
+            {
+                //// apply login logic here
+                //return await Task.FromResult(new GeneralResponse()
+                //{
+                //    IsSuccess = false,
+                //    Data = null,
+                //    Message = "This email has already been registered before"
+                //});
+
+
+                Freelancer freelancer = new Freelancer()  // consider it is a freelancer for testing
+                {
+                    Name = googleSignupDto.firstName
+                    // convert img from string to bytes and save it in freelancer
+                };
+
+                try
+                {
+                    _freelancerService.Add(freelancer);   // add + save inside the same method
+                }
+                catch (Exception ex)
+                {
+                    return new GeneralResponse()
+                    {
+                        IsSuccess = false,
+                        Data = null,
+                        Message = ex.Message
+                    };
+                }
+
+                User = new ApplicationUser()
+                {
+                    UserName = googleSignupDto.firstName,     // should add guid as suffix as gmail allow username duplication but identity user doesnot
+                    Email = googleSignupDto.email,
+                    FreeLancerId = freelancer.Id,
+                    EmailConfirmed = true                      // as he registered using gmail
+                };
+
+                try
+                {
+                    // should add role 
+                    await _unitOfWork.ApplicationUserRepository.InsertAsync(User);
+                }
+                catch (Exception ex)
+                {
+                    return await Task.FromResult(new GeneralResponse()
+                    {
+                        IsSuccess = false,
+                        Data = ex.Message,
+                        Message = "Error on account creation"
+                    });
+                }
+
+                try
+                {
+                    await SendWelcomeNotificationAsync(User);
+                }
+                catch (Exception ex)
+                {
+                    return new GeneralResponse()
+                    {
+                        IsSuccess = false,
+                        Data = ex.Message,
+                        Message = "Error on sending welcome notification"
+                    };
+                }
+
+            }
+
+            // logic for login
+            AuthModel authModel = new AuthModel();
+
+            var jwtSecurityToken = await CreateJwtToken(User);
+            var rolesList = await _userManager.GetRolesAsync(User);
+
+            authModel.IsAuthenticated = true;
+            authModel.Token = new JwtSecurityTokenHandler().WriteToken(jwtSecurityToken);
+            authModel.Email = User.Email;
+            authModel.Username = User.UserName;
+            authModel.ExpiresOn = jwtSecurityToken.ValidTo;
+            authModel.Roles = rolesList.ToList();
+
+            // refresh token 
+
+            //if (User.RefreshTokens.Any(t => t.IsActive))
+            //{
+            //    var activeRefreshToken = User.RefreshTokens.FirstOrDefault(t => t.IsActive);
+            //    authModel.RefreshToken = activeRefreshToken.Token;
+            //    authModel.RefreshTokenExpiration = activeRefreshToken.ExpiresOn;
+            //}
+            //else
+            //{
+            //    var refreshToken = GenerateRefreshToken();
+            //    authModel.RefreshToken = refreshToken.Token;
+            //    authModel.RefreshTokenExpiration = refreshToken.ExpiresOn;
+            //    User.RefreshTokens.Add(refreshToken);
+            //    await _userManager.UpdateAsync(User);
+            //}
+
+            return new GeneralResponse()
+            {
+                IsSuccess = true,
+                Data = authModel,
+                Message = "Successfully authenticated using gmail"
+            };
+
+        }
+
+
+
+        public async Task<GeneralResponse> IsGmailTokenValidAsync(string GmailToken) 
+        {
+            ValidationSettings settings = new GoogleJsonWebSignature.ValidationSettings
+            {
+                Audience = new string[] { _googleAuthConfig.ClientId }
+            };
+
+            Payload payload = new Payload();
+            try
+            {
+               payload = await GoogleJsonWebSignature.ValidateAsync(GmailToken, settings); // validate that aud of token matches clienId of my project on google cloud api
+            }
+            catch(Exception ex)
+            {
+                return new GeneralResponse
+                {
+                    IsSuccess = false,
+                    Data = null,
+                    Message = "Invalid gmail token"
+                };
+            }
+            if (payload == null)
+            {
+                return new GeneralResponse
+                {
+                    IsSuccess = false,
+                    Data = null,
+                    Message = "Invalid gmail token"
+                };
+            }
+
+            return new GeneralResponse()
+            {
+                IsSuccess = true,
+                Data = payload,
+                Message = "Valid gmail token"
+            };
+        }
+
+
     }
 }

@@ -51,6 +51,7 @@ namespace Shoghlana.EF.Migrations
                     b.HasData(
                         new
                         {
+
                             Id = "965ec63a-f4f9-4ceb-a7bb-6a28e3b8bf28",
                             ConcurrencyStamp = "836ff1f7-8b35-4482-8155-821ce4b9bace",
                             Name = "Admin",
@@ -58,6 +59,7 @@ namespace Shoghlana.EF.Migrations
                         },
                         new
                         {
+
                             Id = "923a5659-53bc-47de-b20c-367f0deb3611",
                             ConcurrencyStamp = "8f585296-7dc1-4323-b5f1-dc8d55119ed2",
                             Name = "Client",
@@ -65,6 +67,7 @@ namespace Shoghlana.EF.Migrations
                         },
                         new
                         {
+
                             Id = "165bc26e-84f4-4dfd-8c8a-ab65cfad5938",
                             ConcurrencyStamp = "7fdea4c6-6776-4b1d-928b-007907f4ce8b",
                             Name = "Freelancer",
@@ -379,6 +382,9 @@ namespace Shoghlana.EF.Migrations
                     b.Property<DateTime>("RegisterationTime")
                         .HasColumnType("datetime2");
 
+                    b.Property<DateTime>("RegisterationTime")
+                        .HasColumnType("datetime2");
+
                     b.HasKey("Id");
 
                     b.ToTable("Clients");
@@ -387,6 +393,7 @@ namespace Shoghlana.EF.Migrations
                         new
                         {
                             Id = 1,
+
                             Country = "المملكة العربية السعودية",
                             Description = "مبرمج ومطور تطبيقات متخصص في تطوير الويب",
                             Name = "عبد الرحمن أحمد",
@@ -396,6 +403,7 @@ namespace Shoghlana.EF.Migrations
                         new
                         {
                             Id = 2,
+
                             Country = "مصر",
                             Description = "مصممة جرافيك محترفة تعمل في تصميم اللوجوهات والبوسترات",
                             Name = "فاطمة محمد",
@@ -790,6 +798,7 @@ namespace Shoghlana.EF.Migrations
                             FreelancerId = 1,
                             MaxBudget = 500m,
                             MinBudget = 100m,
+
                             PostTime = new DateTime(2024, 6, 19, 3, 9, 39, 835, DateTimeKind.Local).AddTicks(7386),
                             Status = 0,
                             Title = "تصميم شعار احترافي ومميز"
@@ -804,6 +813,7 @@ namespace Shoghlana.EF.Migrations
                             FreelancerId = 2,
                             MaxBudget = 700m,
                             MinBudget = 200m,
+
                             PostTime = new DateTime(2024, 6, 19, 3, 9, 39, 835, DateTimeKind.Local).AddTicks(7485),
                             Status = 0,
                             Title = "تصميم بوستر إعلاني لمواقع التواصل"

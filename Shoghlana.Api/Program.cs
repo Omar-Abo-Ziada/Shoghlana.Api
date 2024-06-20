@@ -11,6 +11,7 @@ using Shoghlana.Core.Helpers;
 using Shoghlana.Core.Interfaces;
 using Shoghlana.Core.Models;
 using Shoghlana.EF;
+using Shoghlana.EF.Configurations;
 using Shoghlana.EF.Repositories;
 using Shoghlana.EF.Repository;
 using System.Text;
@@ -70,6 +71,8 @@ namespace Shoghlana.Api
                    };
                });
 
+            // registering Ioptions<GoogleAuthConfig>
+            builder.Services.Configure<GoogleAuthConfig>(builder.Configuration.GetSection("google"));
 
             // Registering the Unit of work inside the application container.
             builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
@@ -96,6 +99,7 @@ namespace Shoghlana.Api
             builder.Services.AddScoped<ISkillRepository, SkillRepository>();
 
             builder.Services.AddScoped<IRateRepository, RateRepository>();
+            builder.Services.AddScoped<IApplicationUserRepository, ApplicationUserRepository>();
 
             // Registering the Generic Repository inside the application container.
             builder.Services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
@@ -113,6 +117,7 @@ namespace Shoghlana.Api
             builder.Services.AddScoped<IProjectService, ProjectService>();
             builder.Services.AddScoped<IRateService, RateService>();
             builder.Services.AddScoped<IProposalImageService, ProposalImageService>();
+           // builder.Services.AddScoped<IGoogleAuthService, GoogleAuthService>();
 
             builder.Services.AddAutoMapper(typeof(Program));
 

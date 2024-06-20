@@ -31,6 +31,9 @@ namespace Shoghlana.Core.Interfaces
 
         IRateRepository rateRepository { get; }
 
+        public IApplicationUserRepository ApplicationUserRepository { get; }
+
+
         //------------------------------------------------------
 
         public int Save();

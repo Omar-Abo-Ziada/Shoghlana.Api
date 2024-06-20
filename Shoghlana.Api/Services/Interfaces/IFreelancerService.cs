@@ -13,7 +13,7 @@ namespace Shoghlana.Api.Services.Interfaces
 
         public ActionResult<GeneralResponse> GetById(int id);
 
-        public Task<ActionResult<GeneralResponse>> AddAsync([FromForm] AddFreelancerDTO addedFreelancerDTO);
+        public Task<ActionResult<GeneralResponse>> AddAsync(AddFreelancerDTO addedFreelancerDTO);
                
         public Task<ActionResult<GeneralResponse>> UpdateAsync(int id, [FromForm] AddFreelancerDTO addedFreelancerDTO);
 

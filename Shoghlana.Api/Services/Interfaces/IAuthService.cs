@@ -1,4 +1,6 @@
-﻿using Shoghlana.Core.Models;
+﻿using Shoghlana.Api.Response;
+using Shoghlana.Core.DTO;
+using Shoghlana.Core.Models;
 
 namespace Shoghlana.Api.Services.Interfaces
 {
@@ -13,5 +15,14 @@ namespace Shoghlana.Api.Services.Interfaces
         Task<AuthModel> RefreshTokenAsync(string token);
 
         Task<bool> RevokeTokenAsync(string token);
+
+
+
+        // google authentication
+        Task<ApplicationUser> GetByIdAsync(string id);
+        Task<ApplicationUser> GetByEmailAsync(string email);
+        Task<GeneralResponse> GoogleAuthentication(GoogleSignupDto googleSignupDto);
+        Task<GeneralResponse> IsGmailTokenValidAsync(string GmailToken);
+
     }
 }

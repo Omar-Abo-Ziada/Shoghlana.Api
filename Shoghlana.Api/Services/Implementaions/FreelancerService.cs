@@ -71,50 +71,61 @@ namespace Shoghlana.Api.Services.Implementaions
         }
 
         [HttpPost]
-        public async Task<ActionResult<GeneralResponse>> AddAsync([FromForm] AddFreelancerDTO addedFreelancerDTO)
+        public async Task<ActionResult<GeneralResponse>> AddAsync( AddFreelancerDTO addedFreelancerDTO)
         {
-            if (addedFreelancerDTO.PersonalImageBytes is null)
+            Freelancer freelancer;
+            if (addedFreelancerDTO.PersonalImageBytes is not null)
             {
-                return new GeneralResponse()
+                //return new GeneralResponse()
+                //{
+                //    IsSuccess = false,
+                //    Status = 400,
+                //    Message = "Personal Image is required"
+                //};
+
+                if (!allowedExtensions.Contains(Path.GetExtension(addedFreelancerDTO.PersonalImageBytes.FileName).ToLower()))
                 {
-                    IsSuccess = false,
-                    Status = 400,
-                    Message = "Personal Image is required"
+                    return new GeneralResponse()
+                    {
+                        IsSuccess = false,
+                        Status = 400,
+                        Message = "The allowed Personal Image Extensions => {jpg , png}",
+                    };
+                }
+
+                if (addedFreelancerDTO.PersonalImageBytes.Length > maxAllowedPersonalImageSize)
+                {
+                    return new GeneralResponse()
+                    {
+                        IsSuccess = false,
+                        Status = 400,
+                        Message = "The max Allowed Personal Image Size => 1 MB ",
+                    };
+                }
+
+                using var dataStream = new MemoryStream();
+
+                await addedFreelancerDTO.PersonalImageBytes.CopyToAsync(dataStream);
+
+                freelancer = new Freelancer()
+                {
+                    Name = addedFreelancerDTO.Name,
+                    Title = addedFreelancerDTO.Title,
+                    Address = addedFreelancerDTO.Address,
+                    Overview = addedFreelancerDTO.Overview,
+                    PersonalImageBytes = dataStream?.ToArray(),
                 };
             }
 
-            if (!allowedExtensions.Contains(Path.GetExtension(addedFreelancerDTO.PersonalImageBytes.FileName).ToLower()))
-            {
-                return new GeneralResponse()
-                {
-                    IsSuccess = false,
-                    Status = 400,
-                    Message = "The allowed Personal Image Extensions => {jpg , png}",
-                };
-            }
-
-            if (addedFreelancerDTO.PersonalImageBytes.Length > maxAllowedPersonalImageSize)
-            {
-                return new GeneralResponse()
-                {
-                    IsSuccess = false,
-                    Status = 400,
-                    Message = "The max Allowed Personal Image Size => 1 MB ",
-                };
-            }
-
-            using var dataStream = new MemoryStream();
-
-            await addedFreelancerDTO.PersonalImageBytes.CopyToAsync(dataStream);
-
-            Freelancer freelancer = new Freelancer()
+            freelancer = new Freelancer()
             {
                 Name = addedFreelancerDTO.Name,
                 Title = addedFreelancerDTO.Title,
                 Address = addedFreelancerDTO.Address,
                 Overview = addedFreelancerDTO.Overview,
-                PersonalImageBytes = dataStream.ToArray(),
             };
+
+
 
             Freelancer addedFreelancer = await _unitOfWork.freelancerRepository.AddAsync(freelancer);
 
@@ -131,7 +142,7 @@ namespace Shoghlana.Api.Services.Implementaions
             };
             //freelancer = mapper.Map<FreelancerDTO, Freelancer>(freelancerDTO);
         }
-
+        
         [HttpPut("{id:int}")]
         public async Task<ActionResult<GeneralResponse>> UpdateAsync(int id, [FromForm] AddFreelancerDTO addedFreelancerDTO)
         {

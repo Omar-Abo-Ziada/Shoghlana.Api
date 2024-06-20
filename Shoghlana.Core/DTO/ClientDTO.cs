@@ -21,14 +21,14 @@ namespace Shoghlana.Core.DTO
 
         public IFormFile? Image { get; set; }
 
-        public DateTime RegisterationTime { get; set; }
+        public DateTime RegisterationTime { get; set; } = DateTime.Now;
 
         public string? Country { get; set; }
 
         public string? Phone { get; set; }
 
-        public int JobsCount { get; set; }
+        public int? JobsCount { get; set; }
 
-        public int CompletedJobsCount { get; set; }
+        public int? CompletedJobsCount { get; set; }
     }
 }
