@@ -70,7 +70,7 @@ namespace Shoghlana.Api.Services.Implementaions
             PaginatedListDTO<Job> paginatedJobs = _unitOfWork.jobRepository
                   .GetPaginatedJobs(MinBudget, MaxBudget, CategoryId, ClientId, FreelancerId, page, pageSize, includes);
 
-            if(paginatedJobs.Items is null)
+            if(paginatedJobs.Items is null) 
             {
                 return new GeneralResponse()
                 {
@@ -82,7 +82,7 @@ namespace Shoghlana.Api.Services.Implementaions
                         TotalItems = paginatedJobs.TotalItems,
                         Items = null
                     },
-                    Status = 200 , 
+                    Status = 400 , 
                     Message = "No Jobs Found with this filteration"
                 };
             }
