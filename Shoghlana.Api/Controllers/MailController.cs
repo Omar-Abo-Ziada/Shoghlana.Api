@@ -43,7 +43,7 @@ namespace Shoghlana.Api.Controllers
             else
             {
                 var token = await _userManager.GenerateEmailConfirmationTokenAsync(user);
-                string confirmationLink = Url.Action("ConfirmEmail", "Auth", new { userEmail = user.Email, token }, Request.Scheme);
+                string confirmationLink = Url.Action("ConfirmEmail", "Mail", new { userEmail = user.Email, token }, Request.Scheme);
 
                 string subject = "Email Confirmation";
                 string body = $"<h1>Welcome to Shoghlana!</h1>" +
@@ -59,6 +59,50 @@ namespace Shoghlana.Api.Controllers
                     Status = 200,
                     Message = " mail sent  "
 
+                };
+            }
+        }
+
+        [HttpGet("ConfirmEmail")]
+
+        public async Task<GeneralResponse> ConfirmEmail(string userEmail, string token)
+        {
+            var user = await _userManager.FindByEmailAsync(userEmail);
+            if (user == null)
+            {
+                return new GeneralResponse
+                {
+                    IsSuccess = false,
+                    Status = 400,
+                    Data = null,
+                    Message = "Invalid mail address"
+                };
+            }
+
+            var result = await _userManager.ConfirmEmailAsync(user, token);
+            if (result.Succeeded)
+            {
+                user.EmailConfirmed = true;
+                var jwtSecurityToken = await _authservice.CreateJwtToken(user);
+
+                await _userManager.UpdateAsync(user);
+                return new GeneralResponse()
+                {
+                    IsSuccess = true,
+                    Data = user.Email,
+                    Status = 200,
+                    Message = "Email confirmed successfully",
+                    Token = jwtSecurityToken.ToString()
+                };
+            }
+            else
+            {
+                return new GeneralResponse()
+                {
+                    IsSuccess = false,
+                    Status = 400,
+                    Data = result.Errors,
+                    Message = "Error confirming email"
                 };
             }
         }
