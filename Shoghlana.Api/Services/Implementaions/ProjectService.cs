@@ -109,7 +109,7 @@ namespace Shoghlana.Api.Services.Implementaions
 
         public ActionResult<GeneralResponse> GetById(int id)
         {
-            Project? project = _unitOfWork.projectRepository.Find(includes: ["skills", "Images" ], criteria: p => p.Id == id);
+            Project? project = _unitOfWork.projectRepository.Find(includes: ["Skills", "Images" ], criteria: p => p.Id == id);
 
             if (project == null)
             {
