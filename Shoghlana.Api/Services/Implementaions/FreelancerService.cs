@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore.Query.SqlExpressions;
 using Shoghlana.Api.Response;
 using Shoghlana.Api.Services.Implementations;
 using Shoghlana.Api.Services.Interfaces;
@@ -25,8 +26,9 @@ namespace Shoghlana.Api.Services.Implementaions
 
         [HttpGet]
         public ActionResult<GeneralResponse> GetAll()
-        {
-            List<Freelancer> freelancers = _unitOfWork.freelancerRepository.FindAll(includes: ["Skills"]).ToList();
+        { 
+            List<Freelancer> freelancers = _unitOfWork.freelancerRepository
+                                           .FindAll(includes: ["Skills"]).ToList();
 
             List<FreelancerDTO> freelancerDTOs = new List<FreelancerDTO>(freelancers.Count);
 
@@ -48,7 +50,8 @@ namespace Shoghlana.Api.Services.Implementaions
         [HttpGet("{id:int}")]
         public ActionResult<GeneralResponse> GetById(int id)
         {
-            Freelancer? freelancer = _unitOfWork.freelancerRepository.Find(criteria: null, includes: ["Skills"]);
+            Freelancer? freelancer = _unitOfWork.freelancerRepository
+                                     .Find(criteria: f => f.Id == id, includes: ["Skills", "Portfolio"]);
 
             if (freelancer is null)
             {
@@ -60,13 +63,54 @@ namespace Shoghlana.Api.Services.Implementaions
                 };
             }
 
-            FreelancerDTO freelancerDTO = mapper.Map<Freelancer, FreelancerDTO>(freelancer);
+            //FreelancerDTO freelancerDTO = mapper.Map<Freelancer, FreelancerDTO>(freelancer);
+            GetFreelancerDTO GetFreelancerDTO = new GetFreelancerDTO()
+            {
+                Id = freelancer.Id,
+                Name = freelancer.Name,
+                Address = freelancer.Address,
+                Overview = freelancer.Overview,
+                PersonalImageBytes = freelancer.PersonalImageBytes,
+                Title = freelancer.Title
+            };
+
+            List<Skill> Skills = new List<Skill>();
+            foreach(FreelancerSkills FreelancerSkill in freelancer.Skills)
+            {
+              Skill? skill = _unitOfWork.skillRepository.GetById(FreelancerSkill.SkillId);
+                Skills.Add(skill);
+            } 
+            List<SkillDTO> SkillsDtos = mapper.Map<List<Skill>, List<SkillDTO>>(Skills);
+            GetFreelancerDTO.skills = SkillsDtos;
+
+            List<GetProjectDTO> getProjectsDTOs = new List<GetProjectDTO>();
+            getProjectsDTOs = mapper.Map <List<Project> , List<GetProjectDTO>> (freelancer.Portfolio);
+
+
+            for(int i = 0; i < freelancer.Portfolio.Count; i++)
+            {
+                List<int> ProjectSkillsIds = _unitOfWork.projectSkillsRepository
+                                            .FindAll(criteria: ps => ps.ProjectId == freelancer.Portfolio[i].Id)
+                                            .Select(ps => ps.SkillId).ToList();
+
+                List<Skill> ProjectSkills = new List<Skill>();
+                foreach(int skillId in ProjectSkillsIds)
+                {
+                    Skill skill = _unitOfWork.skillRepository.GetById(skillId);
+                    ProjectSkills.Add(skill);
+                }
+
+                List<SkillDTO> skillDTOs = mapper.Map<List<Skill>, List<SkillDTO>>(ProjectSkills);
+                getProjectsDTOs[i].Skills = skillDTOs;
+            }
+           
+            GetFreelancerDTO.Portfolio = getProjectsDTOs;
 
             return new GeneralResponse()
             {
                 IsSuccess = true,
                 Status = 200,
-                Data = freelancerDTO
+                Data = GetFreelancerDTO 
             };
         }
 
@@ -117,15 +161,17 @@ namespace Shoghlana.Api.Services.Implementaions
                 };
             }
 
-            freelancer = new Freelancer()
+            else
             {
-                Name = addedFreelancerDTO.Name,
-                Title = addedFreelancerDTO.Title,
-                Address = addedFreelancerDTO.Address,
-                Overview = addedFreelancerDTO.Overview,
-            };
-
-
+                freelancer = new Freelancer()
+                {
+                    Name = addedFreelancerDTO.Name,
+                    Title = addedFreelancerDTO.Title,
+                    Address = addedFreelancerDTO.Address,
+                    Overview = addedFreelancerDTO.Overview,
+                };
+            }
+          
 
             Freelancer addedFreelancer = await _unitOfWork.freelancerRepository.AddAsync(freelancer);
 
