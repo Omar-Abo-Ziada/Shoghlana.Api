@@ -94,7 +94,7 @@ namespace Shoghlana.Api.Services.Implementaions
 
             _unitOfWork.Save();
 
-            if (existingJob.FreelancerId.HasValue)
+            if (existingJob.AcceptedFreelancerId.HasValue)
             {
                 Client? client = _unitOfWork.clientRepository.GetById((int)existingJob.ClientId);
 
@@ -109,7 +109,7 @@ namespace Shoghlana.Api.Services.Implementaions
                         senderImage = client.Image
                     };
 
-                    await NotifyFreelancer(existingJob.FreelancerId.Value, notificationDto);
+                    await NotifyFreelancer(existingJob.AcceptedFreelancerId.Value, notificationDto);
                 }
             }
 

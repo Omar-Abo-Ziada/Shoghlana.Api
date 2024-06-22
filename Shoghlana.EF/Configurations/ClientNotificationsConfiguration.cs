@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection.Emit;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -16,6 +17,9 @@ namespace Shoghlana.EF.Configurations
         {
 
             builder.HasKey(cn => cn.ClientId);
+
+            builder.Property(cn => cn.Title).IsRequired().HasMaxLength(50);
+            builder.Property(cn => cn.description).IsRequired(false).HasMaxLength(100);
 
             builder.HasOne(cn => cn.Client)
                       .WithMany(c => c.Notifications)

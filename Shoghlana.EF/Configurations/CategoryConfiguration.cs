@@ -9,6 +9,10 @@ namespace Shoghlana.EF.Configurations
     {
         public void Configure(EntityTypeBuilder<Category> builder)
         {
+            builder.Property(c => c.Title).IsRequired().HasMaxLength(50);
+
+            builder.Property(c => c.Description).IsRequired(false).HasMaxLength(200);
+
             builder.HasData(
                 new Category { Id = 1, Title = "خدمات التصميم", Description = "تشمل كافة الخدمات المتعلقة بالتصميم الجرافيكي، التصميم الصناعي، وتصميم الويب." },
                 new Category { Id = 2, Title = "خدمات برمجية", Description = "تشمل كتابة وتطوير التطبيقات والبرمجيات لمختلف الأنظمة والأجهزة." },
