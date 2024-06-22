@@ -27,7 +27,7 @@ namespace Shoghlana.Core.DTO
 
         public List<GetProjectDTO>? Portfolio { get; set; }
 
-        public List<JobDTO>? WorkingHistory { get; set; }
+        public List<GetJobDTO>? WorkingHistory { get; set; }
 
         public List<GetProposalDTO>? Proposals { get; set; }
 

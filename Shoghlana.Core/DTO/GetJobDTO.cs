@@ -1,8 +1,13 @@
 ﻿using Shoghlana.Core.Enums;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace Shoghlana.Core.DTO
 {
-    public class JobDTO
+    public class GetJobDTO
     {
         public int Id { get; set; }
 
@@ -54,6 +59,7 @@ namespace Shoghlana.Core.DTO
 
         public string? CategoryTitle { get; set; }
 
-       // public RateDTO? Rate { get; set; } // added manually after the freelancer finshes => the client gives him a rate
+        public RateDTO? Rate { get; set; } // added manually after the freelancer finshes => the client gives him a rate
+
     }
 }
