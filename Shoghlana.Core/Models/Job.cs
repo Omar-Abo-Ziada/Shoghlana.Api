@@ -31,7 +31,7 @@ namespace Shoghlana.Core.Models
 
         public Rate? Rate { get; set; }
 
-        public JobStatus Status { get; set; }
+        public JobStatus Status { get; set; } 
 
         //---------------------------------------------
 
@@ -43,7 +43,7 @@ namespace Shoghlana.Core.Models
 
         public Freelancer Freelancer { get; set; }
 
-        public int? CategoryId { get; set; }
+        public int CategoryId { get; set; }
 
         public Category Category { get; set; }
     }

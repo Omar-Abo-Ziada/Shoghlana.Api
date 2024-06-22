@@ -25,13 +25,13 @@ namespace Shoghlana.Core.Models
 
         public string? Overview { get; set; }
 
-        public List<Project>? Portfolio { get; set; }
+        public List<Project>? Portfolio { get; set; } 
 
-        public List<Job>? WorkingHistory { get; set; }
+        public List<Job>? WorkingHistory { get; set; } 
 
-        public List<Proposal>? Proposals { get; set; }
+        public List<Proposal>? Proposals { get; set; } 
 
-        public List<FreelancerSkills>? Skills { get; set; }
+        public List<FreelancerSkills>? Skills { get; set; } 
 
         public List<FreelancerNotification>? Notifications { get; set; }
 
