@@ -22,6 +22,8 @@ namespace Shoghlana.Core.Enums
         Closed = 1,
 
         completed = 2,
+
+        All = 3,
     }
 
     public enum ProposalStatus
@@ -43,7 +45,7 @@ namespace Shoghlana.Core.Enums
     public enum UserRole
     {
         Freelancer = 0,
+
         Client = 1
     }
 }
-//
