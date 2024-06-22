@@ -63,11 +63,11 @@ namespace Shoghlana.Api.Services.Implementaions
         }
 
         public ActionResult<GeneralResponse> GetPaginatedJobs
-         (JobStatus? status , int? MinBudget , int? MaxBudget , int? ClientId , int? FreelancerId , 
-            int page , int pageSize , PaginatedJobsRequestBody requestBody )
+         (JobStatus? status , int? MinBudget , int? MaxBudget , int? ClientId , int? FreelancerId , bool? HasManyProposals,
+          bool? IsNew , int page , int pageSize , PaginatedJobsRequestBody requestBody )
         {
             PaginatedListDTO<Job> paginatedJobs = _unitOfWork.jobRepository
-                  .GetPaginatedJobs(status , MinBudget, MaxBudget,ClientId, FreelancerId, page, pageSize, requestBody);
+                  .GetPaginatedJobs(status , MinBudget, MaxBudget,ClientId, FreelancerId, HasManyProposals, IsNew, page, pageSize, requestBody);
 
             if(paginatedJobs.Items is null) 
             {

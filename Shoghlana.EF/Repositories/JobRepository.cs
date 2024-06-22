@@ -15,7 +15,8 @@ namespace Shoghlana.EF.Repositories
         }
 
         public PaginatedListDTO<Job> GetPaginatedJobs
-           (JobStatus? status, int? MinBudget, int? MaxBudget, int? ClientId, int? FreelancerId, int page, int pageSize, PaginatedJobsRequestBody requestBody)
+           (JobStatus? status, int? MinBudget, int? MaxBudget, int? ClientId, int? FreelancerId, bool? HasManyProposals, bool? IsNew,
+            int page, int pageSize, PaginatedJobsRequestBody requestBody)
         {
             IQueryable<Job> query = dbSet;
 
@@ -52,6 +53,19 @@ namespace Shoghlana.EF.Repositories
             if (FreelancerId > 0 && FreelancerId is not null)
             {
                 query = query.Where(j => j.AcceptedFreelancerId == FreelancerId);
+            }
+
+            if(HasManyProposals is not null)
+            {
+                switch (HasManyProposals) 
+                {
+                    case true:
+                        query = query.Where(j => j.ProposalsCount > 5);
+                        break;
+                    case false:
+                        query = query.Where(j => j.ProposalsCount <= 5);
+                        break;
+                }
             }
 
             if (requestBody?.Includes is not null && requestBody.Includes.Any())

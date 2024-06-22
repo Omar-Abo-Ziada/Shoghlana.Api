@@ -32,9 +32,10 @@ namespace Shoghlana.Api.Controllers
 
         [HttpPost("pagination")]
         public ActionResult<GeneralResponse> GetPaginatedJobs
-          (int? MinBudget, int? MaxBudget, int? ClientId, int? FreelancerId, int page = defaultPageNumber, int pageSize = defaultPageSize, JobStatus? status = JobStatus.All, PaginatedJobsRequestBody requestBody = null)
+          (int? MinBudget, int? MaxBudget, int? ClientId, int? FreelancerId , bool? HasManyProposals , bool? IsNew, int page = defaultPageNumber, int pageSize = defaultPageSize, JobStatus? status = JobStatus.All
+            , PaginatedJobsRequestBody requestBody = null)
         {
-            return jobService.GetPaginatedJobs(status, MinBudget, MaxBudget, ClientId, FreelancerId, page, pageSize, requestBody);
+            return jobService.GetPaginatedJobs(status, MinBudget, MaxBudget, ClientId, FreelancerId , HasManyProposals, IsNew, page, pageSize, requestBody);
         }
 
         [HttpPost("paginationAsync")]

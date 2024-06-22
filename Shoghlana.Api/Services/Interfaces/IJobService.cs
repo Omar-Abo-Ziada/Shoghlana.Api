@@ -16,7 +16,7 @@ namespace Shoghlana.Api.Services.Interfaces
         public ActionResult<GeneralResponse> GetAll();
 
         public ActionResult<GeneralResponse> GetPaginatedJobs
-        (JobStatus? status , int? MinBudget, int? MaxBudget, int? ClientId, int? FreelancerId,int page, int pageSize, PaginatedJobsRequestBody requestBody);
+        (JobStatus? status , int? MinBudget, int? MaxBudget, int? ClientId, int? FreelancerId, bool? HasManyProposals, bool? IsNew , int page, int pageSize, PaginatedJobsRequestBody requestBody);
 
         public Task<ActionResult<GeneralResponse>> GetPaginatedJobsAsync
         (JobStatus? status, int? MinBudget, int? MaxBudget, int? ClientId, int? FreelancerId, int page, int pageSize, PaginatedJobsRequestBody requestBody);
