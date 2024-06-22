@@ -9,7 +9,7 @@ namespace Shoghlana.Core.DTO
 {
     public class AddProposalImageDTO
     {
-        //public int Id { get; set; }
+        //public int Id { get; set; }   
 
         public IFormFile? Image { get; set; }
 

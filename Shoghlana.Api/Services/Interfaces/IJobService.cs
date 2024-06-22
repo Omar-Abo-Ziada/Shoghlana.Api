@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Shoghlana.Api.Response;
 using Shoghlana.Api.Services.Implementaions;
 using Shoghlana.Core.DTO;
+using Shoghlana.Core.Enums;
 using Shoghlana.Core.Models;
 using Shoghlana.EF.Repositories;
 using System.Drawing.Printing;
@@ -15,10 +16,10 @@ namespace Shoghlana.Api.Services.Interfaces
         public ActionResult<GeneralResponse> GetAll();
 
         public ActionResult<GeneralResponse> GetPaginatedJobs
-        (int MinBudget, int MaxBudget, int CategoryId, int ClientId, int FreelancerId,int page, int pageSize, string[] includes = null);
+        (JobStatus? status , int? MinBudget, int? MaxBudget, int? ClientId, int? FreelancerId,int page, int pageSize, PaginatedJobsRequestBody requestBody);
 
         public Task<ActionResult<GeneralResponse>> GetPaginatedJobsAsync
-        (int MinBudget, int MaxBudget, int CategoryId, int ClientId, int FreelancerId,int page, int pageSize, string[] includes = null);
+        (JobStatus? status, int? MinBudget, int? MaxBudget, int? ClientId, int? FreelancerId, int page, int pageSize, PaginatedJobsRequestBody requestBody);
 
         public ActionResult<GeneralResponse> Get(int id);
 
