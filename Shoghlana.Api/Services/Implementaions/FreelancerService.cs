@@ -107,10 +107,10 @@ namespace Shoghlana.Api.Services.Implementaions
             GetFreelancerDTO.Portfolio = getProjectsDTOs;
 
 
-            List<JobDTO> jobDTOs = new List<JobDTO>();
+            List<GetJobDTO> jobDTOs = new List<GetJobDTO>();
             foreach(Job job in freelancer.WorkingHistory)
             {
-                JobDTO jobDto = mapper.Map<Job, JobDTO>(job);
+                GetJobDTO jobDto = mapper.Map<Job, GetJobDTO>(job);
                 Rate? rate = _unitOfWork.rateRepository.Find(r => r.JobId == job.Id);
                 RateDTO rateDto = mapper.Map<Rate, RateDTO>(rate);
                 jobDto.Rate = rateDto;

@@ -4,7 +4,7 @@ namespace Shoghlana.Core.DTO
 {
     public class SkillDTO
     {
-        //public int Id { get; set; }
+        public int Id { get; set; }
 
         [Required(ErrorMessage = "Title is required")]
         [MinLength(1, ErrorMessage = "Title must be at least 1 character long")]

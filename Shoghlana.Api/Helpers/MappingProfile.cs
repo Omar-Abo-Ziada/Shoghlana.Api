@@ -19,6 +19,9 @@ namespace Shoghlana.Api.Helpers
             CreateMap<SkillDTO, JobSkills>();
             CreateMap<JobSkills, SkillDTO>();
 
+            CreateMap<Skill, SkillDTO>();
+            CreateMap<SkillDTO, Skill>();
+
             CreateMap<Project, GetProjectDTO>();
             CreateMap<GetProjectDTO, Project>();
 
@@ -30,6 +33,10 @@ namespace Shoghlana.Api.Helpers
 
             CreateMap<Job, JobDTO>(); 
             CreateMap<JobDTO, Job>();
+
+            CreateMap<GetJobDTO, Job>();
+            CreateMap<Job, GetJobDTO>();
+
 
             CreateMap<GetProposalDTO, Proposal>();
             CreateMap<Proposal, GetProposalDTO>();
