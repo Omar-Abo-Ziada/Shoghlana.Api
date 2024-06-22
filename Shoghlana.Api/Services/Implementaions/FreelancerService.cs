@@ -51,7 +51,7 @@ namespace Shoghlana.Api.Services.Implementaions
         public ActionResult<GeneralResponse> GetById(int id)
         {
             Freelancer? freelancer = _unitOfWork.freelancerRepository
-                                     .Find(criteria: f => f.Id == id, includes: ["Skills", "Portfolio"]);
+                                     .Find(criteria: f => f.Id == id, includes: ["Skills", "Portfolio", "WorkingHistory"]);
 
             if (freelancer is null)
             {
@@ -105,6 +105,20 @@ namespace Shoghlana.Api.Services.Implementaions
             }
            
             GetFreelancerDTO.Portfolio = getProjectsDTOs;
+
+
+            List<JobDTO> jobDTOs = new List<JobDTO>();
+            foreach(Job job in freelancer.WorkingHistory)
+            {
+                JobDTO jobDto = mapper.Map<Job, JobDTO>(job);
+                Rate? rate = _unitOfWork.rateRepository.Find(r => r.JobId == job.Id);
+                RateDTO rateDto = mapper.Map<Rate, RateDTO>(rate);
+                jobDto.Rate = rateDto;
+                Category category = _unitOfWork.categoryRepository.GetById(job.CategoryId);
+                jobDto.CategoryTitle = category.Title;
+                jobDTOs.Add(jobDto);
+            }
+            GetFreelancerDTO.WorkingHistory = jobDTOs;
 
             return new GeneralResponse()
             {
