@@ -12,8 +12,8 @@ using Shoghlana.EF;
 namespace Shoghlana.EF.Migrations
 {
     [DbContext(typeof(ApplicationDBContext))]
-    [Migration("20240618235316_Jobs_ClientID")]
-    partial class Jobs_ClientID
+    [Migration("20240622163538_Init")]
+    partial class Init
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -54,22 +54,22 @@ namespace Shoghlana.EF.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "17732e3f-5b88-467d-826f-b88430b5f0b2",
-                            ConcurrencyStamp = "e7f055d1-97b3-49a9-be21-5b2f586522f2",
+                            Id = "60f84e9d-3305-46fa-838e-d119f68ac222",
+                            ConcurrencyStamp = "268773d7-9f69-42c2-a973-c4141d77bed0",
                             Name = "Admin",
                             NormalizedName = "ADMIN"
                         },
                         new
                         {
-                            Id = "aa088447-8a04-49df-8897-dd86f754369a",
-                            ConcurrencyStamp = "16687aaa-e22f-48a0-b581-b78746fb4095",
+                            Id = "9b047ef8-fac8-42aa-b72e-c75f01124b4f",
+                            ConcurrencyStamp = "c8640980-7ebf-4297-8654-b8f6fde0e0c9",
                             Name = "Client",
                             NormalizedName = "CLIENT"
                         },
                         new
                         {
-                            Id = "b1507d85-b4da-4a29-bc21-bfd0dd795842",
-                            ConcurrencyStamp = "55aa8cb3-5c6a-440c-8048-9c51135b3303",
+                            Id = "fecebe08-eea1-4b8a-8b91-e8f957bd57a5",
+                            ConcurrencyStamp = "c90b6d05-5fcf-46f1-8e7a-3280c994a443",
                             Name = "Freelancer",
                             NormalizedName = "FREELANCER"
                         });
@@ -302,11 +302,13 @@ namespace Shoghlana.EF.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Description")
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
 
                     b.Property<string>("Title")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
                     b.HasKey("Id");
 
@@ -394,7 +396,7 @@ namespace Shoghlana.EF.Migrations
                             Description = "مبرمج ومطور تطبيقات متخصص في تطوير الويب",
                             Name = "عبد الرحمن أحمد",
                             Phone = "+966123456789",
-                            RegisterationTime = new DateTime(2023, 12, 19, 2, 53, 14, 545, DateTimeKind.Local).AddTicks(9850)
+                            RegisterationTime = new DateTime(2023, 12, 22, 19, 35, 37, 537, DateTimeKind.Local).AddTicks(7552)
                         },
                         new
                         {
@@ -403,7 +405,7 @@ namespace Shoghlana.EF.Migrations
                             Description = "مصممة جرافيك محترفة تعمل في تصميم اللوجوهات والبوسترات",
                             Name = "فاطمة محمد",
                             Phone = "+201234567890",
-                            RegisterationTime = new DateTime(2023, 6, 19, 2, 53, 14, 545, DateTimeKind.Local).AddTicks(9927)
+                            RegisterationTime = new DateTime(2023, 6, 22, 19, 35, 37, 537, DateTimeKind.Local).AddTicks(7665)
                         },
                         new
                         {
@@ -412,7 +414,7 @@ namespace Shoghlana.EF.Migrations
                             Description = "مسوق رقمي محترف بخبرة في إدارة الحملات الإعلانية عبر وسائل التواصل الاجتماعي",
                             Name = "علي العبدالله",
                             Phone = "+971123456789",
-                            RegisterationTime = new DateTime(2024, 3, 19, 2, 53, 14, 545, DateTimeKind.Local).AddTicks(9932)
+                            RegisterationTime = new DateTime(2024, 3, 22, 19, 35, 37, 537, DateTimeKind.Local).AddTicks(7673)
                         },
                         new
                         {
@@ -421,7 +423,7 @@ namespace Shoghlana.EF.Migrations
                             Description = "كاتبة محتوى متخصصة في الكتابة الإبداعية والمقالات الفنية",
                             Name = "مريم حسن",
                             Phone = "+962123456789",
-                            RegisterationTime = new DateTime(2023, 9, 19, 2, 53, 14, 545, DateTimeKind.Local).AddTicks(9936)
+                            RegisterationTime = new DateTime(2023, 9, 22, 19, 35, 37, 537, DateTimeKind.Local).AddTicks(7681)
                         },
                         new
                         {
@@ -430,7 +432,7 @@ namespace Shoghlana.EF.Migrations
                             Description = "مصور فوتوغرافي متخصص في تصوير الأحداث والمناسبات الخاصة",
                             Name = "يوسف خالد",
                             Phone = "+964123456789",
-                            RegisterationTime = new DateTime(2023, 11, 19, 2, 53, 14, 545, DateTimeKind.Local).AddTicks(9941)
+                            RegisterationTime = new DateTime(2023, 11, 22, 19, 35, 37, 537, DateTimeKind.Local).AddTicks(7688)
                         },
                         new
                         {
@@ -439,7 +441,7 @@ namespace Shoghlana.EF.Migrations
                             Description = "مديرة مشروع محترفة في إدارة المشاريع التقنية والتطوير البرمجي",
                             Name = "لمى عبدالله",
                             Phone = "+966123456789",
-                            RegisterationTime = new DateTime(2024, 2, 19, 2, 53, 14, 545, DateTimeKind.Local).AddTicks(9944)
+                            RegisterationTime = new DateTime(2024, 2, 22, 19, 35, 37, 537, DateTimeKind.Local).AddTicks(7694)
                         },
                         new
                         {
@@ -448,7 +450,7 @@ namespace Shoghlana.EF.Migrations
                             Description = "مسوق محتوى إبداعي يعمل على ترويج المحتوى الرقمي للشركات الناشئة",
                             Name = "عمر أحمد",
                             Phone = "+201234567890",
-                            RegisterationTime = new DateTime(2023, 7, 19, 2, 53, 14, 545, DateTimeKind.Local).AddTicks(9949)
+                            RegisterationTime = new DateTime(2023, 7, 22, 19, 35, 37, 537, DateTimeKind.Local).AddTicks(7781)
                         },
                         new
                         {
@@ -457,7 +459,7 @@ namespace Shoghlana.EF.Migrations
                             Description = "مطورة تطبيقات محترفة تعمل في تطوير تطبيقات الهواتف الذكية",
                             Name = "رنا محمود",
                             Phone = "+961123456789",
-                            RegisterationTime = new DateTime(2023, 10, 19, 2, 53, 14, 545, DateTimeKind.Local).AddTicks(9953)
+                            RegisterationTime = new DateTime(2023, 10, 22, 19, 35, 37, 537, DateTimeKind.Local).AddTicks(7790)
                         },
                         new
                         {
@@ -466,7 +468,7 @@ namespace Shoghlana.EF.Migrations
                             Description = "مدير تسويق متخصص في إدارة استراتيجيات التسويق الرقمي",
                             Name = "أحمد علي",
                             Phone = "+962123456789",
-                            RegisterationTime = new DateTime(2024, 1, 19, 2, 53, 14, 545, DateTimeKind.Local).AddTicks(9956)
+                            RegisterationTime = new DateTime(2024, 1, 22, 19, 35, 37, 537, DateTimeKind.Local).AddTicks(7798)
                         },
                         new
                         {
@@ -475,7 +477,7 @@ namespace Shoghlana.EF.Migrations
                             Description = "خبيرة في تصميم وإدارة مواقع الويب للشركات الصغيرة والمتوسطة",
                             Name = "هدى صالح",
                             Phone = "+966123456789",
-                            RegisterationTime = new DateTime(2023, 8, 19, 2, 53, 14, 545, DateTimeKind.Local).AddTicks(9960)
+                            RegisterationTime = new DateTime(2023, 8, 22, 19, 35, 37, 537, DateTimeKind.Local).AddTicks(7805)
                         },
                         new
                         {
@@ -484,7 +486,7 @@ namespace Shoghlana.EF.Migrations
                             Description = "محاسبة مالية محترفة تعمل في مجال إعداد التقارير المالية",
                             Name = "سلمى عبدالله",
                             Phone = "+971123456789",
-                            RegisterationTime = new DateTime(2024, 3, 19, 2, 53, 14, 545, DateTimeKind.Local).AddTicks(9964)
+                            RegisterationTime = new DateTime(2024, 3, 22, 19, 35, 37, 537, DateTimeKind.Local).AddTicks(7811)
                         },
                         new
                         {
@@ -493,7 +495,7 @@ namespace Shoghlana.EF.Migrations
                             Description = "مهندس معماري متخصص في تصميم المباني السكنية",
                             Name = "محمد حسن",
                             Phone = "+201234567890",
-                            RegisterationTime = new DateTime(2023, 11, 19, 2, 53, 14, 545, DateTimeKind.Local).AddTicks(9968)
+                            RegisterationTime = new DateTime(2023, 11, 22, 19, 35, 37, 537, DateTimeKind.Local).AddTicks(7819)
                         },
                         new
                         {
@@ -502,7 +504,7 @@ namespace Shoghlana.EF.Migrations
                             Description = "طبيبة مختصة في طب الأطفال والأمراض النفسية",
                             Name = "زينب عبدالله",
                             Phone = "+964123456789",
-                            RegisterationTime = new DateTime(2024, 4, 19, 2, 53, 14, 545, DateTimeKind.Local).AddTicks(9974)
+                            RegisterationTime = new DateTime(2024, 4, 22, 19, 35, 37, 537, DateTimeKind.Local).AddTicks(7825)
                         },
                         new
                         {
@@ -511,7 +513,7 @@ namespace Shoghlana.EF.Migrations
                             Description = "مصمم جرافيك مبدع يعمل في تصميم الإعلانات التجارية",
                             Name = "أحمد حسين",
                             Phone = "+961123456789",
-                            RegisterationTime = new DateTime(2023, 9, 19, 2, 53, 14, 545, DateTimeKind.Local).AddTicks(9978)
+                            RegisterationTime = new DateTime(2023, 9, 22, 19, 35, 37, 537, DateTimeKind.Local).AddTicks(7832)
                         },
                         new
                         {
@@ -520,7 +522,7 @@ namespace Shoghlana.EF.Migrations
                             Description = "مترجمة محترفة تعمل في ترجمة النصوص الطبية والعلمية",
                             Name = "فاطمة علي",
                             Phone = "+962123456789",
-                            RegisterationTime = new DateTime(2024, 1, 19, 2, 53, 14, 545, DateTimeKind.Local).AddTicks(9982)
+                            RegisterationTime = new DateTime(2024, 1, 22, 19, 35, 37, 537, DateTimeKind.Local).AddTicks(7838)
                         },
                         new
                         {
@@ -529,7 +531,7 @@ namespace Shoghlana.EF.Migrations
                             Description = "مطور ويب محترف في تطوير التطبيقات الإلكترونية",
                             Name = "عبدالله محمود",
                             Phone = "+966123456789",
-                            RegisterationTime = new DateTime(2023, 7, 19, 2, 53, 14, 545, DateTimeKind.Local).AddTicks(9986)
+                            RegisterationTime = new DateTime(2023, 7, 22, 19, 35, 37, 537, DateTimeKind.Local).AddTicks(7844)
                         },
                         new
                         {
@@ -538,7 +540,7 @@ namespace Shoghlana.EF.Migrations
                             Description = "مهندسة معمارية متخصصة في تصميم المنشآت الصناعية",
                             Name = "ريم عبدالله",
                             Phone = "+201234567890",
-                            RegisterationTime = new DateTime(2023, 10, 19, 2, 53, 14, 545, DateTimeKind.Local).AddTicks(9990)
+                            RegisterationTime = new DateTime(2023, 10, 22, 19, 35, 37, 537, DateTimeKind.Local).AddTicks(7851)
                         },
                         new
                         {
@@ -547,7 +549,7 @@ namespace Shoghlana.EF.Migrations
                             Description = "محاسب مالي يتمتع بخبرة واسعة في المحاسبة المالية",
                             Name = "عمر حسن",
                             Phone = "+961123456789",
-                            RegisterationTime = new DateTime(2024, 2, 19, 2, 53, 14, 545, DateTimeKind.Local).AddTicks(9994)
+                            RegisterationTime = new DateTime(2024, 2, 22, 19, 35, 37, 537, DateTimeKind.Local).AddTicks(7857)
                         });
                 });
 
@@ -561,11 +563,12 @@ namespace Shoghlana.EF.Migrations
 
                     b.Property<string>("Title")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
                     b.Property<string>("description")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
 
                     b.Property<DateTime>("sentTime")
                         .HasColumnType("datetime2");
@@ -584,20 +587,25 @@ namespace Shoghlana.EF.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Address")
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
                     b.Property<string>("Overview")
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
 
                     b.Property<byte[]>("PersonalImageBytes")
                         .HasColumnType("varbinary(max)");
 
                     b.Property<string>("Title")
-                        .HasColumnType("nvarchar(max)");
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
                     b.HasKey("Id");
 
@@ -699,11 +707,12 @@ namespace Shoghlana.EF.Migrations
 
                     b.Property<string>("Title")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
                     b.Property<string>("description")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
 
                     b.Property<DateTime>("sentTime")
                         .HasColumnType("datetime2");
@@ -738,20 +747,30 @@ namespace Shoghlana.EF.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
+                    b.Property<int?>("AcceptedFreelancerId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime?>("ApproveTime")
+                        .HasColumnType("datetime2");
+
                     b.Property<int?>("CategoryId")
                         .HasColumnType("int");
 
                     b.Property<int>("ClientId")
                         .HasColumnType("int");
 
+                    b.Property<DateTime?>("DeadLine")
+                        .HasColumnType("datetime2");
+
                     b.Property<string>("Description")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(1000)
+                        .HasColumnType("nvarchar(1000)");
 
-                    b.Property<int>("ExperienceLevel")
+                    b.Property<int>("DurationInDays")
                         .HasColumnType("int");
 
-                    b.Property<int?>("FreelancerId")
+                    b.Property<int>("ExperienceLevel")
                         .HasColumnType("int");
 
                     b.Property<decimal>("MaxBudget")
@@ -763,6 +782,9 @@ namespace Shoghlana.EF.Migrations
                     b.Property<DateTime>("PostTime")
                         .HasColumnType("datetime2");
 
+                    b.Property<int?>("ProposalsCount")
+                        .HasColumnType("int");
+
                     b.Property<int>("Status")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
@@ -770,15 +792,16 @@ namespace Shoghlana.EF.Migrations
 
                     b.Property<string>("Title")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("AcceptedFreelancerId");
 
                     b.HasIndex("CategoryId");
 
                     b.HasIndex("ClientId");
-
-                    b.HasIndex("FreelancerId");
 
                     b.ToTable("Jobs");
 
@@ -786,72 +809,537 @@ namespace Shoghlana.EF.Migrations
                         new
                         {
                             Id = 1,
+                            AcceptedFreelancerId = 1,
                             CategoryId = 1,
                             ClientId = 1,
                             Description = "تصميم وأعمال فنية احترافية",
+                            DurationInDays = 0,
                             ExperienceLevel = 0,
-                            FreelancerId = 1,
                             MaxBudget = 500m,
                             MinBudget = 100m,
-                            PostTime = new DateTime(2024, 6, 19, 2, 53, 14, 548, DateTimeKind.Local).AddTicks(8766),
+                            PostTime = new DateTime(2024, 6, 22, 19, 35, 37, 543, DateTimeKind.Local).AddTicks(1694),
+                            ProposalsCount = 0,
                             Status = 0,
                             Title = "تصميم شعار احترافي ومميز"
                         },
                         new
                         {
                             Id = 2,
+                            AcceptedFreelancerId = 2,
                             CategoryId = 1,
                             ClientId = 2,
                             Description = "تصميم وأعمال فنية إدارية",
+                            DurationInDays = 0,
                             ExperienceLevel = 1,
-                            FreelancerId = 2,
                             MaxBudget = 700m,
                             MinBudget = 200m,
-                            PostTime = new DateTime(2024, 6, 19, 2, 53, 14, 548, DateTimeKind.Local).AddTicks(8825),
+                            PostTime = new DateTime(2024, 6, 22, 19, 35, 37, 543, DateTimeKind.Local).AddTicks(1734),
+                            ProposalsCount = 0,
                             Status = 0,
                             Title = "تصميم بوستر إعلاني لمواقع التواصل"
                         },
                         new
                         {
                             Id = 3,
+                            AcceptedFreelancerId = 3,
                             CategoryId = 1,
                             ClientId = 3,
                             Description = "تصميم بطاقات أعمال",
+                            DurationInDays = 0,
                             ExperienceLevel = 2,
-                            FreelancerId = 3,
                             MaxBudget = 600m,
                             MinBudget = 150m,
-                            PostTime = new DateTime(2024, 6, 19, 2, 53, 14, 548, DateTimeKind.Local).AddTicks(8832),
+                            PostTime = new DateTime(2024, 6, 22, 19, 35, 37, 543, DateTimeKind.Local).AddTicks(1756),
+                            ProposalsCount = 0,
                             Status = 0,
                             Title = "تصميم كارت شخصي احترافي للطباعة"
                         },
                         new
                         {
                             Id = 4,
+                            AcceptedFreelancerId = 4,
                             CategoryId = 2,
                             ClientId = 4,
                             Description = "برمجة وتطوير المواقع والتطبيقات",
+                            DurationInDays = 0,
                             ExperienceLevel = 1,
-                            FreelancerId = 4,
                             MaxBudget = 800m,
                             MinBudget = 300m,
-                            PostTime = new DateTime(2024, 6, 19, 2, 53, 14, 548, DateTimeKind.Local).AddTicks(8882),
+                            PostTime = new DateTime(2024, 6, 22, 19, 35, 37, 543, DateTimeKind.Local).AddTicks(1776),
+                            ProposalsCount = 0,
                             Status = 0,
                             Title = "تركيب لوحة تحكم مجانية مدى الحياة"
                         },
                         new
                         {
                             Id = 5,
+                            AcceptedFreelancerId = 5,
                             CategoryId = 3,
                             ClientId = 5,
                             Description = "برمجة مواقع الإنترنت",
+                            DurationInDays = 0,
                             ExperienceLevel = 0,
-                            FreelancerId = 5,
                             MaxBudget = 700m,
                             MinBudget = 200m,
-                            PostTime = new DateTime(2024, 6, 19, 2, 53, 14, 548, DateTimeKind.Local).AddTicks(8889),
+                            PostTime = new DateTime(2024, 6, 22, 19, 35, 37, 543, DateTimeKind.Local).AddTicks(1796),
+                            ProposalsCount = 0,
                             Status = 0,
                             Title = "تصميم موقع تعريفي للشركات"
+                        },
+                        new
+                        {
+                            Id = 6,
+                            AcceptedFreelancerId = 6,
+                            CategoryId = 4,
+                            ClientId = 6,
+                            Description = "برمجة وتصميم تطبيقات الهواتف الذكية",
+                            DurationInDays = 0,
+                            ExperienceLevel = 2,
+                            MaxBudget = 3000m,
+                            MinBudget = 1000m,
+                            PostTime = new DateTime(2024, 6, 22, 19, 35, 37, 543, DateTimeKind.Local).AddTicks(1816),
+                            ProposalsCount = 0,
+                            Status = 0,
+                            Title = "تطوير تطبيق موبايل لنظام iOS و Android"
+                        },
+                        new
+                        {
+                            Id = 7,
+                            AcceptedFreelancerId = 7,
+                            CategoryId = 3,
+                            ClientId = 7,
+                            Description = "برمجة وتصميم مواقع التسوق عبر الإنترنت",
+                            DurationInDays = 0,
+                            ExperienceLevel = 1,
+                            MaxBudget = 1500m,
+                            MinBudget = 500m,
+                            PostTime = new DateTime(2024, 6, 22, 19, 35, 37, 543, DateTimeKind.Local).AddTicks(1837),
+                            ProposalsCount = 0,
+                            Status = 0,
+                            Title = "تصميم وتطوير موقع تجارة إلكترونية"
+                        },
+                        new
+                        {
+                            Id = 8,
+                            AcceptedFreelancerId = 8,
+                            CategoryId = 5,
+                            ClientId = 8,
+                            Description = "تسويق وإعلان للشركات والأفراد",
+                            DurationInDays = 0,
+                            ExperienceLevel = 0,
+                            MaxBudget = 1000m,
+                            MinBudget = 300m,
+                            PostTime = new DateTime(2024, 6, 22, 19, 35, 37, 543, DateTimeKind.Local).AddTicks(1857),
+                            ProposalsCount = 0,
+                            Status = 0,
+                            Title = "إدارة حملة إعلانية على وسائل التواصل الاجتماعي"
+                        },
+                        new
+                        {
+                            Id = 9,
+                            AcceptedFreelancerId = 9,
+                            CategoryId = 6,
+                            ClientId = 9,
+                            Description = "فنون تصويرية ورسم",
+                            DurationInDays = 0,
+                            ExperienceLevel = 1,
+                            MaxBudget = 600m,
+                            MinBudget = 200m,
+                            PostTime = new DateTime(2024, 6, 22, 19, 35, 37, 543, DateTimeKind.Local).AddTicks(1877),
+                            ProposalsCount = 0,
+                            Status = 0,
+                            Title = "تصميم مجموعة من الرسوم التوضيحية للكتب الأطفال"
+                        },
+                        new
+                        {
+                            Id = 10,
+                            AcceptedFreelancerId = 10,
+                            CategoryId = 1,
+                            ClientId = 10,
+                            Description = "كتابة محتوى تسويقي وإعلاني",
+                            DurationInDays = 0,
+                            ExperienceLevel = 0,
+                            MaxBudget = 300m,
+                            MinBudget = 100m,
+                            PostTime = new DateTime(2024, 6, 22, 19, 35, 37, 543, DateTimeKind.Local).AddTicks(1898),
+                            ProposalsCount = 0,
+                            Status = 0,
+                            Title = "كتابة محتوى إعلاني لموقع الويب"
+                        },
+                        new
+                        {
+                            Id = 11,
+                            CategoryId = 2,
+                            ClientId = 11,
+                            Description = "برمجة نظم إدارية متقدمة",
+                            DurationInDays = 0,
+                            ExperienceLevel = 2,
+                            MaxBudget = 2000m,
+                            MinBudget = 500m,
+                            PostTime = new DateTime(2024, 6, 22, 19, 35, 37, 543, DateTimeKind.Local).AddTicks(1917),
+                            ProposalsCount = 0,
+                            Status = 0,
+                            Title = "تصميم وبرمجة نظام إدارة للموظفين"
+                        },
+                        new
+                        {
+                            Id = 12,
+                            CategoryId = 3,
+                            ClientId = 12,
+                            Description = "تحليل اقتصادي ومالي",
+                            DurationInDays = 0,
+                            ExperienceLevel = 2,
+                            MaxBudget = 5000m,
+                            MinBudget = 1000m,
+                            PostTime = new DateTime(2024, 6, 22, 19, 35, 37, 543, DateTimeKind.Local).AddTicks(1936),
+                            ProposalsCount = 0,
+                            Status = 0,
+                            Title = "إعداد دراسة جدوى لمشروع تجاري مستقبلي"
+                        },
+                        new
+                        {
+                            Id = 13,
+                            CategoryId = 4,
+                            ClientId = 13,
+                            Description = "دورات تعليمية وتدريب",
+                            DurationInDays = 0,
+                            ExperienceLevel = 0,
+                            MaxBudget = 200m,
+                            MinBudget = 50m,
+                            PostTime = new DateTime(2024, 6, 22, 19, 35, 37, 543, DateTimeKind.Local).AddTicks(1951),
+                            ProposalsCount = 0,
+                            Status = 0,
+                            Title = "تعليم البرمجة للمبتدئين عبر الإنترنت"
+                        },
+                        new
+                        {
+                            Id = 14,
+                            CategoryId = 5,
+                            ClientId = 14,
+                            Description = "تصميم جرافيك وإعلان",
+                            DurationInDays = 0,
+                            ExperienceLevel = 1,
+                            MaxBudget = 500m,
+                            MinBudget = 150m,
+                            PostTime = new DateTime(2024, 6, 22, 19, 35, 37, 543, DateTimeKind.Local).AddTicks(1964),
+                            ProposalsCount = 0,
+                            Status = 0,
+                            Title = "تصميم مطبوعات دعائية لفعالية ثقافية"
+                        },
+                        new
+                        {
+                            Id = 15,
+                            CategoryId = 6,
+                            ClientId = 15,
+                            Description = "ترجمة وكتابة",
+                            DurationInDays = 0,
+                            ExperienceLevel = 2,
+                            MaxBudget = 800m,
+                            MinBudget = 200m,
+                            PostTime = new DateTime(2024, 6, 22, 19, 35, 37, 543, DateTimeKind.Local).AddTicks(2068),
+                            ProposalsCount = 0,
+                            Status = 0,
+                            Title = "ترجمة مقالات علمية من الإنجليزية إلى العربية"
+                        },
+                        new
+                        {
+                            Id = 16,
+                            CategoryId = 1,
+                            ClientId = 16,
+                            Description = "برمجة ألعاب الفيديو",
+                            DurationInDays = 0,
+                            ExperienceLevel = 2,
+                            MaxBudget = 5000m,
+                            MinBudget = 1000m,
+                            PostTime = new DateTime(2024, 6, 22, 19, 35, 37, 543, DateTimeKind.Local).AddTicks(2085),
+                            ProposalsCount = 0,
+                            Status = 0,
+                            Title = "تصميم وتطوير لعبة فيديو متنقلة"
+                        },
+                        new
+                        {
+                            Id = 17,
+                            CategoryId = 2,
+                            ClientId = 17,
+                            Description = "تصميم وبرمجة منصات تعليمية إلكترونية",
+                            DurationInDays = 0,
+                            ExperienceLevel = 1,
+                            MaxBudget = 1500m,
+                            MinBudget = 500m,
+                            PostTime = new DateTime(2024, 6, 22, 19, 35, 37, 543, DateTimeKind.Local).AddTicks(2099),
+                            ProposalsCount = 0,
+                            Status = 0,
+                            Title = "تصميم منصة تعليمية عبر الإنترنت"
+                        },
+                        new
+                        {
+                            Id = 18,
+                            CategoryId = 3,
+                            ClientId = 18,
+                            Description = "كتابة وتحرير محتوى",
+                            DurationInDays = 0,
+                            ExperienceLevel = 1,
+                            MaxBudget = 700m,
+                            MinBudget = 200m,
+                            PostTime = new DateTime(2024, 6, 22, 19, 35, 37, 543, DateTimeKind.Local).AddTicks(2117),
+                            ProposalsCount = 0,
+                            Status = 0,
+                            Title = "إدارة محتوى لمدونة تقنية"
+                        },
+                        new
+                        {
+                            Id = 19,
+                            CategoryId = 4,
+                            ClientId = 1,
+                            Description = "برمجة وتخصيص نظم CRM",
+                            DurationInDays = 0,
+                            ExperienceLevel = 2,
+                            MaxBudget = 2500m,
+                            MinBudget = 800m,
+                            PostTime = new DateTime(2024, 6, 22, 19, 35, 37, 543, DateTimeKind.Local).AddTicks(2134),
+                            ProposalsCount = 0,
+                            Status = 0,
+                            Title = "تصميم وتطوير نظام إدارة العلاقات مع العملاء (CRM)"
+                        },
+                        new
+                        {
+                            Id = 20,
+                            CategoryId = 5,
+                            ClientId = 2,
+                            Description = "تحليل بيانات وإعداد تقارير",
+                            DurationInDays = 0,
+                            ExperienceLevel = 1,
+                            MaxBudget = 1000m,
+                            MinBudget = 300m,
+                            PostTime = new DateTime(2024, 6, 22, 19, 35, 37, 543, DateTimeKind.Local).AddTicks(2150),
+                            ProposalsCount = 0,
+                            Status = 0,
+                            Title = "تحليل بيانات وإعداد تقرير استراتيجي للشركات"
+                        },
+                        new
+                        {
+                            Id = 21,
+                            CategoryId = 6,
+                            ClientId = 3,
+                            Description = "كتابة محتوى تعليمي وبحثي",
+                            DurationInDays = 0,
+                            ExperienceLevel = 2,
+                            MaxBudget = 1500m,
+                            MinBudget = 500m,
+                            PostTime = new DateTime(2024, 6, 22, 19, 35, 37, 543, DateTimeKind.Local).AddTicks(2169),
+                            ProposalsCount = 0,
+                            Status = 0,
+                            Title = "كتابة وتحرير كتب إلكترونية في مجال الذكاء الاصطناعي"
+                        },
+                        new
+                        {
+                            Id = 22,
+                            CategoryId = 1,
+                            ClientId = 4,
+                            Description = "برمجة وتصميم مواقع تعليمية",
+                            DurationInDays = 0,
+                            ExperienceLevel = 1,
+                            MaxBudget = 1200m,
+                            MinBudget = 400m,
+                            PostTime = new DateTime(2024, 6, 22, 19, 35, 37, 543, DateTimeKind.Local).AddTicks(2187),
+                            ProposalsCount = 0,
+                            Status = 0,
+                            Title = "تصميم وتطوير موقع تعليمي للطلاب"
+                        },
+                        new
+                        {
+                            Id = 23,
+                            CategoryId = 2,
+                            ClientId = 5,
+                            Description = "تصميم وبرمجة تطبيقات الحجز الإلكتروني",
+                            DurationInDays = 0,
+                            ExperienceLevel = 1,
+                            MaxBudget = 1800m,
+                            MinBudget = 600m,
+                            PostTime = new DateTime(2024, 6, 22, 19, 35, 37, 543, DateTimeKind.Local).AddTicks(2205),
+                            ProposalsCount = 0,
+                            Status = 0,
+                            Title = "تصميم وبرمجة منصة للحجز الإلكتروني للفعاليات"
+                        },
+                        new
+                        {
+                            Id = 24,
+                            CategoryId = 3,
+                            ClientId = 6,
+                            Description = "تحسين أداء محركات البحث للمواقع",
+                            DurationInDays = 0,
+                            ExperienceLevel = 0,
+                            MaxBudget = 800m,
+                            MinBudget = 200m,
+                            PostTime = new DateTime(2024, 6, 22, 19, 35, 37, 543, DateTimeKind.Local).AddTicks(2222),
+                            ProposalsCount = 0,
+                            Status = 0,
+                            Title = "تحسين محركات البحث (SEO) لموقع الويب"
+                        },
+                        new
+                        {
+                            Id = 25,
+                            CategoryId = 4,
+                            ClientId = 7,
+                            Description = "برمجة نظم إدارة متكاملة",
+                            DurationInDays = 0,
+                            ExperienceLevel = 2,
+                            MaxBudget = 2500m,
+                            MinBudget = 700m,
+                            PostTime = new DateTime(2024, 6, 22, 19, 35, 37, 543, DateTimeKind.Local).AddTicks(2238),
+                            ProposalsCount = 0,
+                            Status = 0,
+                            Title = "تطوير نظام لإدارة المخزون والمبيعات للشركات الصغيرة"
+                        },
+                        new
+                        {
+                            Id = 26,
+                            CategoryId = 5,
+                            ClientId = 8,
+                            Description = "تحليل اقتصادي ومالي للمشاريع العقارية",
+                            DurationInDays = 0,
+                            ExperienceLevel = 2,
+                            MaxBudget = 5000m,
+                            MinBudget = 1500m,
+                            PostTime = new DateTime(2024, 6, 22, 19, 35, 37, 543, DateTimeKind.Local).AddTicks(2254),
+                            ProposalsCount = 0,
+                            Status = 0,
+                            Title = "إعداد دراسة جدوى لمشروع سكني جديد"
+                        },
+                        new
+                        {
+                            Id = 27,
+                            CategoryId = 6,
+                            ClientId = 9,
+                            Description = "برمجة تطبيقات المساعدة الشخصية",
+                            DurationInDays = 0,
+                            ExperienceLevel = 2,
+                            MaxBudget = 3000m,
+                            MinBudget = 800m,
+                            PostTime = new DateTime(2024, 6, 22, 19, 35, 37, 543, DateTimeKind.Local).AddTicks(2271),
+                            ProposalsCount = 0,
+                            Status = 0,
+                            Title = "تصميم وتطوير تطبيق للمساعدة الشخصية عبر الإنترنت"
+                        },
+                        new
+                        {
+                            Id = 28,
+                            CategoryId = 1,
+                            ClientId = 10,
+                            Description = "تسويق وجمع التبرعات",
+                            DurationInDays = 0,
+                            ExperienceLevel = 1,
+                            MaxBudget = 1500m,
+                            MinBudget = 400m,
+                            PostTime = new DateTime(2024, 6, 22, 19, 35, 37, 543, DateTimeKind.Local).AddTicks(2289),
+                            ProposalsCount = 0,
+                            Status = 0,
+                            Title = "إنشاء وإدارة حملة تبرعات عبر الإنترنت"
+                        },
+                        new
+                        {
+                            Id = 29,
+                            CategoryId = 2,
+                            ClientId = 11,
+                            Description = "تصميم وبرمجة منصات تعليمية تفاعلية",
+                            DurationInDays = 0,
+                            ExperienceLevel = 1,
+                            MaxBudget = 2000m,
+                            MinBudget = 600m,
+                            PostTime = new DateTime(2024, 6, 22, 19, 35, 37, 543, DateTimeKind.Local).AddTicks(2305),
+                            ProposalsCount = 0,
+                            Status = 0,
+                            Title = "تطوير منصة تعليمية تفاعلية لتعليم الرياضيات"
+                        },
+                        new
+                        {
+                            Id = 30,
+                            CategoryId = 3,
+                            ClientId = 12,
+                            Description = "برمجة وتصميم ألعاب تعليمية",
+                            DurationInDays = 0,
+                            ExperienceLevel = 0,
+                            MaxBudget = 1200m,
+                            MinBudget = 300m,
+                            PostTime = new DateTime(2024, 6, 22, 19, 35, 37, 543, DateTimeKind.Local).AddTicks(2390),
+                            ProposalsCount = 0,
+                            Status = 0,
+                            Title = "تصميم وتطوير لعبة فيديو تعليمية للأطفال"
+                        },
+                        new
+                        {
+                            Id = 31,
+                            CategoryId = 4,
+                            ClientId = 13,
+                            Description = "تحليل سياسات وإعداد تقارير",
+                            DurationInDays = 0,
+                            ExperienceLevel = 0,
+                            MaxBudget = 700m,
+                            MinBudget = 200m,
+                            PostTime = new DateTime(2024, 6, 22, 19, 35, 37, 543, DateTimeKind.Local).AddTicks(2409),
+                            ProposalsCount = 0,
+                            Status = 0,
+                            Title = "إعداد تقرير بحثي عن السياسات العامة"
+                        },
+                        new
+                        {
+                            Id = 32,
+                            CategoryId = 5,
+                            ClientId = 14,
+                            Description = "برمجة وتخصيص نظم إدارة المحتوى",
+                            DurationInDays = 0,
+                            ExperienceLevel = 1,
+                            MaxBudget = 1500m,
+                            MinBudget = 400m,
+                            PostTime = new DateTime(2024, 6, 22, 19, 35, 37, 543, DateTimeKind.Local).AddTicks(2425),
+                            ProposalsCount = 0,
+                            Status = 0,
+                            Title = "تصميم وبرمجة نظام إدارة المحتوى للمدونات"
+                        },
+                        new
+                        {
+                            Id = 33,
+                            CategoryId = 6,
+                            ClientId = 15,
+                            Description = "تسويق وإعلان عن المنتجات",
+                            DurationInDays = 0,
+                            ExperienceLevel = 0,
+                            MaxBudget = 1000m,
+                            MinBudget = 300m,
+                            PostTime = new DateTime(2024, 6, 22, 19, 35, 37, 543, DateTimeKind.Local).AddTicks(2443),
+                            ProposalsCount = 0,
+                            Status = 0,
+                            Title = "إعداد وتنفيذ حملة تسويقية لمنتج جديد"
+                        },
+                        new
+                        {
+                            Id = 34,
+                            CategoryId = 1,
+                            ClientId = 16,
+                            Description = "برمجة نظم إدارة المشاريع",
+                            DurationInDays = 0,
+                            ExperienceLevel = 2,
+                            MaxBudget = 2500m,
+                            MinBudget = 600m,
+                            PostTime = new DateTime(2024, 6, 22, 19, 35, 37, 543, DateTimeKind.Local).AddTicks(2462),
+                            ProposalsCount = 0,
+                            Status = 0,
+                            Title = "تصميم وبرمجة نظام لإدارة المشاريع الهندسية"
+                        },
+                        new
+                        {
+                            Id = 35,
+                            CategoryId = 2,
+                            ClientId = 17,
+                            Description = "برمجة وتصميم تطبيقات تعليمية",
+                            DurationInDays = 0,
+                            ExperienceLevel = 1,
+                            MaxBudget = 1800m,
+                            MinBudget = 500m,
+                            PostTime = new DateTime(2024, 6, 22, 19, 35, 37, 543, DateTimeKind.Local).AddTicks(2480),
+                            ProposalsCount = 0,
+                            Status = 0,
+                            Title = "تصميم وتطوير تطبيق لتعليم لغات البرمجة"
                         });
                 });
 
@@ -879,13 +1367,15 @@ namespace Shoghlana.EF.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Description")
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
 
                     b.Property<int?>("FreelancerId")
                         .HasColumnType("int");
 
                     b.Property<string>("Link")
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
                     b.Property<byte[]>("Poster")
                         .IsRequired()
@@ -896,7 +1386,8 @@ namespace Shoghlana.EF.Migrations
 
                     b.Property<string>("Title")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
                     b.HasKey("Id");
 
@@ -911,6 +1402,7 @@ namespace Shoghlana.EF.Migrations
                             Description = "Description for Project1",
                             FreelancerId = 1,
                             Poster = new byte[] { 32, 33, 34, 35 },
+                            TimePublished = new DateTime(2024, 6, 22, 19, 35, 37, 544, DateTimeKind.Local).AddTicks(4961),
                             Title = "Project1"
                         },
                         new
@@ -919,6 +1411,7 @@ namespace Shoghlana.EF.Migrations
                             Description = "Description for Project2",
                             FreelancerId = 2,
                             Poster = new byte[] { 32, 33, 34, 35 },
+                            TimePublished = new DateTime(2024, 6, 22, 19, 35, 37, 544, DateTimeKind.Local).AddTicks(5074),
                             Title = "Project2"
                         });
                 });
@@ -1116,11 +1609,13 @@ namespace Shoghlana.EF.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Description")
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
 
                     b.Property<string>("Title")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
                     b.HasKey("Id");
 
@@ -1528,6 +2023,10 @@ namespace Shoghlana.EF.Migrations
 
             modelBuilder.Entity("Shoghlana.Core.Models.Job", b =>
                 {
+                    b.HasOne("Shoghlana.Core.Models.Freelancer", "AcceptedFreelancer")
+                        .WithMany("WorkingHistory")
+                        .HasForeignKey("AcceptedFreelancerId");
+
                     b.HasOne("Shoghlana.Core.Models.Category", "Category")
                         .WithMany("Jobs")
                         .HasForeignKey("CategoryId");
@@ -1538,15 +2037,11 @@ namespace Shoghlana.EF.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Shoghlana.Core.Models.Freelancer", "Freelancer")
-                        .WithMany("WorkingHistory")
-                        .HasForeignKey("FreelancerId");
+                    b.Navigation("AcceptedFreelancer");
 
                     b.Navigation("Category");
 
                     b.Navigation("Client");
-
-                    b.Navigation("Freelancer");
                 });
 
             modelBuilder.Entity("Shoghlana.Core.Models.JobSkills", b =>
@@ -1589,7 +2084,7 @@ namespace Shoghlana.EF.Migrations
             modelBuilder.Entity("Shoghlana.Core.Models.ProjectSkills", b =>
                 {
                     b.HasOne("Shoghlana.Core.Models.Project", "Project")
-                        .WithMany("skills")
+                        .WithMany("Skills")
                         .HasForeignKey("ProjectId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -1689,7 +2184,7 @@ namespace Shoghlana.EF.Migrations
                 {
                     b.Navigation("Images");
 
-                    b.Navigation("skills");
+                    b.Navigation("Skills");
                 });
 
             modelBuilder.Entity("Shoghlana.Core.Models.Proposal", b =>

@@ -1,4 +1,5 @@
 ﻿using Shoghlana.Core.DTO;
+using Shoghlana.Core.Enums;
 using Shoghlana.Core.Models;
 using System;
 using System.Collections.Generic;
@@ -11,11 +12,9 @@ namespace Shoghlana.Core.Interfaces
     public interface IJobRepository : IGenericRepository<Job>
     {
         public PaginatedListDTO<Job> GetPaginatedJobs
-       (int MinBudget, int MaxBudget, int CategoryId, int ClientId, int FreelancerId,
-        int page, int pageSize, string[] includes = null);
+       (JobStatus? status, int? MinBudget, int? MaxBudget, int? ClientId, int? FreelancerId, int page, int pageSize, PaginatedJobsRequestBody requestBody);
 
         public Task<PaginatedListDTO<Job>> GetPaginatedJobsAsync
-        (int MinBudget, int MaxBudget, int CategoryId, int ClientId, int FreelancerId,
-         int page, int pageSize, string[] includes = null);
+       (JobStatus? status, int? MinBudget, int? MaxBudget, int? ClientId, int? FreelancerId, int page, int pageSize, PaginatedJobsRequestBody requestBody);
     }
 }

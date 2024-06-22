@@ -15,6 +15,11 @@ namespace Shoghlana.EF.Configurations
         public void Configure(EntityTypeBuilder<Freelancer> builder)
         {
 
+            builder.Property(f => f.Name).IsRequired().HasMaxLength(50);
+            builder.Property(f => f.Title).IsRequired().HasMaxLength(50);
+            builder.Property(f => f.Address).IsRequired(false).HasMaxLength(50);
+            builder.Property(f => f.Overview).IsRequired(false).HasMaxLength(500);
+
             // Seed initial data
             builder.HasData(
                 new Freelancer

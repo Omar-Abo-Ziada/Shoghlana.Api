@@ -1,13 +1,9 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Shoghlana.Core.DTO;
+using Shoghlana.Core.Enums;
 using Shoghlana.Core.Interfaces;
 using Shoghlana.Core.Models;
 using Shoghlana.EF.Repository;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Shoghlana.EF.Repositories
 {
@@ -19,41 +15,53 @@ namespace Shoghlana.EF.Repositories
         }
 
         public PaginatedListDTO<Job> GetPaginatedJobs
-           (int MinBudget, int MaxBudget, int CategoryId, int ClientId, int FreelancerId,
-            int page, int pageSize, string[] includes = null)
+           (JobStatus? status, int? MinBudget, int? MaxBudget, int? ClientId, int? FreelancerId, int page, int pageSize, PaginatedJobsRequestBody requestBody)
         {
             IQueryable<Job> query = dbSet;
 
-            if (MinBudget > 0)
+            if (status is not null && status != JobStatus.All)
+            {
+                query = query.Where(j => j.Status == status);
+            }
+
+            if (MinBudget > 0 && MinBudget is not null)
             {
                 query = query.Where(j => j.MinBudget >= MinBudget);
             }
 
-            if (MaxBudget > 0)
+            if (MaxBudget > 0 && MaxBudget is not null)
             {
                 query = query.Where(j => j.MaxBudget <= MaxBudget);
             }
 
-            if (CategoryId > 0)
+            if (requestBody?.CategoriesIDs is not null && requestBody.CategoriesIDs.Any())
             {
-                query = query.Where(j => j.CategoryId == CategoryId);
+                var validCategoriesIDs = requestBody.CategoriesIDs.Where(id => id > 0).ToList();
+
+                if (validCategoriesIDs.Count > 0)
+                {
+                    query = query.Where(j => validCategoriesIDs.Contains((int)j.CategoryId));
+                }
             }
 
-            if (ClientId > 0)
+            if (ClientId > 0 && ClientId is not null)
             {
                 query = query.Where(j => j.ClientId == ClientId);
             }
 
-            if (FreelancerId > 0)
+            if (FreelancerId > 0 && FreelancerId is not null)
             {
-                query = query.Where(j => j.FreelancerId == FreelancerId);
+                query = query.Where(j => j.AcceptedFreelancerId == FreelancerId);
             }
 
-            if (includes != null)
+            if (requestBody?.Includes is not null && requestBody.Includes.Any())
             {
-                foreach (var include in includes)
+                foreach (var include in requestBody.Includes)
                 {
-                    query = query.Include(include);
+                    if (include != "string")
+                    {
+                        query = query.Include(include);
+                    }
                 }
             }
 
@@ -66,10 +74,10 @@ namespace Shoghlana.EF.Repositories
 
             int totalPages = (int)Math.Ceiling(totalFilteredItems / (double)pageSize);
 
-            //if (page > totalPages)
-            //{
-            //    page = totalPages;
-            //}
+            if (page > totalPages)
+            {
+                page = totalPages;
+            }
 
             if (totalPages == 0)
             {
@@ -96,45 +104,57 @@ namespace Shoghlana.EF.Repositories
         }
 
         public async Task<PaginatedListDTO<Job>> GetPaginatedJobsAsync
-        (int MinBudget, int MaxBudget, int CategoryId, int ClientId, int FreelancerId,
-         int page, int pageSize, string[] includes = null)
+      (JobStatus? status, int? MinBudget, int? MaxBudget, int? ClientId, int? FreelancerId, int page, int pageSize, PaginatedJobsRequestBody requestBody)
         {
             IQueryable<Job> query = dbSet;
 
-            if (MinBudget > 0)
+            if (status is not null && status != JobStatus.All)
+            {
+                query = query.Where(j => j.Status == status);
+            }
+
+            if (MinBudget > 0 && MinBudget is not null)
             {
                 query = query.Where(j => j.MinBudget >= MinBudget);
             }
 
-            if (MaxBudget > 0)
+            if (MaxBudget > 0 && MaxBudget is not null)
             {
                 query = query.Where(j => j.MaxBudget <= MaxBudget);
             }
 
-            if (CategoryId > 0)
+            if (requestBody?.CategoriesIDs is not null && requestBody.CategoriesIDs.Any())
             {
-                query = query.Where(j => j.CategoryId == CategoryId);
+                var validCategoriesIDs = requestBody.CategoriesIDs.Where(id => id > 0).ToList();
+
+                if (validCategoriesIDs.Count > 0)
+                {
+                    query = query.Where(j => validCategoriesIDs.Contains((int)j.CategoryId));
+                }
             }
 
-            if (ClientId > 0)
+            if (ClientId > 0 && ClientId is not null)
             {
                 query = query.Where(j => j.ClientId == ClientId);
             }
 
-            if (FreelancerId > 0)
+            if (FreelancerId > 0 && FreelancerId is not null)
             {
-                query = query.Where(j => j.FreelancerId == FreelancerId);
+                query = query.Where(j => j.AcceptedFreelancerId == FreelancerId);
             }
 
-            if (includes != null)
+            if (requestBody?.Includes is not null && requestBody.Includes.Any())
             {
-                foreach (var include in includes)
+                foreach (var include in requestBody.Includes)
                 {
-                    query = query.Include(include);
+                    if (include != "string")
+                    {
+                        query = query.Include(include);
+                    }
                 }
             }
 
-            int totalFilteredItems = query.Count();
+            int totalFilteredItems = await query.CountAsync();
 
             if (page < 1)
             {
@@ -148,7 +168,7 @@ namespace Shoghlana.EF.Repositories
                 page = totalPages;
             }
 
-            if (page == 0)
+            if (totalPages == 0)
             {
                 return new PaginatedListDTO<Job>
                 {

@@ -241,7 +241,7 @@ namespace Shoghlana.Api.Services.Implementaions
 
             project.Skills = projectDTO.Skills?.Select(skillDTO => new ProjectSkills   // skills are added after project id is generated
             {
-                SkillId = skillDTO.Id,
+                //SkillId = skillDTO.Id,
                 ProjectId = project.Id
             }).ToList();
 
@@ -355,7 +355,7 @@ namespace Shoghlana.Api.Services.Implementaions
                 project.Skills.AddRange(updateProjectDTO.Skills.Select(skillDTO => new ProjectSkills
                 {
                     ProjectId = project.Id,
-                    SkillId = skillDTO.Id
+                    //SkillId = skillDTO.Id
                 }));
             }
 
