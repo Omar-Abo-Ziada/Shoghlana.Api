@@ -1,6 +1,5 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using Shoghlana.Api.Response;
 using Shoghlana.Api.Services.Implementations;
 using Shoghlana.Api.Services.Interfaces;
@@ -8,9 +7,6 @@ using Shoghlana.Core.DTO;
 using Shoghlana.Core.Enums;
 using Shoghlana.Core.Interfaces;
 using Shoghlana.Core.Models;
-using Shoghlana.EF.Migrations;
-using Shoghlana.EF.Repositories;
-using System.Linq.Expressions;
 
 namespace Shoghlana.Api.Services.Implementaions
 {
@@ -31,19 +27,20 @@ namespace Shoghlana.Api.Services.Implementaions
 
             for (int i = 0; i < jobs.Count; i++)
             {
-                jobDTOs[i].clientName = jobs[i].Client.Name;
-                jobDTOs[i].CategoryTitle = jobs[i].Category.Title;
+                //jobDTOs[i].clientName = jobs[i].Client.Name;
+                //jobDTOs[i].CategoryTitle = jobs[i].Category.Title;
 
-                var client = _unitOfWork.clientRepository.GetById(jobDTOs[i].ClientId);
-                jobDTOs[i].clientName = client?.Name ?? "NA";
+                //var client = _unitOfWork.clientRepository.GetById(jobDTOs[i].ClientId);
+                //jobDTOs[i].clientName = client?.Name ?? "NA";
 
-                var category = _unitOfWork.categoryRepository.GetById(jobDTOs[i].CategoryId);
-                jobDTOs[i].CategoryTitle = category?.Title ?? "NA";
+                //var category = _unitOfWork.categoryRepository.GetById(jobDTOs[i].CategoryId);
+                //jobDTOs[i].CategoryTitle = category?.Title ?? "NA";
 
-                var freelancer = _unitOfWork.freelancerRepository.GetById(jobDTOs[i].AcceptedFreelancerId);
-                jobDTOs[i].AcceptedFreelancerName = freelancer?.Title ?? "NA";
+                //var freelancer = _unitOfWork.freelancerRepository.GetById((int)jobDTOs[i].AcceptedFreelancerId);
+                //jobDTOs[i].AcceptedFreelancerName = freelancer?.Title ?? "NA";
 
-                jobDTOs[i].ProposalsCount = _unitOfWork.proposalRepository.GetCount();
+                // it is calculated automatically in the prop from the count of proposal List 
+           //     jobDTOs[i].ProposalsCount = _unitOfWork.proposalRepository.GetCount();
 
                 foreach (JobSkills jobSkill in jobs[i].skills)
                 {
@@ -52,7 +49,7 @@ namespace Shoghlana.Api.Services.Implementaions
                     jobDTOs[i].Skills.Add(new SkillDTO
                     {
                         Title = skill.Title,
-                        Id = skill.Id,
+                        //Id = skill.Id,
                     });
                 }
             }
@@ -96,15 +93,19 @@ namespace Shoghlana.Api.Services.Implementaions
                 JobDTO jobDTO = mapper.Map<Job , JobDTO>(job);
 
                 var client = _unitOfWork.clientRepository.GetById(jobDTO.ClientId);
-                jobDTO.clientName = client?.Name ?? "NA";
+                //jobDTO.clientName = client?.Name ?? "NA";
 
-                var category = _unitOfWork.categoryRepository.GetById(jobDTO.CategoryId);
-                jobDTO.CategoryTitle = category?.Title ?? "NA";
+                //var category = _unitOfWork.categoryRepository.GetById(jobDTO.CategoryId);
+                //jobDTO.CategoryTitle = category?.Title ?? "NA";
 
-                var freelancer = _unitOfWork.freelancerRepository.GetById(jobDTO.AcceptedFreelancerId);
-                jobDTO.AcceptedFreelancerName = freelancer?.Title ?? "NA";
+                //if(jobDTO.AcceptedFreelancerId is not null)
+                //{
+                //    var freelancer = _unitOfWork.freelancerRepository.GetById((int)jobDTO.AcceptedFreelancerId);
+                //    jobDTO.AcceptedFreelancerName = freelancer?.Title ?? "NA";
 
-                jobDTO.ProposalsCount = _unitOfWork.proposalRepository.GetCount();
+                //}
+                // it is calculated automatically in the prop from the count of proposal List 
+                // jobDTO.ProposalsCount = _unitOfWork.proposalRepository.GetCount();
 
                 jobsDTOs.Add(jobDTO);
             }
@@ -153,16 +154,20 @@ namespace Shoghlana.Api.Services.Implementaions
             {
                 JobDTO jobDTO = mapper.Map<Job, JobDTO>(job);
 
-                var client = _unitOfWork.clientRepository.GetById(jobDTO.ClientId);
-                jobDTO.clientName = client?.Name ?? "NA";
+                //var client = _unitOfWork.clientRepository.GetById(jobDTO.ClientId);
+                //jobDTO.clientName = client?.Name ?? "NA";
 
-                var category = _unitOfWork.categoryRepository.GetById(jobDTO.CategoryId);
-                jobDTO.CategoryTitle = category?.Title ?? "NA";
+                //var category = _unitOfWork.categoryRepository.GetById(jobDTO.CategoryId);
+                //jobDTO.CategoryTitle = category?.Title ?? "NA";
 
-                var freelancer = _unitOfWork.freelancerRepository.GetById(jobDTO.AcceptedFreelancerId);
-                jobDTO.AcceptedFreelancerName = freelancer?.Title ?? "NA";
+                //if (jobDTO.AcceptedFreelancerId is not null)
+                //{
+                //    var freelancer = _unitOfWork.freelancerRepository.GetById((int)jobDTO.AcceptedFreelancerId);
+                //    jobDTO.AcceptedFreelancerName = freelancer?.Title ?? "NA";
 
-                jobDTO.ProposalsCount = _unitOfWork.proposalRepository.GetCount();
+                //}
+                // it is calculated automatically in the prop from the count of proposal List 
+                // jobDTO.ProposalsCount = _unitOfWork.proposalRepository.GetCount();
 
                 jobsDTOs.Add(jobDTO);
             }
@@ -219,20 +224,20 @@ namespace Shoghlana.Api.Services.Implementaions
                     proposalDTOs.Add(proposalDTO);
                 }
 
-                jobDTO.Proposals = proposalDTOs;
+                //jobDTO.Proposals = proposalDTOs;
             }
 
-            jobDTO.clientName = job.Client?.Name ?? "NA";
+            //jobDTO.clientName = job.Client?.Name ?? "NA";
 
-            jobDTO.CategoryTitle = job.Category?.Title ?? "NA";
+            //jobDTO.CategoryTitle = job.Category?.Title ?? "NA";
 
-            Freelancer? acceptedFreelancer = _unitOfWork.freelancerRepository.GetById(job.FreelancerId ?? 0);
+            Freelancer? acceptedFreelancer = _unitOfWork.freelancerRepository.GetById(job.AcceptedFreelancerId ?? 0);
 
-            if (acceptedFreelancer is not null)
-            {
-                jobDTO.AcceptedFreelancerId = acceptedFreelancer.Id;
-                jobDTO.AcceptedFreelancerName = acceptedFreelancer.Name;
-            }
+            //if (acceptedFreelancer is not null)
+            //{
+            //    jobDTO.AcceptedFreelancerId = acceptedFreelancer.Id;
+            //    jobDTO.AcceptedFreelancerName = acceptedFreelancer.Name;
+            //}
 
             jobDTO = mapper.Map<Job, JobDTO>(job);
 
@@ -250,7 +255,7 @@ namespace Shoghlana.Api.Services.Implementaions
 
             try
             {
-                jobs = _unitOfWork.jobRepository.FindAll(["Client", "Category", "skills"], j => j.FreelancerId == id)
+                jobs = _unitOfWork.jobRepository.FindAll(["Client", "Category", "skills"], j => j.AcceptedFreelancerId == id)
                                                         .ToList();
             }
             catch (Exception ex)
@@ -267,8 +272,8 @@ namespace Shoghlana.Api.Services.Implementaions
 
             for (int i = 0; i < jobs.Count; i++)
             {
-                jobDTOs[i].clientName = jobs[i].Client.Name;
-                jobDTOs[i].CategoryTitle = jobs[i].Category.Title;
+                //jobDTOs[i].clientName = jobs[i].Client.Name;
+                //jobDTOs[i].CategoryTitle = jobs[i].Category.Title;
 
                 foreach (JobSkills jobSkill in jobs[i].skills)
                 {
@@ -277,7 +282,7 @@ namespace Shoghlana.Api.Services.Implementaions
                     jobDTOs[i].Skills.Add(new SkillDTO
                     {
                         Title = skill.Title,
-                        Id = skill.Id,
+                        //Id = skill.Id,
                     });
                 }
             }
@@ -381,9 +386,10 @@ namespace Shoghlana.Api.Services.Implementaions
 
             for (int i = 0; i < jobs.Count; i++)
             {
-                jobDTOs[i].AcceptedFreelancerName = jobs[i].Freelancer.Name;
-                jobDTOs[i].AcceptedFreelancerId = jobs[i].Freelancer.Id;
-                jobDTOs[i].CategoryTitle = jobs[i].Category.Title;
+                //jobDTOs[i].AcceptedFreelancerName = jobs[i]?.AcceptedFreelancer?.Name;
+                //jobDTOs[i].AcceptedFreelancerId = jobs[i]?.AcceptedFreelancer?.Id;
+
+                //jobDTOs[i].CategoryTitle = jobs[i]?.Category?.Title;
 
                 foreach (JobSkills jobSkill in jobs[i].skills)
                 {
@@ -392,7 +398,7 @@ namespace Shoghlana.Api.Services.Implementaions
                     jobDTOs[i].Skills.Add(new SkillDTO
                     {
                         Title = skill.Title,
-                        Id = skill.Id,
+                        //Id = skill.Id,
                     });
                 }
             }
@@ -420,19 +426,57 @@ namespace Shoghlana.Api.Services.Implementaions
 
             try
             {
+                job.skills = null;
+
                 _unitOfWork.jobRepository.Add(job);
 
                 _unitOfWork.Save();
 
+                List<JobSkills> JobSkills = new List<JobSkills>();
+
                 foreach (SkillDTO skillDTO in jobDto.Skills)
                 {
-                    job.skills.Add(new JobSkills
+                    Skill skill = new Skill()
                     {
-                        SkillId = skillDTO.Id,
+                        Title = skillDTO.Title,
+                        Description = skillDTO.Description,
+                    };
+
+                    _unitOfWork.skillRepository.Add(skill);
+
+                    _unitOfWork.Save();
+
+                    var jobSkill = new JobSkills
+                    {
+                        SkillId = skill.Id,
                         JobId = job.Id
-                    });
+                    };
+
+                    JobSkills.Add(jobSkill);
                 }
+
+                //foreach (GetProposalDTO getProposalDTO in jobDto.Proposals)
+                //{
+                //    Proposal proposal = mapper.Map<GetProposalDTO, Proposal>(getProposalDTO);
+
+                //    job?.Proposals?.Add(proposal);
+
+                //    //job.Proposals.Add(new JobSkills
+                //    //{
+                //    //    SkillId = skillDTO.Id,
+                //    //    JobId = job.Id
+                //    //});
+                //}
+
+                //Rate rate = mapper.Map<RateDTO , Rate>(jobDto.Rate);
+
+                //job.Rate = rate;
+
                 _unitOfWork.jobRepository.Update(job);
+
+                _unitOfWork.Save();
+
+                job.skills = JobSkills;
 
                 _unitOfWork.Save();
             }
@@ -450,7 +494,8 @@ namespace Shoghlana.Api.Services.Implementaions
             {
                 IsSuccess = true,
                 Data = jobDto,
-                Message = "Job is added successfully"
+                Message = "Job is added successfully",
+                Status = 200 ,
             };
         }
 
@@ -477,7 +522,7 @@ namespace Shoghlana.Api.Services.Implementaions
             {
                 skills.Add(new JobSkills
                 {
-                    SkillId = skillDto.Id,
+                    //SkillId = skillDto.Id,
                     JobId = jobDto.Id
                 });
             }

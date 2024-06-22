@@ -4,12 +4,6 @@ using Shoghlana.Core.Enums;
 using Shoghlana.Core.Interfaces;
 using Shoghlana.Core.Models;
 using Shoghlana.EF.Repository;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.CompilerServices;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Shoghlana.EF.Repositories
 {
@@ -57,7 +51,7 @@ namespace Shoghlana.EF.Repositories
 
             if (FreelancerId > 0 && FreelancerId is not null)
             {
-                query = query.Where(j => j.FreelancerId == FreelancerId);
+                query = query.Where(j => j.AcceptedFreelancerId == FreelancerId);
             }
 
             if (requestBody?.Includes is not null && requestBody.Includes.Any())
@@ -146,7 +140,7 @@ namespace Shoghlana.EF.Repositories
 
             if (FreelancerId > 0 && FreelancerId is not null)
             {
-                query = query.Where(j => j.FreelancerId == FreelancerId);
+                query = query.Where(j => j.AcceptedFreelancerId == FreelancerId);
             }
 
             if (requestBody?.Includes is not null && requestBody.Includes.Any())
