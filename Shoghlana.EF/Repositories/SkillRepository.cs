@@ -13,7 +13,7 @@ namespace Shoghlana.EF.Repositories
     {
         public SkillRepository(ApplicationDBContext context) : base(context)
         {
-
+            
         }
     }
 }

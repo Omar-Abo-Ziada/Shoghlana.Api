@@ -121,6 +121,7 @@ namespace Shoghlana.Api
             builder.Services.AddScoped<IProjectService, ProjectService>();
             builder.Services.AddScoped<IRateService, RateService>();
             builder.Services.AddScoped<IProposalImageService, ProposalImageService>();
+            builder.Services.AddScoped<ISkillService, SkillService>();
            // builder.Services.AddScoped<IGoogleAuthService, GoogleAuthService>();
 
             builder.Services.AddAutoMapper(typeof(Program));
