@@ -101,8 +101,8 @@ namespace Shoghlana.Api.Services.Implementaions
                 {
                     foreach (Job job in client.Jobs)
                     {
-                        JobDTO jobDTO = new JobDTO();
-                        jobDTO = mapper.Map<Job, JobDTO>(job);
+                        AddJobDTO jobDTO = new AddJobDTO();
+                        jobDTO = mapper.Map<Job, AddJobDTO>(job);
                         clientsDTO.Jobs.Add(jobDTO);
                     }
                 }
@@ -132,7 +132,7 @@ namespace Shoghlana.Api.Services.Implementaions
                 ClientWithJobsDTO clientWithJobs = new ClientWithJobsDTO();
                 clientWithJobs.Name = client.Name;
                 clientWithJobs.Image = client.Image;
-                clientWithJobs.Jobs = client.Jobs.Select(job => new JobDTO
+                clientWithJobs.Jobs = client.Jobs.Select(job => new AddJobDTO
                 {
                     Title = job.Title,
                     Description = job.Description,

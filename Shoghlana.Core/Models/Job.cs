@@ -20,13 +20,13 @@ namespace Shoghlana.Core.Models
 
         public int DurationInDays { get; set; }
 
-        private DateTime? _manualDeadLine;
+        //private DateTime? _manualDeadLine;
 
-        public DateTime? DeadLine
-        {
-            get => _manualDeadLine ?? ApproveTime?.AddDays(DurationInDays);
-            set => _manualDeadLine = value;
-        }
+        //public DateTime? DeadLine
+        //{
+        //    get => _manualDeadLine ?? ApproveTime?.AddDays(DurationInDays);
+        //    set => _manualDeadLine = value;
+        //}
 
         /// <summary>
         ///  any time you access the ProposalsCount property,
@@ -34,11 +34,11 @@ namespace Shoghlana.Core.Models
         ///  you can also set it manually (added it in order not to breaka an existent code)
         ///  shorlty like this using Lampda expression : 
         /// </summary>
-        public int? ProposalsCount
-        {
-            get => Proposals?.Count() ?? 0;
-            set => ProposalsCount = value;
-        }
+        //public int? ProposalsCount
+        //{
+        //    get => Proposals?.Count() ?? 0;
+        //    set => ProposalsCount = value;
+        //}
 
         public ExperienceLevel ExperienceLevel { get; set; }
 

@@ -28,6 +28,6 @@ namespace Shoghlana.Core.DTO
         public int JobsCount { get; set; }
         public int CompletedJobsCount { get; set; }
 
-        public List<JobDTO> Jobs { get; set; } = new List<JobDTO>();
+        public List<AddJobDTO> Jobs { get; set; } = new List<AddJobDTO>();
     }
 }

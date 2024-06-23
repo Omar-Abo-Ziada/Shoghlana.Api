@@ -9,6 +9,7 @@ namespace Shoghlana.EF.Repositories
 {
     public class JobRepository : GenericRepository<Job>, IJobRepository
     {
+        private DateTime FiveDaysAgo = DateTime.Now.Subtract(TimeSpan.FromDays(5));
         public JobRepository(ApplicationDBContext context) : base(context)
         {
 
@@ -55,18 +56,7 @@ namespace Shoghlana.EF.Repositories
                 query = query.Where(j => j.AcceptedFreelancerId == FreelancerId);
             }
 
-            if(HasManyProposals is not null)
-            {
-                switch (HasManyProposals) 
-                {
-                    case true:
-                        query = query.Where(j => j.ProposalsCount > 5);
-                        break;
-                    case false:
-                        query = query.Where(j => j.ProposalsCount <= 5);
-                        break;
-                }
-            }
+         
 
             if (requestBody?.Includes is not null && requestBody.Includes.Any())
             {
@@ -78,6 +68,33 @@ namespace Shoghlana.EF.Repositories
                     }
                 }
             }
+
+            if (HasManyProposals is not null)
+            {
+                switch (HasManyProposals)
+                {
+                    case true:
+                        query = query.Where(j => j.Proposals.Count() > 5);
+                        break;
+                    case false:
+                        query = query.Where(j => j.Proposals.Count <= 5);
+                        break;
+                }
+            }
+
+            if (IsNew is not null)
+            {
+                switch (IsNew)
+                {
+                    case true:
+                        query = query.Where(j => j.PostTime > FiveDaysAgo);   
+                        break;
+                    case false:
+                        query = query.Where(j => j.PostTime < FiveDaysAgo);
+                        break;
+                }
+            }
+
 
             int totalFilteredItems = query.Count();
 
@@ -104,15 +121,11 @@ namespace Shoghlana.EF.Repositories
                 };
             }
 
-            //List<Job> items =  dbSet.Where(j => j.MinBudget >= MinBudget).Where(j => j.MaxBudget <= MaxBudget)
-            //      .Where(j => requestBody.CategoriesIDs.Contains(j.CategoryId))
-            //      .Skip((page - 1) * pageSize)
-            //                   .Take(pageSize)
-            //                   .ToList();
+       
 
 
 
-            List<Job> items = query.Skip((page - 1) * pageSize)
+            var items = query.Skip((page - 1) * pageSize)
                              .Take(pageSize)
                              .ToList();
 
@@ -126,7 +139,7 @@ namespace Shoghlana.EF.Repositories
         }
 
         public async Task<PaginatedListDTO<Job>> GetPaginatedJobsAsync
-      (JobStatus? status, int? MinBudget, int? MaxBudget, int? ClientId, int? FreelancerId, int page, int pageSize, PaginatedJobsRequestBody requestBody)
+      (JobStatus? status, int? MinBudget, int? MaxBudget, int? ClientId, int? FreelancerId, bool? HasManyProposals, bool? IsNew, int page, int pageSize, PaginatedJobsRequestBody requestBody)
         {
             IQueryable<Job> query = dbSet;
 
@@ -173,6 +186,33 @@ namespace Shoghlana.EF.Repositories
                     {
                         query = query.Include(include);
                     }
+                }
+            }
+
+
+            if (HasManyProposals is not null)
+            {
+                switch (HasManyProposals)
+                {
+                    case true:
+                        query = query.Where(j => j.Proposals.Count() > 5);
+                        break;
+                    case false:
+                        query = query.Where(j => j.Proposals.Count <= 5);
+                        break;
+                }
+            }
+
+            if (IsNew is not null)
+            {
+                switch (IsNew)
+                {
+                    case true:
+                        query = query.Where(j => j.PostTime > FiveDaysAgo);
+                        break;
+                    case false:
+                        query = query.Where(j => j.PostTime < FiveDaysAgo);
+                        break;
                 }
             }
 

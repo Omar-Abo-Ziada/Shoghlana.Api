@@ -23,7 +23,7 @@ namespace Shoghlana.Api.Services.Implementaions
         {
             List<Job> jobs = _unitOfWork.jobRepository.FindAll(["Client", "Category", "skills"]).ToList();
 
-            List<JobDTO> jobDTOs = mapper.Map<List<Job>, List<JobDTO>>(jobs);
+            List<AddJobDTO> jobDTOs = mapper.Map<List<Job>, List<AddJobDTO>>(jobs);
 
             for (int i = 0; i < jobs.Count; i++)
             {
@@ -66,15 +66,22 @@ namespace Shoghlana.Api.Services.Implementaions
          (JobStatus? status , int? MinBudget , int? MaxBudget , int? ClientId , int? FreelancerId , bool? HasManyProposals,
           bool? IsNew , int page , int pageSize , PaginatedJobsRequestBody requestBody )
         {
-            PaginatedListDTO<Job> paginatedJobs = _unitOfWork.jobRepository
+            PaginatedListDTO<GetJobDTO> paginatedJobs = new PaginatedListDTO<GetJobDTO>();
+
+            PaginatedListDTO<Job> jobs = _unitOfWork.jobRepository
                   .GetPaginatedJobs(status , MinBudget, MaxBudget,ClientId, FreelancerId, HasManyProposals, IsNew, page, pageSize, requestBody);
+
+            paginatedJobs.Items = mapper.Map<IEnumerable<Job>, IEnumerable<GetJobDTO>>(jobs.Items);
+            paginatedJobs.TotalItems = jobs.TotalItems;
+            paginatedJobs.CurrentPage = jobs.CurrentPage;
+            paginatedJobs.TotalPages = jobs.TotalPages;
 
             if(paginatedJobs.Items is null) 
             {
                 return new GeneralResponse()
                 {
                     IsSuccess = false,
-                    Data = new PaginatedListDTO<JobDTO>
+                    Data = new PaginatedListDTO<AddJobDTO>
                     {
                         CurrentPage = paginatedJobs.CurrentPage,
                         TotalPages = paginatedJobs.TotalPages,
@@ -86,34 +93,34 @@ namespace Shoghlana.Api.Services.Implementaions
                 };
             }
 
-            List<JobDTO> jobsDTOs = new List<JobDTO> ();
+            List<GetJobDTO> jobsDTOs = (List<GetJobDTO>) paginatedJobs.Items;
 
-            foreach (Job job in paginatedJobs.Items)
-            {
-                JobDTO jobDTO = mapper.Map<Job , JobDTO>(job);
+            //foreach (GetJobDTO job in paginatedJobs.Items)
+            //{
+            //  //  GetJobDTO jobDTO = mapper.Map<Job , GetJobDTO>(job);
 
-                var client = _unitOfWork.clientRepository.GetById(jobDTO.ClientId);
-                //jobDTO.clientName = client?.Name ?? "NA";
+            //  //  var client = _unitOfWork.clientRepository.GetById(jobDTO.ClientId);
+            //    //jobDTO.clientName = client?.Name ?? "NA";
 
-                //var category = _unitOfWork.categoryRepository.GetById(jobDTO.CategoryId);
-                //jobDTO.CategoryTitle = category?.Title ?? "NA";
+            //    //var category = _unitOfWork.categoryRepository.GetById(jobDTO.CategoryId);
+            //    //jobDTO.CategoryTitle = category?.Title ?? "NA";
 
-                //if(jobDTO.AcceptedFreelancerId is not null)
-                //{
-                //    var freelancer = _unitOfWork.freelancerRepository.GetById((int)jobDTO.AcceptedFreelancerId);
-                //    jobDTO.AcceptedFreelancerName = freelancer?.Title ?? "NA";
+            //    //if(jobDTO.AcceptedFreelancerId is not null)
+            //    //{
+            //    //    var freelancer = _unitOfWork.freelancerRepository.GetById((int)jobDTO.AcceptedFreelancerId);
+            //    //    jobDTO.AcceptedFreelancerName = freelancer?.Title ?? "NA";
 
-                //}
-                // it is calculated automatically in the prop from the count of proposal List 
-                // jobDTO.ProposalsCount = _unitOfWork.proposalRepository.GetCount();
+            //    //}
+            //    // it is calculated automatically in the prop from the count of proposal List 
+            //    // jobDTO.ProposalsCount = _unitOfWork.proposalRepository.GetCount();
 
-                jobsDTOs.Add(jobDTO);
-            }
+            //    jobsDTOs.Add(jobDTO);
+            //}
 
             return new GeneralResponse()
             {
                 IsSuccess = true,
-                Data = new PaginatedListDTO<JobDTO>
+                Data = new PaginatedListDTO<GetJobDTO>
                 {
                     CurrentPage = paginatedJobs.CurrentPage,
                     TotalPages = paginatedJobs.TotalPages,
@@ -125,18 +132,29 @@ namespace Shoghlana.Api.Services.Implementaions
         }
 
         public async Task<ActionResult<GeneralResponse>> GetPaginatedJobsAsync
-         (JobStatus? status, int? MinBudget, int? MaxBudget, int? ClientId, int? FreelancerId,
+         (JobStatus? status, int? MinBudget, int? MaxBudget, int? ClientId, int? FreelancerId, bool? HasManyProposals, bool? IsNew,
             int page, int pageSize, PaginatedJobsRequestBody requestBody)
         {
-            PaginatedListDTO<Job> paginatedJobs = await _unitOfWork.jobRepository
-                  .GetPaginatedJobsAsync(status, MinBudget, MaxBudget, ClientId, FreelancerId, page, pageSize, requestBody);
+
+            PaginatedListDTO<GetJobDTO> paginatedJobs = new PaginatedListDTO<GetJobDTO>();
+
+            PaginatedListDTO<Job> jobs = await _unitOfWork.jobRepository
+                  .GetPaginatedJobsAsync(status, MinBudget, MaxBudget, ClientId, FreelancerId, HasManyProposals, IsNew, page, pageSize, requestBody);
+
+            paginatedJobs.Items = mapper.Map<IEnumerable<Job>, IEnumerable<GetJobDTO>>(jobs.Items);
+            paginatedJobs.TotalItems = jobs.TotalItems;
+            paginatedJobs.CurrentPage = jobs.CurrentPage;
+            paginatedJobs.TotalPages = jobs.TotalPages;
+
+            //PaginatedListDTO<GetJobDTO> paginatedJobs = await _unitOfWork.jobRepository
+            //      .GetPaginatedJobsAsync(status, MinBudget, MaxBudget, ClientId, FreelancerId, page, pageSize, requestBody);
 
             if (paginatedJobs.Items is null)
             {
                 return new GeneralResponse()
                 {
                     IsSuccess = false,
-                    Data = new PaginatedListDTO<JobDTO>
+                    Data = new PaginatedListDTO<AddJobDTO>
                     {
                         CurrentPage = paginatedJobs.CurrentPage,
                         TotalPages = paginatedJobs.TotalPages,
@@ -148,34 +166,35 @@ namespace Shoghlana.Api.Services.Implementaions
                 };
             }
 
-            List<JobDTO> jobsDTOs = new List<JobDTO>();
 
-            foreach (Job job in paginatedJobs.Items)
-            {
-                JobDTO jobDTO = mapper.Map<Job, JobDTO>(job);
+            //foreach (Job job in paginatedJobs.Items)
+            //{
+            //    AddJobDTO jobDTO = mapper.Map<Job, AddJobDTO>(job);
 
-                //var client = _unitOfWork.clientRepository.GetById(jobDTO.ClientId);
-                //jobDTO.clientName = client?.Name ?? "NA";
+            //    //var client = _unitOfWork.clientRepository.GetById(jobDTO.ClientId);
+            //    //jobDTO.clientName = client?.Name ?? "NA";
 
-                //var category = _unitOfWork.categoryRepository.GetById(jobDTO.CategoryId);
-                //jobDTO.CategoryTitle = category?.Title ?? "NA";
+            //    //var category = _unitOfWork.categoryRepository.GetById(jobDTO.CategoryId);
+            //    //jobDTO.CategoryTitle = category?.Title ?? "NA";
 
-                //if (jobDTO.AcceptedFreelancerId is not null)
-                //{
-                //    var freelancer = _unitOfWork.freelancerRepository.GetById((int)jobDTO.AcceptedFreelancerId);
-                //    jobDTO.AcceptedFreelancerName = freelancer?.Title ?? "NA";
+            //    //if (jobDTO.AcceptedFreelancerId is not null)
+            //    //{
+            //    //    var freelancer = _unitOfWork.freelancerRepository.GetById((int)jobDTO.AcceptedFreelancerId);
+            //    //    jobDTO.AcceptedFreelancerName = freelancer?.Title ?? "NA";
 
-                //}
-                // it is calculated automatically in the prop from the count of proposal List 
-                // jobDTO.ProposalsCount = _unitOfWork.proposalRepository.GetCount();
+            //    //}
+            //    // it is calculated automatically in the prop from the count of proposal List 
+            //    // jobDTO.ProposalsCount = _unitOfWork.proposalRepository.GetCount();
 
-                jobsDTOs.Add(jobDTO);
-            }
+            //    jobsDTOs.Add(jobDTO);
+            //}
+
+            List<GetJobDTO> jobsDTOs = (List<GetJobDTO>)paginatedJobs.Items;
 
             return new GeneralResponse()
             {
                 IsSuccess = true,
-                Data = new PaginatedListDTO<JobDTO>
+                Data = new PaginatedListDTO<GetJobDTO>
                 {
                     CurrentPage = paginatedJobs.CurrentPage,
                     TotalPages = paginatedJobs.TotalPages,
@@ -200,7 +219,7 @@ namespace Shoghlana.Api.Services.Implementaions
                 };
             }
 
-            JobDTO jobDTO = new JobDTO();
+            AddJobDTO jobDTO = new AddJobDTO();
 
             List<SkillDTO> skillDTOs = new List<SkillDTO>();
 
@@ -239,7 +258,7 @@ namespace Shoghlana.Api.Services.Implementaions
             //    jobDTO.AcceptedFreelancerName = acceptedFreelancer.Name;
             //}
 
-            jobDTO = mapper.Map<Job, JobDTO>(job);
+            jobDTO = mapper.Map<Job, AddJobDTO>(job);
 
             return new GeneralResponse
             {
@@ -268,7 +287,7 @@ namespace Shoghlana.Api.Services.Implementaions
                 };
             }
 
-            List<JobDTO> jobDTOs = mapper.Map<List<Job>, List<JobDTO>>(jobs);
+            List<AddJobDTO> jobDTOs = mapper.Map<List<Job>, List<AddJobDTO>>(jobs);
 
             for (int i = 0; i < jobs.Count; i++)
             {
@@ -382,7 +401,7 @@ namespace Shoghlana.Api.Services.Implementaions
                 };
             }
 
-            List<JobDTO> jobDTOs = mapper.Map<List<Job>, List<JobDTO>>(jobs);
+            List<AddJobDTO> jobDTOs = mapper.Map<List<Job>, List<AddJobDTO>>(jobs);
 
             for (int i = 0; i < jobs.Count; i++)
             {
@@ -413,9 +432,9 @@ namespace Shoghlana.Api.Services.Implementaions
             // rate?????
         }
 
-        public ActionResult<GeneralResponse> Add(JobDTO jobDto)
+        public ActionResult<GeneralResponse> Add(AddJobDTO jobDto)
         {
-            Job job = mapper.Map<JobDTO, Job>(jobDto);
+            Job job = mapper.Map<AddJobDTO, Job>(jobDto);
 
             //foreach(SkillDTO skillDTO in jobDto.skillsDTO) 
             //{
@@ -499,7 +518,7 @@ namespace Shoghlana.Api.Services.Implementaions
             };
         }
 
-        public ActionResult<GeneralResponse> update(JobDTO jobDto)
+        public ActionResult<GeneralResponse> update(AddJobDTO jobDto)
         {
             Job? job = _unitOfWork.jobRepository.GetById(jobDto.Id);
 

@@ -2,7 +2,7 @@
 
 namespace Shoghlana.Core.DTO
 {
-    public class JobDTO
+    public class AddJobDTO
     {
         public int Id { get; set; }
 
