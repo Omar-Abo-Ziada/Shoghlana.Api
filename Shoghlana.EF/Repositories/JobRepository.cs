@@ -104,11 +104,19 @@ namespace Shoghlana.EF.Repositories
                 };
             }
 
-            var items = query.Skip((page - 1) * pageSize)
+            //List<Job> items =  dbSet.Where(j => j.MinBudget >= MinBudget).Where(j => j.MaxBudget <= MaxBudget)
+            //      .Where(j => requestBody.CategoriesIDs.Contains(j.CategoryId))
+            //      .Skip((page - 1) * pageSize)
+            //                   .Take(pageSize)
+            //                   .ToList();
+
+
+
+            List<Job> items = query.Skip((page - 1) * pageSize)
                              .Take(pageSize)
                              .ToList();
 
-            return new PaginatedListDTO<Job>
+            return new PaginatedListDTO<Job>     
             {
                 TotalItems = totalFilteredItems,
                 TotalPages = totalPages,
