@@ -16,10 +16,10 @@ namespace Shoghlana.Api.Services.Interfaces
         public ActionResult<GeneralResponse> GetAll();
 
         public ActionResult<GeneralResponse> GetPaginatedJobs
-        (JobStatus? status , int? MinBudget, int? MaxBudget, int? ClientId, int? FreelancerId,int page, int pageSize, PaginatedJobsRequestBody requestBody);
+        (JobStatus? status , int? MinBudget, int? MaxBudget, int? ClientId, int? FreelancerId, bool? HasManyProposals, bool? IsNew , int page, int pageSize, PaginatedJobsRequestBody requestBody);
 
         public Task<ActionResult<GeneralResponse>> GetPaginatedJobsAsync
-        (JobStatus? status, int? MinBudget, int? MaxBudget, int? ClientId, int? FreelancerId, int page, int pageSize, PaginatedJobsRequestBody requestBody);
+        (JobStatus? status, int? MinBudget, int? MaxBudget, int? ClientId, int? FreelancerId,bool? HasManyProposals, bool? IsNew, int page, int pageSize, PaginatedJobsRequestBody requestBody);
 
         public ActionResult<GeneralResponse> Get(int id);
 
@@ -31,9 +31,9 @@ namespace Shoghlana.Api.Services.Interfaces
 
         public ActionResult<GeneralResponse> GetByClientId([FromQuery] int id);
 
-        public ActionResult<GeneralResponse> Add(JobDTO jobDto);
+        public ActionResult<GeneralResponse> Add(AddJobDTO jobDto);
 
-        public ActionResult<GeneralResponse> update(JobDTO jobDto);
+        public ActionResult<GeneralResponse> update(AddJobDTO jobDto);
 
         public ActionResult<GeneralResponse> delete(int id);
     }

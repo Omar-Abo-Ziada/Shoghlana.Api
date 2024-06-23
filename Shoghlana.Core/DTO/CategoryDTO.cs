@@ -14,6 +14,6 @@ namespace Shoghlana.Core.DTO
 
         public string Title { get; set; }
    
-        public List<JobDTO>? Jobs { get; set; }
+        public List<AddJobDTO>? Jobs { get; set; }
     }
 }

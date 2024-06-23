@@ -31,8 +31,8 @@ namespace Shoghlana.Api.Helpers
             CreateMap<Rate , RateDTO>();
             CreateMap<RateDTO, Rate>();
 
-            CreateMap<Job, JobDTO>(); 
-            CreateMap<JobDTO, Job>();
+            CreateMap<Job, AddJobDTO>(); 
+            CreateMap<AddJobDTO, Job>();
 
             CreateMap<GetJobDTO, Job>();
             CreateMap<Job, GetJobDTO>();

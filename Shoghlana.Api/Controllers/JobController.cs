@@ -31,16 +31,17 @@ namespace Shoghlana.Api.Controllers
 
         [HttpPost("pagination")]
         public ActionResult<GeneralResponse> GetPaginatedJobs
-          (int? MinBudget, int? MaxBudget, int? ClientId, int? FreelancerId, int page = defaultPageNumber, int pageSize = defaultPageSize, JobStatus? status = JobStatus.All, PaginatedJobsRequestBody requestBody = null)
+          (int? MinBudget, int? MaxBudget, int? ClientId, int? FreelancerId , bool? HasManyProposals , bool? IsNew, int page = defaultPageNumber, int pageSize = defaultPageSize, JobStatus? status = JobStatus.All
+            , PaginatedJobsRequestBody requestBody = null)
         {
-            return jobService.GetPaginatedJobs(status, MinBudget, MaxBudget, ClientId, FreelancerId, page, pageSize, requestBody);
+            return jobService.GetPaginatedJobs(status, MinBudget, MaxBudget, ClientId, FreelancerId , HasManyProposals, IsNew, page, pageSize, requestBody);
         }
 
         [HttpPost("paginationAsync")]
         public Task<ActionResult<GeneralResponse>> GetPaginatedJobsAsync
-          (int? MinBudget, int? MaxBudget, int? ClientId, int? FreelancerId, int page = defaultPageNumber, int pageSize = defaultPageSize, JobStatus? status = JobStatus.All, PaginatedJobsRequestBody requestBody = null)
+          (int? MinBudget, int? MaxBudget, int? ClientId, int? FreelancerId, bool? HasManyProposals, bool? IsNew, int page = defaultPageNumber, int pageSize = defaultPageSize, JobStatus? status = JobStatus.All, PaginatedJobsRequestBody requestBody = null)
         {
-            return jobService.GetPaginatedJobsAsync(status, MinBudget, MaxBudget, ClientId, FreelancerId, page, pageSize, requestBody);
+            return jobService.GetPaginatedJobsAsync(status, MinBudget, MaxBudget, ClientId, FreelancerId, HasManyProposals, IsNew, page, pageSize, requestBody);
         }
 
         [HttpGet("{id:int}")]
@@ -74,7 +75,7 @@ namespace Shoghlana.Api.Controllers
         }
 
         [HttpPost]
-        public ActionResult<GeneralResponse> Add(JobDTO jobDto)
+        public ActionResult<GeneralResponse> Add(AddJobDTO jobDto)
         {
             if (!ModelState.IsValid)
             {
@@ -91,7 +92,7 @@ namespace Shoghlana.Api.Controllers
         }
 
         [HttpPut]
-        public ActionResult<GeneralResponse> update(JobDTO jobDto)
+        public ActionResult<GeneralResponse> update(AddJobDTO jobDto)
         {
 
             if (!ModelState.IsValid)
