@@ -42,7 +42,7 @@ namespace Shoghlana.Core.Models
 
         public ExperienceLevel ExperienceLevel { get; set; }
 
-        public List<JobSkills> skills { get; set; } = new List<JobSkills>();
+        public List<JobSkills>? skills { get; set; } = new List<JobSkills>();
 
         public List<Proposal>? Proposals { get; set; } = new List<Proposal>();
 

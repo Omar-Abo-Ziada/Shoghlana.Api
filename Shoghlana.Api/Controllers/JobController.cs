@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Cors;
+using Microsoft.AspNetCore.Mvc;
 using Shoghlana.Api.Response;
 using Shoghlana.Api.Services.Interfaces;
 using Shoghlana.Core.DTO;
@@ -8,8 +9,7 @@ namespace Shoghlana.Api.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-
-
+    [EnableCors("AllowAngular")] // Apply the Angular-specific CORS policy to this controller
     public class JobController : ControllerBase
     {
         private readonly IJobService jobService;
@@ -17,7 +17,6 @@ namespace Shoghlana.Api.Controllers
         private const int defaultPageNumber = 1;
 
         private const int defaultPageSize = 5;
-
 
         public JobController(IJobService jobService)
         {

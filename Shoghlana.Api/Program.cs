@@ -125,7 +125,24 @@ namespace Shoghlana.Api
 
             builder.Services.AddAutoMapper(typeof(Program));
 
-            builder.Services.AddCors();
+            // Define CORS policies
+            builder.Services.AddCors(options =>
+            {
+                options.AddPolicy("AllowAll", builder =>
+                {
+                    builder.AllowAnyOrigin()
+                           .AllowAnyMethod()
+                           .AllowAnyHeader();
+                });
+
+                options.AddPolicy("AllowAngular", builder =>
+                {
+                    builder.WithOrigins("http://localhost:4200/") 
+                           .AllowAnyMethod()
+                           .AllowAnyHeader();
+                });
+            });
+
 
             //************************************************************************
 
@@ -143,7 +160,9 @@ namespace Shoghlana.Api
 
             app.UseAuthorization();
 
-            app.UseCors(c => c.AllowAnyHeader().AllowAnyMethod().AllowAnyOrigin());
+            //app.UseCors(c => c.AllowAnyHeader().AllowAnyMethod().AllowAnyOrigin().AllowCredentials());
+            app.UseCors("AllowAll");
+
 
             app.MapHub<NotificationHub>("/notificationHub");
             app.UseAuthorization();

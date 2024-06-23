@@ -98,7 +98,7 @@ namespace Shoghlana.EF.Repositories
             {
                 TotalItems = totalFilteredItems,
                 TotalPages = totalPages,
-                CurrentPage = page,
+                CurrentPage = page, 
                 Items = items
             };
         }
