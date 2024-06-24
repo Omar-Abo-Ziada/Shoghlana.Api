@@ -36,5 +36,8 @@ namespace Shoghlana.Api.Services.Interfaces
         public ActionResult<GeneralResponse> update(AddJobDTO jobDto);
 
         public ActionResult<GeneralResponse> delete(int id);
+
+        Task<ActionResult<GeneralResponse>> SearchByJobTitleAsync(string KeyWord);
+
     }
 }
