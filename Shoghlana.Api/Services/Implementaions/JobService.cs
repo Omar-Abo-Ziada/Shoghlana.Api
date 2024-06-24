@@ -23,7 +23,7 @@ namespace Shoghlana.Api.Services.Implementaions
         {
             List<Job> jobs = _unitOfWork.jobRepository.FindAll(["Client", "Category", "skills"]).ToList();
 
-            List<AddJobDTO> jobDTOs = mapper.Map<List<Job>, List<AddJobDTO>>(jobs);
+            List<GetJobDTO> jobDTOs = mapper.Map<List<Job>, List<GetJobDTO>>(jobs);
 
             for (int i = 0; i < jobs.Count; i++)
             {
@@ -219,7 +219,7 @@ namespace Shoghlana.Api.Services.Implementaions
                 };
             }
 
-            AddJobDTO jobDTO = new AddJobDTO();
+            GetJobDTO jobDTO = new GetJobDTO();
 
             List<SkillDTO> skillDTOs = new List<SkillDTO>();
 
@@ -258,7 +258,7 @@ namespace Shoghlana.Api.Services.Implementaions
             //    jobDTO.AcceptedFreelancerName = acceptedFreelancer.Name;
             //}
 
-            jobDTO = mapper.Map<Job, AddJobDTO>(job);
+            jobDTO = mapper.Map<Job, GetJobDTO>(job);
 
             return new GeneralResponse
             {
@@ -274,7 +274,7 @@ namespace Shoghlana.Api.Services.Implementaions
 
             try
             {
-                jobs = _unitOfWork.jobRepository.FindAll(["Client", "Category", "skills"], j => j.AcceptedFreelancerId == id)
+                jobs = _unitOfWork.jobRepository.FindAll(["Client", "Category", "skills", "Rate"], j => j.AcceptedFreelancerId == id)
                                                         .ToList();
             }
             catch (Exception ex)
@@ -287,12 +287,15 @@ namespace Shoghlana.Api.Services.Implementaions
                 };
             }
 
-            List<AddJobDTO> jobDTOs = mapper.Map<List<Job>, List<AddJobDTO>>(jobs);
+            List<GetJobDTO> jobDTOs = mapper.Map<List<Job>, List<GetJobDTO>>(jobs);
 
             for (int i = 0; i < jobs.Count; i++)
             {
                 //jobDTOs[i].clientName = jobs[i].Client.Name;
                 //jobDTOs[i].CategoryTitle = jobs[i].Category.Title;
+
+                RateDTO RateDto = mapper.Map<Rate, RateDTO>(jobs[i].Rate);
+                jobDTOs[i].Rate = RateDto;
 
                 foreach (JobSkills jobSkill in jobs[i].skills)
                 {
@@ -301,7 +304,7 @@ namespace Shoghlana.Api.Services.Implementaions
                     jobDTOs[i].Skills.Add(new SkillDTO
                     {
                         Title = skill.Title,
-                        //Id = skill.Id,
+                        Id = skill.Id,
                     });
                 }
             }
@@ -311,7 +314,7 @@ namespace Shoghlana.Api.Services.Implementaions
                 Data = jobDTOs,
                 Message = "All jobs for this freelancer retrieved successfully"
             };
-            // rate?????
+            
         }
 
         public ActionResult<GeneralResponse> GetJobsByCategoryId(int id)
@@ -401,7 +404,7 @@ namespace Shoghlana.Api.Services.Implementaions
                 };
             }
 
-            List<AddJobDTO> jobDTOs = mapper.Map<List<Job>, List<AddJobDTO>>(jobs);
+            List<GetJobDTO> jobDTOs = mapper.Map<List<Job>, List<GetJobDTO>>(jobs);
 
             for (int i = 0; i < jobs.Count; i++)
             {
@@ -417,7 +420,7 @@ namespace Shoghlana.Api.Services.Implementaions
                     jobDTOs[i].Skills.Add(new SkillDTO
                     {
                         Title = skill.Title,
-                        //Id = skill.Id,
+                        Id = skill.Id,
                     });
                 }
             }
@@ -445,7 +448,7 @@ namespace Shoghlana.Api.Services.Implementaions
 
             try
             {
-                job.skills = null;
+              //  job.skills = null;
 
                 _unitOfWork.jobRepository.Add(job);
 
@@ -453,17 +456,17 @@ namespace Shoghlana.Api.Services.Implementaions
 
                 List<JobSkills> JobSkills = new List<JobSkills>();
 
-                foreach (SkillDTO skillDTO in jobDto.Skills)
+                foreach (int skillID in jobDto.SkillsIds)
                 {
-                    Skill skill = new Skill()
-                    {
-                        Title = skillDTO.Title,
-                        Description = skillDTO.Description,
-                    };
+                    //Skill skill = new Skill()
+                    //{
+                    //    Title = skillDTO.Title,
+                    //    Description = skillDTO.Description,
+                    //};
 
-                    _unitOfWork.skillRepository.Add(skill);
+                   Skill? skill = _unitOfWork.skillRepository.GetById(skillID);
 
-                    _unitOfWork.Save();
+                  //  _unitOfWork.Save();
 
                     var jobSkill = new JobSkills
                     {
@@ -474,6 +477,9 @@ namespace Shoghlana.Api.Services.Implementaions
                     JobSkills.Add(jobSkill);
                 }
 
+                 _unitOfWork.jobSkillsRepository.AddRange(JobSkills);
+                 _unitOfWork.jobSkillsRepository.save();
+               
                 //foreach (GetProposalDTO getProposalDTO in jobDto.Proposals)
                 //{
                 //    Proposal proposal = mapper.Map<GetProposalDTO, Proposal>(getProposalDTO);
@@ -491,13 +497,13 @@ namespace Shoghlana.Api.Services.Implementaions
 
                 //job.Rate = rate;
 
-                _unitOfWork.jobRepository.Update(job);
+                //_unitOfWork.jobRepository.Update(job);
 
-                _unitOfWork.Save();
+                //_unitOfWork.Save();
 
-                job.skills = JobSkills;
+               // job.skills = JobSkills;
 
-                _unitOfWork.Save();
+               // _unitOfWork.Save();
             }
 
             catch (Exception ex)
@@ -537,22 +543,28 @@ namespace Shoghlana.Api.Services.Implementaions
             _unitOfWork.jobSkillsRepository.DeleteRange(jobSkills);
 
             List<JobSkills> skills = new List<JobSkills>();
-            foreach (SkillDTO skillDto in jobDto.Skills)
+            foreach (int skillId in jobDto.SkillsIds)
             {
-                skills.Add(new JobSkills
+                Skill? skill = _unitOfWork.skillRepository.GetById(skillId);
+                if(skill is not null)
                 {
-                    //SkillId = skillDto.Id,
-                    JobId = jobDto.Id
-                });
+                    skills.Add(new JobSkills
+                    {
+                        SkillId = skill.Id,
+                        JobId = jobDto.Id
+                    });
+                }
+               
             }
 
-            job.skills = skills;
+          //  job.skills = skills;
 
             try
             {
-                _unitOfWork.jobRepository.Update(job);
+                _unitOfWork.jobSkillsRepository.AddRange(skills);
+               // _unitOfWork.jobRepository.Update(job);
 
-                _unitOfWork.Save();
+               // _unitOfWork.Save();
 
                 return new GeneralResponse
                 {
@@ -645,6 +657,77 @@ namespace Shoghlana.Api.Services.Implementaions
                     Message = ex.Message
                 };
             }
+        }
+
+
+        public async Task <ActionResult<GeneralResponse>> SearchByJobTitleAsync(string KeyWord) 
+        {
+            IEnumerable<Job> Jobs = new List<Job>();
+            try
+            {
+                Jobs = await _unitOfWork.jobRepository
+                                        .FindAllAsync(criteria: j => j.Title.Contains(KeyWord), includes: new string[] { "Rate", "skills" }); 
+            }
+            catch(Exception ex)
+            {
+                return new GeneralResponse()
+                {
+                    IsSuccess = false,
+                    Data = null,
+                    Message = "Error on searching for jobs match this key word"
+                };
+            }
+
+
+            if (Jobs.ToList() == null || Jobs.ToList().Count == 0)
+            {
+                return new GeneralResponse()
+                {
+                    IsSuccess = false,
+                    Data = null,
+                    Message = "No jobs match this search key word"
+                };
+            }
+
+           List<GetJobDTO> GetJobDtos = mapper.Map<IEnumerable<Job>, IEnumerable<GetJobDTO>>(Jobs)
+                                             .ToList();
+
+            for(int i = 0; i < Jobs.Count(); i++)
+            {
+                int? RateId = Jobs.ToList()[i].Rate?.Id;
+                if(RateId != null)
+                {
+                    Rate? rate = await _unitOfWork.rateRepository.GetByIdAsync((int)RateId);
+                    if (rate is not null)
+                    {
+                        RateDTO RateDto = mapper.Map<Rate, RateDTO>(rate);
+                        GetJobDtos[i].Rate = RateDto;
+                    }
+                }
+
+              
+
+                List<SkillDTO> SkillDTOs = new List<SkillDTO>();
+
+                foreach(JobSkills JobSkill in Jobs.ToList()[i].skills)
+                {
+                  Skill? skill = await _unitOfWork.skillRepository.GetByIdAsync(JobSkill.SkillId);
+
+                    if(skill is not null)
+                    {
+                        SkillDTO SkillDto = mapper.Map<Skill, SkillDTO>(skill);
+                        SkillDTOs.Add(SkillDto);
+                    }
+                }
+
+                GetJobDtos[i].Skills = SkillDTOs;
+            }
+            return new GeneralResponse()
+            {
+                IsSuccess = true,
+                Data = GetJobDtos,
+                Message = "All jobs match this key word retrieved successfully"
+            };
         }
     }
 }

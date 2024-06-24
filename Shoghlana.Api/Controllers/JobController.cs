@@ -114,5 +114,21 @@ namespace Shoghlana.Api.Controllers
         {
             return jobService.delete(id);
         }
+
+
+        [HttpGet("Search")]
+        public async Task <ActionResult<GeneralResponse>> SearchByJobTitleAsync(string KeyWord)
+        {
+            if(KeyWord == null || KeyWord == "")
+            {
+                return new GeneralResponse()
+                {
+                    IsSuccess = false,
+                    Data = null,
+                    Message = "No key word to use in search"
+                };
+            }
+            return await jobService.SearchByJobTitleAsync(KeyWord);
+        }
     }
 }

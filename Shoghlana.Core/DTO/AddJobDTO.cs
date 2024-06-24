@@ -23,8 +23,9 @@ namespace Shoghlana.Core.DTO
         //public DateTime? DeadLine { get; set; }
 
         public ExperienceLevel ExperienceLevel { get; set; }
+        public List<int>? SkillsIds { get; set; } = new List<int>();
 
-        public List<SkillDTO>? Skills { get; set; } = new List<SkillDTO>();
+      //  public List<SkillDTO>? Skills { get; set; } = new List<SkillDTO>();
 
         //public List<GetProposalDTO>? Proposals { get; set; } = new List<GetProposalDTO>();
 
