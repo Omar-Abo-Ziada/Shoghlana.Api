@@ -28,11 +28,13 @@ namespace Shoghlana.Api
             // Add services to the container.
 
             builder.Services.AddControllers();
-                //.AddJsonOptions(options =>
-                //{
-                //    options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.Preserve;
-                //});
+            //.AddJsonOptions(options =>
+            //{
+            //    options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.Preserve;
+            //});
             builder.Services.AddSignalR();
+            builder.Services.AddSingleton<IDictionary<string, UserRoomConnection>>(opt =>
+            new Dictionary<string, UserRoomConnection>());
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
@@ -122,13 +124,20 @@ namespace Shoghlana.Api
             builder.Services.AddScoped<IRateService, RateService>();
             builder.Services.AddScoped<IProposalImageService, ProposalImageService>();
             builder.Services.AddScoped<ISkillService, SkillService>();
-           // builder.Services.AddScoped<IGoogleAuthService, GoogleAuthService>();
+            // builder.Services.AddScoped<IGoogleAuthService, GoogleAuthService>();
 
             builder.Services.AddAutoMapper(typeof(Program));
 
             // Define CORS policies
             builder.Services.AddCors(options =>
             {
+                options.AddDefaultPolicy(builder =>
+                {
+                    builder.WithOrigins("http://localhost:4200")
+                    .AllowAnyHeader()
+                    .AllowAnyMethod()
+                    .AllowCredentials();
+                });
                 options.AddPolicy("AllowAll", builder =>
                 {
                     builder.AllowAnyOrigin()
@@ -138,7 +147,7 @@ namespace Shoghlana.Api
 
                 options.AddPolicy("AllowAngular", builder =>
                 {
-                    builder.WithOrigins("http://localhost:4200/") 
+                    builder.WithOrigins("http://localhost:4200/")
                            .AllowAnyMethod()
                            .AllowAnyHeader();
                 });
@@ -163,9 +172,15 @@ namespace Shoghlana.Api
 
             //app.UseCors(c => c.AllowAnyHeader().AllowAnyMethod().AllowAnyOrigin().AllowCredentials());
             app.UseCors("AllowAll");
+            app.UseCors();
 
-
+            app.UseRouting();
             app.MapHub<NotificationHub>("/notificationHub");
+            app.MapHub<ChatHub>("/ChatHub");
+            //app.UseEndpoints(Endpoint =>
+            //{
+            //    Endpoint.MapHub<ChatHub>("/CharHub");
+            //});
             app.UseAuthorization();
 
             app.MapControllers();
