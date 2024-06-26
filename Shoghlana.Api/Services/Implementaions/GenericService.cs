@@ -17,12 +17,12 @@ namespace Shoghlana.Api.Services.Implementations
 
         //******************************************************
 
-        public virtual T GetById(int id)
+        public virtual T Get(int id)
         {
             return _repository.GetById(id);
         }
 
-        public virtual async Task<T> GetByIdAsync(int id)
+        public virtual async Task<T> GetAsync(int id)
         {
             return await _repository.GetByIdAsync(id);
         }

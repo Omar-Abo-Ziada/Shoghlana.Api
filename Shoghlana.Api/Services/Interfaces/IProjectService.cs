@@ -13,9 +13,9 @@ namespace Shoghlana.Api.Services.Interfaces
 
         public ActionResult<GeneralResponse> GetByfreelancerIdId(int id);
 
-        public Task<ActionResult<GeneralResponse>> AddAsync([FromForm] ProjectDTO projectDTO);
+        public Task<ActionResult<GeneralResponse>> AddAsync([FromForm] AddProjectDTO projectDTO);
 
-        public Task<ActionResult<GeneralResponse>> UpdateAsync(int id, [FromForm] ProjectDTO updateProjectDTO);
+        public Task<ActionResult<GeneralResponse>> UpdateAsync(int id, [FromForm] AddProjectDTO updateProjectDTO);
 
         public ActionResult<GeneralResponse> Delete(int id);
     }

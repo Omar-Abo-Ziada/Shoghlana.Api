@@ -22,9 +22,11 @@ namespace Shoghlana.Core.DTO
 
         // should be uncommented and optional >> added on edit freelancer profile >> not added on freelancer creation >> use projectdto on adding , getprojectdto onretrieving
 
-        public List<ProjectDTO>? Portfolio { get; set; }
+        public List<AddProjectDTO>? Portfolio { get; set; }
 
-        public List<AddJobDTO>? WorkingHistory { get; set; }
+        public List<GetJobDTO>? WorkingHistory { get; set; }
+        // TODO you cahnged it from DTO to GetDTO => not tested yet
+        
 
         public List<ProposalDTO>? Proposals { get; set; }
 

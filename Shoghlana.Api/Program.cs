@@ -15,7 +15,6 @@ using Shoghlana.EF.Configurations;
 using Shoghlana.EF.Repositories;
 using Shoghlana.EF.Repository;
 using System.Text;
-using System.Text.Json.Serialization;
 
 namespace Shoghlana.Api
 {
@@ -28,10 +27,10 @@ namespace Shoghlana.Api
             // Add services to the container.
 
             builder.Services.AddControllers();
-                //.AddJsonOptions(options =>
-                //{
-                //    options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.Preserve;
-                //});
+            //.AddJsonOptions(options =>
+            //{
+            //    options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.Preserve;
+            //});
             builder.Services.AddSignalR();
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
@@ -122,7 +121,7 @@ namespace Shoghlana.Api
             builder.Services.AddScoped<IRateService, RateService>();
             builder.Services.AddScoped<IProposalImageService, ProposalImageService>();
             builder.Services.AddScoped<ISkillService, SkillService>();
-           // builder.Services.AddScoped<IGoogleAuthService, GoogleAuthService>();
+            // builder.Services.AddScoped<IGoogleAuthService, GoogleAuthService>();
 
             builder.Services.AddAutoMapper(typeof(Program));
 
@@ -138,12 +137,11 @@ namespace Shoghlana.Api
 
                 options.AddPolicy("AllowAngular", builder =>
                 {
-                    builder.WithOrigins("http://localhost:4200/") 
+                    builder.WithOrigins("http://localhost:4200/")
                            .AllowAnyMethod()
                            .AllowAnyHeader();
                 });
             });
-
 
             //************************************************************************
 
@@ -161,9 +159,7 @@ namespace Shoghlana.Api
 
             app.UseAuthorization();
 
-            //app.UseCors(c => c.AllowAnyHeader().AllowAnyMethod().AllowAnyOrigin().AllowCredentials());
             app.UseCors("AllowAll");
-
 
             app.MapHub<NotificationHub>("/notificationHub");
             app.UseAuthorization();

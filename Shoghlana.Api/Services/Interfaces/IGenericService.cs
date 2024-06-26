@@ -10,9 +10,9 @@ namespace Shoghlana.Api.Services.Interfaces
 {
     public interface IGenericService<T> where T : class
     {
-        T GetById(int id);
+        T Get(int id);
 
-        Task<T> GetByIdAsync(int id);
+        Task<T> GetAsync(int id);
 
         //----------------------------------------------------------------
 

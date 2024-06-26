@@ -18,7 +18,7 @@ namespace Shoghlana.EF.Configurations
 
             builder.Property(p => p.Title).IsRequired().HasMaxLength(50);
             builder.Property(p => p.Description).IsRequired(false).HasMaxLength(100);
-            builder.Property(p => p.Link).IsRequired(false).HasMaxLength(50);
+            builder.Property(p => p.Link).IsRequired(false).HasMaxLength(150);
 
             builder.HasOne(p => p.Freelancer)
                      .WithMany(f => f.Portfolio)

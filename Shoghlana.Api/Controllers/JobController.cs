@@ -9,7 +9,7 @@ namespace Shoghlana.Api.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    [EnableCors("AllowAngular")] // Apply the Angular-specific CORS policy to this controller
+    [EnableCors("AllowAll")] // Apply Allow All policy now for testing
     public class JobController : ControllerBase
     {
         private readonly IJobService jobService;

@@ -36,4 +36,23 @@ select * from ProposalImages
 
 select * from RefreshToken
 
+select * from freelancers
+
+SELECT * FROM __EFMigrationsHistory;
+
+select * from ProjectImages
+
+select * from Projects
+
+select * from skills
+
+select * from projects
+
+select * from projectSkills
+
+select * from AspNetRoles
+
+select * from Jobs
+
+
 
