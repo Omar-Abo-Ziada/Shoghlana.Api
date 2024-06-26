@@ -1,8 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Storage;
+﻿using Microsoft.EntityFrameworkCore.Storage;
 using Shoghlana.Core.Interfaces;
-using Shoghlana.EF.Repository;
-using System;
 
 namespace Shoghlana.EF.Repositories
 {

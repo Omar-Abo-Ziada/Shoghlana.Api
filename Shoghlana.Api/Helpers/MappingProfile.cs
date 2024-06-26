@@ -1,11 +1,6 @@
-
-﻿using AutoMapper;
-
 using AutoMapper;
-
 using Shoghlana.Core.DTO;
 using Shoghlana.Core.Models;
-using System.Drawing;
 
 namespace Shoghlana.Api.Helpers
 {
@@ -22,21 +17,26 @@ namespace Shoghlana.Api.Helpers
             CreateMap<Skill, SkillDTO>();
             CreateMap<SkillDTO, Skill>();
 
-            CreateMap<Project, GetProjectDTO>();
-            CreateMap<GetProjectDTO, Project>();
+            CreateMap<Project, GetProjectDTO>()
+      .ForMember(dest => dest.Skills, opt => opt.MapFrom(src => src.Skills.Select(ps => ps.Skill)));
+
+            CreateMap<GetProjectDTO, Project>()
+                .ForMember(dest => dest.Skills, opt => opt.Ignore());
+
+            CreateMap<Project, AddProjectDTO>();
+            CreateMap<AddProjectDTO, Project>();
 
             CreateMap<ProjectImages, GetImageDTO>();
             CreateMap<GetImageDTO, ProjectImages>();
 
-            CreateMap<Rate , RateDTO>();
+            CreateMap<Rate, RateDTO>();
             CreateMap<RateDTO, Rate>();
 
-            CreateMap<Job, AddJobDTO>(); 
+            CreateMap<Job, AddJobDTO>();
             CreateMap<AddJobDTO, Job>();
 
             CreateMap<GetJobDTO, Job>();
             CreateMap<Job, GetJobDTO>();
-
 
             CreateMap<GetProposalDTO, Proposal>();
             CreateMap<Proposal, GetProposalDTO>();
