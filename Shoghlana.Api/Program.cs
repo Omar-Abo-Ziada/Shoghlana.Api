@@ -32,6 +32,8 @@ namespace Shoghlana.Api
             //    options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.Preserve;
             //});
             builder.Services.AddSignalR();
+            builder.Services.AddSingleton<IDictionary<string, UserRoomConnection>>(opt =>
+            new Dictionary<string, UserRoomConnection>());
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
@@ -128,6 +130,13 @@ namespace Shoghlana.Api
             // Define CORS policies
             builder.Services.AddCors(options =>
             {
+                options.AddDefaultPolicy(builder =>
+                {
+                    builder.WithOrigins("http://localhost:4200")
+                    .AllowAnyHeader()
+                    .AllowAnyMethod()
+                    .AllowCredentials();
+                });
                 options.AddPolicy("AllowAll", builder =>
                 {
                     builder.AllowAnyOrigin()
@@ -160,8 +169,16 @@ namespace Shoghlana.Api
             app.UseAuthorization();
 
             app.UseCors("AllowAll");
+            app.UseCors();
 
+            app.UseRouting();
+          
             app.MapHub<NotificationHub>("/notificationHub");
+            app.MapHub<ChatHub>("/ChatHub");
+            //app.UseEndpoints(Endpoint =>
+            //{
+            //    Endpoint.MapHub<ChatHub>("/CharHub");
+            //});
             app.UseAuthorization();
 
             app.MapControllers();
