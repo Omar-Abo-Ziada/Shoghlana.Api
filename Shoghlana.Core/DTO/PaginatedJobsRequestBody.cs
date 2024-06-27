@@ -4,6 +4,6 @@
     {
         public int[]? CategoriesIDs { get; set; } = null;
 
-        public string[]? Includes { get; set; } = ["Proposals"];
+        public string[]? Includes { get; set; } = null;
     }
 }

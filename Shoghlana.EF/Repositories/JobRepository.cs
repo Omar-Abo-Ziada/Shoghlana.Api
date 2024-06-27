@@ -253,5 +253,14 @@ namespace Shoghlana.EF.Repositories
                 Items = items
             };
         }
+
+
+        public List<Job> GetByCategoryId(int id) 
+        {
+          List<Job> jobs = context.Jobs.Where(j => j.CategoryId == id)
+                                  .ToList();
+
+            return jobs;
+        }
     }
 }

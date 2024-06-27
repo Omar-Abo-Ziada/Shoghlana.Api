@@ -41,7 +41,7 @@ namespace Shoghlana.Core.DTO
         //   // set => ProposalsCount = value;
         //}
 
-        //public JobStatus Status { get; set; } = JobStatus.Active;
+        public JobStatus Status { get; set; } = JobStatus.Active;
 
         public int ClientId { get; set; }
 

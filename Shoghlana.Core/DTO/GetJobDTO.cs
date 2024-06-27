@@ -31,7 +31,7 @@ namespace Shoghlana.Core.DTO
 
         public List<SkillDTO>? Skills { get; set; } = new List<SkillDTO>();
 
-        //public List<GetProposalDTO>? Proposals { get; set; } = new List<GetProposalDTO>();
+        public List<GetProposalDTO>? Proposals { get; set; } = new List<GetProposalDTO>();
 
         /// <summary>
         ///  any time you access the readonly ProposalsCount property,
@@ -49,11 +49,11 @@ namespace Shoghlana.Core.DTO
 
         public int ClientId { get; set; }
 
-        //public string clientName { get; set; }
+        public string clientName { get; set; }
 
-        //public int? AcceptedFreelancerId { get; set; }
+        public int? AcceptedFreelancerId { get; set; }
 
-        //public string? AcceptedFreelancerName { get; set; }
+        public string? AcceptedFreelancerName { get; set; }
 
         public int CategoryId { get; set; }
 

@@ -29,6 +29,7 @@ namespace Shoghlana.Api.Controllers
             return jobService.GetAll();
         }
 
+
         [HttpPost("pagination")]
         public ActionResult<GeneralResponse> GetPaginatedJobs
           (int? MinBudget, int? MaxBudget, int? ClientId, int? FreelancerId , bool? HasManyProposals , bool? IsNew, int page = defaultPageNumber, int pageSize = defaultPageSize, JobStatus? status = JobStatus.All
@@ -57,7 +58,7 @@ namespace Shoghlana.Api.Controllers
         }
 
         [HttpGet("category/{id:int}")]
-        public ActionResult<GeneralResponse> GetJobsByCategoryId(int id)
+        public ActionResult<GeneralResponse> GetJobsByCategoryId([FromRoute] int id)
         {
             return jobService.GetJobsByCategoryId(id);
         }
@@ -69,10 +70,11 @@ namespace Shoghlana.Api.Controllers
         }
 
         [HttpGet("client/{id:int}")]
-        public ActionResult<GeneralResponse> GetByClientId([FromQuery] int id)
+        public ActionResult<GeneralResponse> GetByClientId([FromRoute] int id)
         {
             return jobService.GetByClientId(id);
         }
+
 
         [HttpPost]
         public ActionResult<GeneralResponse> Add(AddJobDTO jobDto)
@@ -91,10 +93,10 @@ namespace Shoghlana.Api.Controllers
             return jobService.Add(jobDto);
         }
 
+
         [HttpPut]
         public ActionResult<GeneralResponse> update(AddJobDTO jobDto)
         {
-
             if (!ModelState.IsValid)
             {
                 return new GeneralResponse()
