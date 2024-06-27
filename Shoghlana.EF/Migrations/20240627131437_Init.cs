@@ -262,10 +262,10 @@ namespace Shoghlana.EF.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Title = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
                     Description = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: true),
-                    Link = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true),
+                    Link = table.Column<string>(type: "nvarchar(150)", maxLength: 150, nullable: true),
                     Poster = table.Column<byte[]>(type: "varbinary(max)", nullable: false),
                     TimePublished = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    FreelancerId = table.Column<int>(type: "int", nullable: true)
+                    FreelancerId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -274,7 +274,8 @@ namespace Shoghlana.EF.Migrations
                         name: "FK_Projects_Freelancers_FreelancerId",
                         column: x => x.FreelancerId,
                         principalTable: "Freelancers",
-                        principalColumn: "Id");
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.NoAction);
                 });
 
             migrationBuilder.CreateTable(
@@ -560,9 +561,9 @@ namespace Shoghlana.EF.Migrations
                 columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
                 values: new object[,]
                 {
-                    { "4ee4c60a-a27e-42b8-93ed-0e8cdc931f2f", "a50ba1b2-910b-4388-abb7-f71dc687525f", "Freelancer", "FREELANCER" },
-                    { "535dcbed-8be1-48de-b0fb-c92b414a9c8b", "e8cdafea-2bc8-47f5-9983-8fe0e805b897", "Admin", "ADMIN" },
-                    { "f69487a9-aa35-433e-b5a0-796b2de40653", "06447ccf-2594-4dc8-8ccb-1405fa60f8d3", "Client", "CLIENT" }
+                    { "6810a251-3d15-4966-8d02-941990117772", "5d4655f7-d823-4827-9bcd-20beba2f9432", "Client", "CLIENT" },
+                    { "6f5b91c2-4564-4a11-ba83-b2cb508049f8", "1eee4e72-964b-4817-a53e-bbe494968d34", "Admin", "ADMIN" },
+                    { "a86ba3b8-3a8c-4a9b-b170-fd316e12c7c3", "f4cea427-bfe8-42b0-8483-d8611250b9df", "Freelancer", "FREELANCER" }
                 });
 
             migrationBuilder.InsertData(
@@ -583,24 +584,24 @@ namespace Shoghlana.EF.Migrations
                 columns: new[] { "Id", "Country", "Description", "Image", "Name", "Phone", "RegisterationTime" },
                 values: new object[,]
                 {
-                    { 1, "المملكة العربية السعودية", "مبرمج ومطور تطبيقات متخصص في تطوير الويب", null, "عبد الرحمن أحمد", "+966123456789", new DateTime(2023, 12, 24, 0, 5, 40, 958, DateTimeKind.Local).AddTicks(8446) },
-                    { 2, "مصر", "مصممة جرافيك محترفة تعمل في تصميم اللوجوهات والبوسترات", null, "فاطمة محمد", "+201234567890", new DateTime(2023, 6, 24, 0, 5, 40, 958, DateTimeKind.Local).AddTicks(8538) },
-                    { 3, "الإمارات العربية المتحدة", "مسوق رقمي محترف بخبرة في إدارة الحملات الإعلانية عبر وسائل التواصل الاجتماعي", null, "علي العبدالله", "+971123456789", new DateTime(2024, 3, 24, 0, 5, 40, 958, DateTimeKind.Local).AddTicks(8543) },
-                    { 4, "الأردن", "كاتبة محتوى متخصصة في الكتابة الإبداعية والمقالات الفنية", null, "مريم حسن", "+962123456789", new DateTime(2023, 9, 24, 0, 5, 40, 958, DateTimeKind.Local).AddTicks(8548) },
-                    { 5, "العراق", "مصور فوتوغرافي متخصص في تصوير الأحداث والمناسبات الخاصة", null, "يوسف خالد", "+964123456789", new DateTime(2023, 11, 24, 0, 5, 40, 958, DateTimeKind.Local).AddTicks(8553) },
-                    { 6, "السعودية", "مديرة مشروع محترفة في إدارة المشاريع التقنية والتطوير البرمجي", null, "لمى عبدالله", "+966123456789", new DateTime(2024, 2, 24, 0, 5, 40, 958, DateTimeKind.Local).AddTicks(8557) },
-                    { 7, "مصر", "مسوق محتوى إبداعي يعمل على ترويج المحتوى الرقمي للشركات الناشئة", null, "عمر أحمد", "+201234567890", new DateTime(2023, 7, 24, 0, 5, 40, 958, DateTimeKind.Local).AddTicks(8562) },
-                    { 8, "لبنان", "مطورة تطبيقات محترفة تعمل في تطوير تطبيقات الهواتف الذكية", null, "رنا محمود", "+961123456789", new DateTime(2023, 10, 24, 0, 5, 40, 958, DateTimeKind.Local).AddTicks(8566) },
-                    { 9, "الأردن", "مدير تسويق متخصص في إدارة استراتيجيات التسويق الرقمي", null, "أحمد علي", "+962123456789", new DateTime(2024, 1, 24, 0, 5, 40, 958, DateTimeKind.Local).AddTicks(8570) },
-                    { 10, "السعودية", "خبيرة في تصميم وإدارة مواقع الويب للشركات الصغيرة والمتوسطة", null, "هدى صالح", "+966123456789", new DateTime(2023, 8, 24, 0, 5, 40, 958, DateTimeKind.Local).AddTicks(8574) },
-                    { 11, "الإمارات العربية المتحدة", "محاسبة مالية محترفة تعمل في مجال إعداد التقارير المالية", null, "سلمى عبدالله", "+971123456789", new DateTime(2024, 3, 24, 0, 5, 40, 958, DateTimeKind.Local).AddTicks(8578) },
-                    { 12, "مصر", "مهندس معماري متخصص في تصميم المباني السكنية", null, "محمد حسن", "+201234567890", new DateTime(2023, 11, 24, 0, 5, 40, 958, DateTimeKind.Local).AddTicks(8583) },
-                    { 13, "العراق", "طبيبة مختصة في طب الأطفال والأمراض النفسية", null, "زينب عبدالله", "+964123456789", new DateTime(2024, 4, 24, 0, 5, 40, 958, DateTimeKind.Local).AddTicks(8587) },
-                    { 14, "لبنان", "مصمم جرافيك مبدع يعمل في تصميم الإعلانات التجارية", null, "أحمد حسين", "+961123456789", new DateTime(2023, 9, 24, 0, 5, 40, 958, DateTimeKind.Local).AddTicks(8591) },
-                    { 15, "الأردن", "مترجمة محترفة تعمل في ترجمة النصوص الطبية والعلمية", null, "فاطمة علي", "+962123456789", new DateTime(2024, 1, 24, 0, 5, 40, 958, DateTimeKind.Local).AddTicks(8596) },
-                    { 16, "السعودية", "مطور ويب محترف في تطوير التطبيقات الإلكترونية", null, "عبدالله محمود", "+966123456789", new DateTime(2023, 7, 24, 0, 5, 40, 958, DateTimeKind.Local).AddTicks(8600) },
-                    { 17, "مصر", "مهندسة معمارية متخصصة في تصميم المنشآت الصناعية", null, "ريم عبدالله", "+201234567890", new DateTime(2023, 10, 24, 0, 5, 40, 958, DateTimeKind.Local).AddTicks(8604) },
-                    { 18, "لبنان", "محاسب مالي يتمتع بخبرة واسعة في المحاسبة المالية", null, "عمر حسن", "+961123456789", new DateTime(2024, 2, 24, 0, 5, 40, 958, DateTimeKind.Local).AddTicks(8608) }
+                    { 1, "المملكة العربية السعودية", "مبرمج ومطور تطبيقات متخصص في تطوير الويب", null, "عبد الرحمن أحمد", "+966123456789", new DateTime(2023, 12, 27, 16, 14, 36, 176, DateTimeKind.Local).AddTicks(4928) },
+                    { 2, "مصر", "مصممة جرافيك محترفة تعمل في تصميم اللوجوهات والبوسترات", null, "فاطمة محمد", "+201234567890", new DateTime(2023, 6, 27, 16, 14, 36, 176, DateTimeKind.Local).AddTicks(5091) },
+                    { 3, "الإمارات العربية المتحدة", "مسوق رقمي محترف بخبرة في إدارة الحملات الإعلانية عبر وسائل التواصل الاجتماعي", null, "علي العبدالله", "+971123456789", new DateTime(2024, 3, 27, 16, 14, 36, 176, DateTimeKind.Local).AddTicks(5096) },
+                    { 4, "الأردن", "كاتبة محتوى متخصصة في الكتابة الإبداعية والمقالات الفنية", null, "مريم حسن", "+962123456789", new DateTime(2023, 9, 27, 16, 14, 36, 176, DateTimeKind.Local).AddTicks(5100) },
+                    { 5, "العراق", "مصور فوتوغرافي متخصص في تصوير الأحداث والمناسبات الخاصة", null, "يوسف خالد", "+964123456789", new DateTime(2023, 11, 27, 16, 14, 36, 176, DateTimeKind.Local).AddTicks(5103) },
+                    { 6, "السعودية", "مديرة مشروع محترفة في إدارة المشاريع التقنية والتطوير البرمجي", null, "لمى عبدالله", "+966123456789", new DateTime(2024, 2, 27, 16, 14, 36, 176, DateTimeKind.Local).AddTicks(5107) },
+                    { 7, "مصر", "مسوق محتوى إبداعي يعمل على ترويج المحتوى الرقمي للشركات الناشئة", null, "عمر أحمد", "+201234567890", new DateTime(2023, 7, 27, 16, 14, 36, 176, DateTimeKind.Local).AddTicks(5110) },
+                    { 8, "لبنان", "مطورة تطبيقات محترفة تعمل في تطوير تطبيقات الهواتف الذكية", null, "رنا محمود", "+961123456789", new DateTime(2023, 10, 27, 16, 14, 36, 176, DateTimeKind.Local).AddTicks(5114) },
+                    { 9, "الأردن", "مدير تسويق متخصص في إدارة استراتيجيات التسويق الرقمي", null, "أحمد علي", "+962123456789", new DateTime(2024, 1, 27, 16, 14, 36, 176, DateTimeKind.Local).AddTicks(5118) },
+                    { 10, "السعودية", "خبيرة في تصميم وإدارة مواقع الويب للشركات الصغيرة والمتوسطة", null, "هدى صالح", "+966123456789", new DateTime(2023, 8, 27, 16, 14, 36, 176, DateTimeKind.Local).AddTicks(5121) },
+                    { 11, "الإمارات العربية المتحدة", "محاسبة مالية محترفة تعمل في مجال إعداد التقارير المالية", null, "سلمى عبدالله", "+971123456789", new DateTime(2024, 3, 27, 16, 14, 36, 176, DateTimeKind.Local).AddTicks(5125) },
+                    { 12, "مصر", "مهندس معماري متخصص في تصميم المباني السكنية", null, "محمد حسن", "+201234567890", new DateTime(2023, 11, 27, 16, 14, 36, 176, DateTimeKind.Local).AddTicks(5129) },
+                    { 13, "العراق", "طبيبة مختصة في طب الأطفال والأمراض النفسية", null, "زينب عبدالله", "+964123456789", new DateTime(2024, 4, 27, 16, 14, 36, 176, DateTimeKind.Local).AddTicks(5132) },
+                    { 14, "لبنان", "مصمم جرافيك مبدع يعمل في تصميم الإعلانات التجارية", null, "أحمد حسين", "+961123456789", new DateTime(2023, 9, 27, 16, 14, 36, 176, DateTimeKind.Local).AddTicks(5136) },
+                    { 15, "الأردن", "مترجمة محترفة تعمل في ترجمة النصوص الطبية والعلمية", null, "فاطمة علي", "+962123456789", new DateTime(2024, 1, 27, 16, 14, 36, 176, DateTimeKind.Local).AddTicks(5140) },
+                    { 16, "السعودية", "مطور ويب محترف في تطوير التطبيقات الإلكترونية", null, "عبدالله محمود", "+966123456789", new DateTime(2023, 7, 27, 16, 14, 36, 176, DateTimeKind.Local).AddTicks(5143) },
+                    { 17, "مصر", "مهندسة معمارية متخصصة في تصميم المنشآت الصناعية", null, "ريم عبدالله", "+201234567890", new DateTime(2023, 10, 27, 16, 14, 36, 176, DateTimeKind.Local).AddTicks(5147) },
+                    { 18, "لبنان", "محاسب مالي يتمتع بخبرة واسعة في المحاسبة المالية", null, "عمر حسن", "+961123456789", new DateTime(2024, 2, 27, 16, 14, 36, 176, DateTimeKind.Local).AddTicks(5151) }
                 });
 
             migrationBuilder.InsertData(
@@ -691,41 +692,83 @@ namespace Shoghlana.EF.Migrations
                 columns: new[] { "Id", "AcceptedFreelancerId", "ApproveTime", "CategoryId", "ClientId", "Description", "DurationInDays", "ExperienceLevel", "MaxBudget", "MinBudget", "PostTime", "Title" },
                 values: new object[,]
                 {
-                    { 1, 1, null, 1, 1, "تصميم وأعمال فنية احترافية", 0, 0, 500m, 100m, new DateTime(2024, 6, 24, 0, 5, 40, 962, DateTimeKind.Local).AddTicks(1385), "تصميم شعار احترافي ومميز" },
-                    { 2, 2, null, 1, 2, "تصميم وأعمال فنية إدارية", 0, 1, 700m, 200m, new DateTime(2024, 6, 24, 0, 5, 40, 962, DateTimeKind.Local).AddTicks(1401), "تصميم بوستر إعلاني لمواقع التواصل" },
-                    { 3, 3, null, 1, 3, "تصميم بطاقات أعمال", 0, 2, 600m, 150m, new DateTime(2024, 6, 24, 0, 5, 40, 962, DateTimeKind.Local).AddTicks(1409), "تصميم كارت شخصي احترافي للطباعة" },
-                    { 4, 4, null, 2, 4, "برمجة وتطوير المواقع والتطبيقات", 0, 1, 800m, 300m, new DateTime(2024, 6, 24, 0, 5, 40, 962, DateTimeKind.Local).AddTicks(1416), "تركيب لوحة تحكم مجانية مدى الحياة" },
-                    { 5, 5, null, 3, 5, "برمجة مواقع الإنترنت", 0, 0, 700m, 200m, new DateTime(2024, 6, 24, 0, 5, 40, 962, DateTimeKind.Local).AddTicks(1422), "تصميم موقع تعريفي للشركات" },
-                    { 6, 6, null, 4, 6, "برمجة وتصميم تطبيقات الهواتف الذكية", 0, 2, 3000m, 1000m, new DateTime(2024, 6, 24, 0, 5, 40, 962, DateTimeKind.Local).AddTicks(1429), "تطوير تطبيق موبايل لنظام iOS و Android" },
-                    { 7, 7, null, 3, 7, "برمجة وتصميم مواقع التسوق عبر الإنترنت", 0, 1, 1500m, 500m, new DateTime(2024, 6, 24, 0, 5, 40, 962, DateTimeKind.Local).AddTicks(1437), "تصميم وتطوير موقع تجارة إلكترونية" },
-                    { 8, 8, null, 5, 8, "تسويق وإعلان للشركات والأفراد", 0, 0, 1000m, 300m, new DateTime(2024, 6, 24, 0, 5, 40, 962, DateTimeKind.Local).AddTicks(1443), "إدارة حملة إعلانية على وسائل التواصل الاجتماعي" },
-                    { 9, 9, null, 6, 9, "فنون تصويرية ورسم", 0, 1, 600m, 200m, new DateTime(2024, 6, 24, 0, 5, 40, 962, DateTimeKind.Local).AddTicks(1450), "تصميم مجموعة من الرسوم التوضيحية للكتب الأطفال" },
-                    { 10, 10, null, 1, 10, "كتابة محتوى تسويقي وإعلاني", 0, 0, 300m, 100m, new DateTime(2024, 6, 24, 0, 5, 40, 962, DateTimeKind.Local).AddTicks(1456), "كتابة محتوى إعلاني لموقع الويب" },
-                    { 11, null, null, 2, 11, "برمجة نظم إدارية متقدمة", 0, 2, 2000m, 500m, new DateTime(2024, 6, 24, 0, 5, 40, 962, DateTimeKind.Local).AddTicks(1462), "تصميم وبرمجة نظام إدارة للموظفين" },
-                    { 12, null, null, 3, 12, "تحليل اقتصادي ومالي", 0, 2, 5000m, 1000m, new DateTime(2024, 6, 24, 0, 5, 40, 962, DateTimeKind.Local).AddTicks(1468), "إعداد دراسة جدوى لمشروع تجاري مستقبلي" },
-                    { 13, null, null, 4, 13, "دورات تعليمية وتدريب", 0, 0, 200m, 50m, new DateTime(2024, 6, 24, 0, 5, 40, 962, DateTimeKind.Local).AddTicks(1474), "تعليم البرمجة للمبتدئين عبر الإنترنت" },
-                    { 14, null, null, 5, 14, "تصميم جرافيك وإعلان", 0, 1, 500m, 150m, new DateTime(2024, 6, 24, 0, 5, 40, 962, DateTimeKind.Local).AddTicks(1480), "تصميم مطبوعات دعائية لفعالية ثقافية" },
-                    { 15, null, null, 6, 15, "ترجمة وكتابة", 0, 2, 800m, 200m, new DateTime(2024, 6, 24, 0, 5, 40, 962, DateTimeKind.Local).AddTicks(1486), "ترجمة مقالات علمية من الإنجليزية إلى العربية" },
-                    { 16, null, null, 1, 16, "برمجة ألعاب الفيديو", 0, 2, 5000m, 1000m, new DateTime(2024, 6, 24, 0, 5, 40, 962, DateTimeKind.Local).AddTicks(1533), "تصميم وتطوير لعبة فيديو متنقلة" },
-                    { 17, null, null, 2, 17, "تصميم وبرمجة منصات تعليمية إلكترونية", 0, 1, 1500m, 500m, new DateTime(2024, 6, 24, 0, 5, 40, 962, DateTimeKind.Local).AddTicks(1540), "تصميم منصة تعليمية عبر الإنترنت" },
-                    { 18, null, null, 3, 18, "كتابة وتحرير محتوى", 0, 1, 700m, 200m, new DateTime(2024, 6, 24, 0, 5, 40, 962, DateTimeKind.Local).AddTicks(1546), "إدارة محتوى لمدونة تقنية" },
-                    { 19, null, null, 4, 1, "برمجة وتخصيص نظم CRM", 0, 2, 2500m, 800m, new DateTime(2024, 6, 24, 0, 5, 40, 962, DateTimeKind.Local).AddTicks(1552), "تصميم وتطوير نظام إدارة العلاقات مع العملاء (CRM)" },
-                    { 20, null, null, 5, 2, "تحليل بيانات وإعداد تقارير", 0, 1, 1000m, 300m, new DateTime(2024, 6, 24, 0, 5, 40, 962, DateTimeKind.Local).AddTicks(1558), "تحليل بيانات وإعداد تقرير استراتيجي للشركات" },
-                    { 21, null, null, 6, 3, "كتابة محتوى تعليمي وبحثي", 0, 2, 1500m, 500m, new DateTime(2024, 6, 24, 0, 5, 40, 962, DateTimeKind.Local).AddTicks(1564), "كتابة وتحرير كتب إلكترونية في مجال الذكاء الاصطناعي" },
-                    { 22, null, null, 1, 4, "برمجة وتصميم مواقع تعليمية", 0, 1, 1200m, 400m, new DateTime(2024, 6, 24, 0, 5, 40, 962, DateTimeKind.Local).AddTicks(1571), "تصميم وتطوير موقع تعليمي للطلاب" },
-                    { 23, null, null, 2, 5, "تصميم وبرمجة تطبيقات الحجز الإلكتروني", 0, 1, 1800m, 600m, new DateTime(2024, 6, 24, 0, 5, 40, 962, DateTimeKind.Local).AddTicks(1576), "تصميم وبرمجة منصة للحجز الإلكتروني للفعاليات" },
-                    { 24, null, null, 3, 6, "تحسين أداء محركات البحث للمواقع", 0, 0, 800m, 200m, new DateTime(2024, 6, 24, 0, 5, 40, 962, DateTimeKind.Local).AddTicks(1582), "تحسين محركات البحث (SEO) لموقع الويب" },
-                    { 25, null, null, 4, 7, "برمجة نظم إدارة متكاملة", 0, 2, 2500m, 700m, new DateTime(2024, 6, 24, 0, 5, 40, 962, DateTimeKind.Local).AddTicks(1590), "تطوير نظام لإدارة المخزون والمبيعات للشركات الصغيرة" },
-                    { 26, null, null, 5, 8, "تحليل اقتصادي ومالي للمشاريع العقارية", 0, 2, 5000m, 1500m, new DateTime(2024, 6, 24, 0, 5, 40, 962, DateTimeKind.Local).AddTicks(1596), "إعداد دراسة جدوى لمشروع سكني جديد" },
-                    { 27, null, null, 6, 9, "برمجة تطبيقات المساعدة الشخصية", 0, 2, 3000m, 800m, new DateTime(2024, 6, 24, 0, 5, 40, 962, DateTimeKind.Local).AddTicks(1602), "تصميم وتطوير تطبيق للمساعدة الشخصية عبر الإنترنت" },
-                    { 28, null, null, 1, 10, "تسويق وجمع التبرعات", 0, 1, 1500m, 400m, new DateTime(2024, 6, 24, 0, 5, 40, 962, DateTimeKind.Local).AddTicks(1608), "إنشاء وإدارة حملة تبرعات عبر الإنترنت" },
-                    { 29, null, null, 2, 11, "تصميم وبرمجة منصات تعليمية تفاعلية", 0, 1, 2000m, 600m, new DateTime(2024, 6, 24, 0, 5, 40, 962, DateTimeKind.Local).AddTicks(1614), "تطوير منصة تعليمية تفاعلية لتعليم الرياضيات" },
-                    { 30, null, null, 3, 12, "برمجة وتصميم ألعاب تعليمية", 0, 0, 1200m, 300m, new DateTime(2024, 6, 24, 0, 5, 40, 962, DateTimeKind.Local).AddTicks(1620), "تصميم وتطوير لعبة فيديو تعليمية للأطفال" },
-                    { 31, null, null, 4, 13, "تحليل سياسات وإعداد تقارير", 0, 0, 700m, 200m, new DateTime(2024, 6, 24, 0, 5, 40, 962, DateTimeKind.Local).AddTicks(1626), "إعداد تقرير بحثي عن السياسات العامة" },
-                    { 32, null, null, 5, 14, "برمجة وتخصيص نظم إدارة المحتوى", 0, 1, 1500m, 400m, new DateTime(2024, 6, 24, 0, 5, 40, 962, DateTimeKind.Local).AddTicks(1632), "تصميم وبرمجة نظام إدارة المحتوى للمدونات" },
-                    { 33, null, null, 6, 15, "تسويق وإعلان عن المنتجات", 0, 0, 1000m, 300m, new DateTime(2024, 6, 24, 0, 5, 40, 962, DateTimeKind.Local).AddTicks(1638), "إعداد وتنفيذ حملة تسويقية لمنتج جديد" },
-                    { 34, null, null, 1, 16, "برمجة نظم إدارة المشاريع", 0, 2, 2500m, 600m, new DateTime(2024, 6, 24, 0, 5, 40, 962, DateTimeKind.Local).AddTicks(1644), "تصميم وبرمجة نظام لإدارة المشاريع الهندسية" },
-                    { 35, null, null, 2, 17, "برمجة وتصميم تطبيقات تعليمية", 0, 1, 1800m, 500m, new DateTime(2024, 6, 24, 0, 5, 40, 962, DateTimeKind.Local).AddTicks(1651), "تصميم وتطوير تطبيق لتعليم لغات البرمجة" }
+                    { 1, 1, null, 1, 1, "تصميم وأعمال فنية احترافية", 0, 0, 500m, 100m, new DateTime(2024, 6, 27, 16, 14, 36, 179, DateTimeKind.Local).AddTicks(7992), "تصميم شعار احترافي ومميز" },
+                    { 2, 2, null, 1, 2, "تصميم وأعمال فنية إدارية", 0, 1, 700m, 200m, new DateTime(2024, 6, 27, 16, 14, 36, 179, DateTimeKind.Local).AddTicks(8010), "تصميم بوستر إعلاني لمواقع التواصل" },
+                    { 3, 3, null, 1, 3, "تصميم بطاقات أعمال", 0, 2, 600m, 150m, new DateTime(2024, 6, 27, 16, 14, 36, 179, DateTimeKind.Local).AddTicks(8018), "تصميم كارت شخصي احترافي للطباعة" },
+                    { 4, 4, null, 2, 4, "برمجة وتطوير المواقع والتطبيقات", 0, 1, 800m, 300m, new DateTime(2024, 6, 27, 16, 14, 36, 179, DateTimeKind.Local).AddTicks(8024), "تركيب لوحة تحكم مجانية مدى الحياة" },
+                    { 5, 5, null, 3, 5, "برمجة مواقع الإنترنت", 0, 0, 700m, 200m, new DateTime(2024, 6, 27, 16, 14, 36, 179, DateTimeKind.Local).AddTicks(8031), "تصميم موقع تعريفي للشركات" },
+                    { 6, 6, null, 4, 6, "برمجة وتصميم تطبيقات الهواتف الذكية", 0, 2, 3000m, 1000m, new DateTime(2024, 6, 27, 16, 14, 36, 179, DateTimeKind.Local).AddTicks(8038), "تطوير تطبيق موبايل لنظام iOS و Android" }
+                });
+
+            migrationBuilder.InsertData(
+                table: "Jobs",
+                columns: new[] { "Id", "AcceptedFreelancerId", "ApproveTime", "CategoryId", "ClientId", "Description", "DurationInDays", "ExperienceLevel", "MaxBudget", "MinBudget", "PostTime", "Status", "Title" },
+                values: new object[,]
+                {
+                    { 7, 7, null, 3, 7, "برمجة وتصميم مواقع التسوق عبر الإنترنت", 0, 1, 1500m, 500m, new DateTime(2024, 6, 27, 16, 14, 36, 179, DateTimeKind.Local).AddTicks(8044), 2, "تصميم وتطوير موقع تجارة إلكترونية" },
+                    { 8, 8, null, 5, 8, "تسويق وإعلان للشركات والأفراد", 0, 0, 1000m, 300m, new DateTime(2024, 6, 27, 16, 14, 36, 179, DateTimeKind.Local).AddTicks(8051), 2, "إدارة حملة إعلانية على وسائل التواصل الاجتماعي" },
+                    { 9, 9, null, 6, 9, "فنون تصويرية ورسم", 0, 1, 600m, 200m, new DateTime(2024, 6, 27, 16, 14, 36, 179, DateTimeKind.Local).AddTicks(8057), 2, "تصميم مجموعة من الرسوم التوضيحية للكتب الأطفال" },
+                    { 10, 10, null, 1, 10, "كتابة محتوى تسويقي وإعلاني", 0, 0, 300m, 100m, new DateTime(2024, 6, 27, 16, 14, 36, 179, DateTimeKind.Local).AddTicks(8064), 2, "كتابة محتوى إعلاني لموقع الويب" }
+                });
+
+            migrationBuilder.InsertData(
+                table: "Jobs",
+                columns: new[] { "Id", "AcceptedFreelancerId", "ApproveTime", "CategoryId", "ClientId", "Description", "DurationInDays", "ExperienceLevel", "MaxBudget", "MinBudget", "PostTime", "Title" },
+                values: new object[,]
+                {
+                    { 11, null, null, 2, 11, "برمجة نظم إدارية متقدمة", 0, 2, 2000m, 500m, new DateTime(2024, 6, 27, 16, 14, 36, 179, DateTimeKind.Local).AddTicks(8071), "تصميم وبرمجة نظام إدارة للموظفين" },
+                    { 12, null, null, 3, 12, "تحليل اقتصادي ومالي", 0, 2, 5000m, 1000m, new DateTime(2024, 6, 27, 16, 14, 36, 179, DateTimeKind.Local).AddTicks(8079), "إعداد دراسة جدوى لمشروع تجاري مستقبلي" },
+                    { 13, null, null, 4, 13, "دورات تعليمية وتدريب", 0, 0, 200m, 50m, new DateTime(2024, 6, 27, 16, 14, 36, 179, DateTimeKind.Local).AddTicks(8087), "تعليم البرمجة للمبتدئين عبر الإنترنت" },
+                    { 14, null, null, 5, 14, "تصميم جرافيك وإعلان", 0, 1, 500m, 150m, new DateTime(2024, 6, 27, 16, 14, 36, 179, DateTimeKind.Local).AddTicks(8093), "تصميم مطبوعات دعائية لفعالية ثقافية" },
+                    { 15, null, null, 6, 15, "ترجمة وكتابة", 0, 2, 800m, 200m, new DateTime(2024, 6, 27, 16, 14, 36, 179, DateTimeKind.Local).AddTicks(8099), "ترجمة مقالات علمية من الإنجليزية إلى العربية" },
+                    { 16, null, null, 1, 16, "برمجة ألعاب الفيديو", 0, 2, 5000m, 1000m, new DateTime(2024, 6, 27, 16, 14, 36, 179, DateTimeKind.Local).AddTicks(8105), "تصميم وتطوير لعبة فيديو متنقلة" },
+                    { 17, null, null, 2, 17, "تصميم وبرمجة منصات تعليمية إلكترونية", 0, 1, 1500m, 500m, new DateTime(2024, 6, 27, 16, 14, 36, 179, DateTimeKind.Local).AddTicks(8111), "تصميم منصة تعليمية عبر الإنترنت" },
+                    { 18, null, null, 3, 18, "كتابة وتحرير محتوى", 0, 1, 700m, 200m, new DateTime(2024, 6, 27, 16, 14, 36, 179, DateTimeKind.Local).AddTicks(8117), "إدارة محتوى لمدونة تقنية" },
+                    { 19, null, null, 4, 1, "برمجة وتخصيص نظم CRM", 0, 2, 2500m, 800m, new DateTime(2024, 6, 27, 16, 14, 36, 179, DateTimeKind.Local).AddTicks(8123), "تصميم وتطوير نظام إدارة العلاقات مع العملاء (CRM)" }
+                });
+
+            migrationBuilder.InsertData(
+                table: "Jobs",
+                columns: new[] { "Id", "AcceptedFreelancerId", "ApproveTime", "CategoryId", "ClientId", "Description", "DurationInDays", "ExperienceLevel", "MaxBudget", "MinBudget", "PostTime", "Status", "Title" },
+                values: new object[,]
+                {
+                    { 20, null, null, 5, 2, "تحليل بيانات وإعداد تقارير", 0, 1, 1000m, 300m, new DateTime(2024, 6, 27, 16, 14, 36, 179, DateTimeKind.Local).AddTicks(8162), 1, "تحليل بيانات وإعداد تقرير استراتيجي للشركات" },
+                    { 21, null, null, 6, 3, "كتابة محتوى تعليمي وبحثي", 0, 2, 1500m, 500m, new DateTime(2024, 6, 27, 16, 14, 36, 179, DateTimeKind.Local).AddTicks(8170), 1, "كتابة وتحرير كتب إلكترونية في مجال الذكاء الاصطناعي" }
+                });
+
+            migrationBuilder.InsertData(
+                table: "Jobs",
+                columns: new[] { "Id", "AcceptedFreelancerId", "ApproveTime", "CategoryId", "ClientId", "Description", "DurationInDays", "ExperienceLevel", "MaxBudget", "MinBudget", "PostTime", "Title" },
+                values: new object[,]
+                {
+                    { 22, null, null, 1, 4, "برمجة وتصميم مواقع تعليمية", 0, 1, 1200m, 400m, new DateTime(2024, 6, 27, 16, 14, 36, 179, DateTimeKind.Local).AddTicks(8176), "تصميم وتطوير موقع تعليمي للطلاب" },
+                    { 23, null, null, 2, 5, "تصميم وبرمجة تطبيقات الحجز الإلكتروني", 0, 1, 1800m, 600m, new DateTime(2024, 6, 27, 16, 14, 36, 179, DateTimeKind.Local).AddTicks(8182), "تصميم وبرمجة منصة للحجز الإلكتروني للفعاليات" },
+                    { 24, null, null, 3, 6, "تحسين أداء محركات البحث للمواقع", 0, 0, 800m, 200m, new DateTime(2024, 6, 27, 16, 14, 36, 179, DateTimeKind.Local).AddTicks(8188), "تحسين محركات البحث (SEO) لموقع الويب" },
+                    { 25, null, null, 4, 7, "برمجة نظم إدارة متكاملة", 0, 2, 2500m, 700m, new DateTime(2024, 6, 27, 16, 14, 36, 179, DateTimeKind.Local).AddTicks(8194), "تطوير نظام لإدارة المخزون والمبيعات للشركات الصغيرة" },
+                    { 26, null, null, 5, 8, "تحليل اقتصادي ومالي للمشاريع العقارية", 0, 2, 5000m, 1500m, new DateTime(2024, 6, 27, 16, 14, 36, 179, DateTimeKind.Local).AddTicks(8200), "إعداد دراسة جدوى لمشروع سكني جديد" },
+                    { 27, null, null, 6, 9, "برمجة تطبيقات المساعدة الشخصية", 0, 2, 3000m, 800m, new DateTime(2024, 6, 27, 16, 14, 36, 179, DateTimeKind.Local).AddTicks(8206), "تصميم وتطوير تطبيق للمساعدة الشخصية عبر الإنترنت" }
+                });
+
+            migrationBuilder.InsertData(
+                table: "Jobs",
+                columns: new[] { "Id", "AcceptedFreelancerId", "ApproveTime", "CategoryId", "ClientId", "Description", "DurationInDays", "ExperienceLevel", "MaxBudget", "MinBudget", "PostTime", "Status", "Title" },
+                values: new object[,]
+                {
+                    { 28, null, null, 1, 10, "تسويق وجمع التبرعات", 0, 1, 1500m, 400m, new DateTime(2024, 6, 27, 16, 14, 36, 179, DateTimeKind.Local).AddTicks(8211), 1, "إنشاء وإدارة حملة تبرعات عبر الإنترنت" },
+                    { 29, null, null, 2, 11, "تصميم وبرمجة منصات تعليمية تفاعلية", 0, 1, 2000m, 600m, new DateTime(2024, 6, 27, 16, 14, 36, 179, DateTimeKind.Local).AddTicks(8219), 1, "تطوير منصة تعليمية تفاعلية لتعليم الرياضيات" },
+                    { 30, null, null, 3, 12, "برمجة وتصميم ألعاب تعليمية", 0, 0, 1200m, 300m, new DateTime(2024, 6, 27, 16, 14, 36, 179, DateTimeKind.Local).AddTicks(8224), 1, "تصميم وتطوير لعبة فيديو تعليمية للأطفال" },
+                    { 31, null, null, 4, 13, "تحليل سياسات وإعداد تقارير", 0, 0, 700m, 200m, new DateTime(2024, 6, 27, 16, 14, 36, 179, DateTimeKind.Local).AddTicks(8230), 1, "إعداد تقرير بحثي عن السياسات العامة" }
+                });
+
+            migrationBuilder.InsertData(
+                table: "Jobs",
+                columns: new[] { "Id", "AcceptedFreelancerId", "ApproveTime", "CategoryId", "ClientId", "Description", "DurationInDays", "ExperienceLevel", "MaxBudget", "MinBudget", "PostTime", "Title" },
+                values: new object[,]
+                {
+                    { 32, null, null, 5, 14, "برمجة وتخصيص نظم إدارة المحتوى", 0, 1, 1500m, 400m, new DateTime(2024, 6, 27, 16, 14, 36, 179, DateTimeKind.Local).AddTicks(8236), "تصميم وبرمجة نظام إدارة المحتوى للمدونات" },
+                    { 33, null, null, 6, 15, "تسويق وإعلان عن المنتجات", 0, 0, 1000m, 300m, new DateTime(2024, 6, 27, 16, 14, 36, 179, DateTimeKind.Local).AddTicks(8242), "إعداد وتنفيذ حملة تسويقية لمنتج جديد" },
+                    { 34, null, null, 1, 16, "برمجة نظم إدارة المشاريع", 0, 2, 2500m, 600m, new DateTime(2024, 6, 27, 16, 14, 36, 179, DateTimeKind.Local).AddTicks(8248), "تصميم وبرمجة نظام لإدارة المشاريع الهندسية" },
+                    { 35, null, null, 2, 17, "برمجة وتصميم تطبيقات تعليمية", 0, 1, 1800m, 500m, new DateTime(2024, 6, 27, 16, 14, 36, 179, DateTimeKind.Local).AddTicks(8254), "تصميم وتطوير تطبيق لتعليم لغات البرمجة" }
                 });
 
             migrationBuilder.InsertData(
@@ -733,8 +776,8 @@ namespace Shoghlana.EF.Migrations
                 columns: new[] { "Id", "Description", "FreelancerId", "Link", "Poster", "TimePublished", "Title" },
                 values: new object[,]
                 {
-                    { 1, "Description for Project1", 1, null, new byte[] { 32, 33, 34, 35 }, new DateTime(2024, 6, 24, 0, 5, 40, 962, DateTimeKind.Local).AddTicks(6263), "Project1" },
-                    { 2, "Description for Project2", 2, null, new byte[] { 32, 33, 34, 35 }, new DateTime(2024, 6, 24, 0, 5, 40, 962, DateTimeKind.Local).AddTicks(6342), "Project2" }
+                    { 1, "Description for Project1", 1, null, new byte[] { 32, 33, 34, 35 }, new DateTime(2024, 6, 27, 16, 14, 36, 180, DateTimeKind.Local).AddTicks(2972), "Project1" },
+                    { 2, "Description for Project2", 2, null, new byte[] { 32, 33, 34, 35 }, new DateTime(2024, 6, 27, 16, 14, 36, 180, DateTimeKind.Local).AddTicks(3041), "Project2" }
                 });
 
             migrationBuilder.InsertData(
