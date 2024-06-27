@@ -59,28 +59,68 @@ namespace Shoghlana.Api.Services.Implementaions
                 return new AuthModel { Message = "Username is already registered!" };
             }
 
-            var user = new ApplicationUser
+            var user = new ApplicationUser();
+
+
+            if (model.role == (int)Core.Enums.UserRole.Freelancer)
             {
-                UserName = model.Username,
+                Freelancer freelancer = new Freelancer()
+                {
+                    Name = model.Username
+                    // convert img from string to bytes and save it in freelancer
+                };
 
-                Email = model.Email,
+                    _freelancerService.Add(freelancer);   // add + save inside the same method
 
-                //PhoneNumber = model.PhoneNumber,
+                    user.UserName = model.Username;
 
-                //NormalizedEmail = model.Email ,
+                    user.Email = model.Email;
 
-                //PasswordHash = model.Password,
+                    user.FreeLancerId = freelancer.Id;
+                    //PhoneNumber = model.PhoneNumber,
 
-                // TODO the mail and password ? 
-            };
+                    //NormalizedEmail = model.Email ,
 
-            var result = await _userManager.CreateAsync(user, model.Password);
+                    //PasswordHash = model.Password,
 
-            if (!result.Succeeded)
-            {
-                var errors = string.Join(", ", result.Errors.Select(e => e.Description));
-                return new AuthModel { Message = errors };
+                    // TODO the mail and password ? 
+
+
+                var result = await _unitOfWork.ApplicationUserRepository.InsertAsync(user, "Freelancer", model.Password);
+
+                if (!result.Succeeded)
+                {
+                    var errors = string.Join(", ", result.Errors.Select(e => e.Description));
+                    return new AuthModel { Message = errors };
+                }
             }
+
+            else if(model.role == (int)Core.Enums.UserRole.Client)
+            {
+                Client client = new Client()
+                {
+                    Name = model.Username
+                    // convert img from string to bytes and save it in freelancer
+                };
+
+                clientService.Add(client);   // add + save inside the same method
+
+                user.UserName = model.Username;
+
+                   user.Email = model.Email;
+
+                   user.ClientId = client.Id;
+
+                var result = await _unitOfWork.ApplicationUserRepository.InsertAsync(user, "Client", model.Password);
+
+                if (!result.Succeeded)
+                {
+                    var errors = string.Join(", ", result.Errors.Select(e => e.Description));
+                    return new AuthModel { Message = errors };
+                }
+            }
+
+          
 
             // Send a welcome notification to the user
             await SendWelcomeNotificationAsync(user);
@@ -344,6 +384,22 @@ namespace Shoghlana.Api.Services.Implementaions
                         FreeLancerId = freelancer.Id,
                         EmailConfirmed = true                      // as he registered using gmail
                     };
+
+
+                    try
+                    {
+                        // should add role 
+                        await _unitOfWork.ApplicationUserRepository.InsertAsync(User, "Freelancer");
+                    }
+                    catch (Exception ex)
+                    {
+                        return await Task.FromResult(new GeneralResponse()
+                        {
+                            IsSuccess = false,
+                            Data = ex.Message,
+                            Message = "Error on account creation"
+                        });
+                    }
                 }
 
                 else
@@ -376,28 +432,22 @@ namespace Shoghlana.Api.Services.Implementaions
                         EmailConfirmed = true                      // as he registered using gmail
                     };
 
-                    
-                }
 
-             
+                    try
+                    {
+                        // should add role 
+                        await _unitOfWork.ApplicationUserRepository.InsertAsync(User, "Client");
+                    }
+                    catch (Exception ex)
+                    {
+                        return await Task.FromResult(new GeneralResponse()
+                        {
+                            IsSuccess = false,
+                            Data = ex.Message,
+                            Message = "Error on account creation"
+                        });
+                    }
 
-            
-                
-              
-
-                try
-                {
-                    // should add role 
-                    await _unitOfWork.ApplicationUserRepository.InsertAsync(User);
-                }
-                catch (Exception ex)
-                {
-                    return await Task.FromResult(new GeneralResponse()
-                    { 
-                        IsSuccess = false,
-                        Data = ex.Message,
-                        Message = "Error on account creation"
-                    });
                 }
 
                 try

@@ -34,8 +34,8 @@ namespace Shoghlana.Api.Controllers
             return projectService.GetByfreelancerIdId(id);
         }
 
-        [HttpPost]
-        public async Task<ActionResult<GeneralResponse>> AddAsync([FromForm] ProjectDTO projectDTO)
+        [HttpPost("{id:int}")]
+        public async Task<ActionResult<GeneralResponse>> AddAsync([FromForm] AddProjectDTO projectDTO)
         {
             if (!ModelState.IsValid)
             {
@@ -52,7 +52,7 @@ namespace Shoghlana.Api.Controllers
         }
 
         [HttpPut("{id:int}")]
-        public async Task<ActionResult<GeneralResponse>> UpdateAsync(int id, [FromForm] ProjectDTO updateProjectDTO)
+        public async Task<ActionResult<GeneralResponse>> UpdateAsync(int id, [FromForm] AddProjectDTO updateProjectDTO)
         {
             if (!ModelState.IsValid)
             {
@@ -66,7 +66,6 @@ namespace Shoghlana.Api.Controllers
             }
             return await projectService.UpdateAsync(id, updateProjectDTO);
         }
-
 
         [HttpDelete("{id:int}")]
         public ActionResult<GeneralResponse> Delete(int id)

@@ -1,20 +1,14 @@
 ﻿using Microsoft.AspNetCore.Http;
-using Shoghlana.Core.Models;
-using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Shoghlana.Core.DTO
 {
-    public class ProjectDTO
+    public class AddProjectDTO
     {
         [Required(ErrorMessage = "Title is required")]
         [MinLength(3, ErrorMessage = "Title must be at least 3 characters long")]
         [MaxLength(100, ErrorMessage = "Title cannot exceed 100 characters")]
-        public string Title { get; set; }
+        public string? Title { get; set; }
 
         [MaxLength(500, ErrorMessage = "Description cannot exceed 500 characters")]
         public string? Description { get; set; }
@@ -23,14 +17,20 @@ namespace Shoghlana.Core.DTO
         public string? Link { get; set; }
 
         [Required(ErrorMessage = "Poster is required")]
-        public IFormFile? Poster { get; set; }
+        public IFormFile Poster { get; set; }
 
         public List<ImageDTO>? Images { get; set; } = new List<ImageDTO> { };
 
-        public List<SkillDTO>? Skills { get; set; } = new List<SkillDTO> { };
+        //public List<SkillDTO>? Skills { get; set; } = new List<SkillDTO> { };
 
-        public DateTime? TimePublished { get; set; }
+        public List<int>? SkillIDs { get; set; } = new List<int> { };
 
-        public int? FreelancerId { get; set; }
+        public DateTime? TimePublished { get; set; } = DateTime.Now;
+
+        [Required(ErrorMessage = "FreelancerId is required")]
+        public int FreelancerId { get; set; }
+
+        [Required(ErrorMessage = "ProjectId is required")]
+        public int ProjectId { get; set; }
     }
 }

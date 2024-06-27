@@ -132,7 +132,7 @@ namespace Shoghlana.EF.Configurations
                     MinBudget = 500,
                     MaxBudget = 1500,
                     ExperienceLevel = ExperienceLevel.Intermediate,
-                    Status = JobStatus.Active,
+                    Status = JobStatus.completed,
                     ClientId = 7,
                     AcceptedFreelancerId = 7,
                     CategoryId = 3
@@ -146,7 +146,7 @@ namespace Shoghlana.EF.Configurations
                     MinBudget = 300,
                     MaxBudget = 1000,
                     ExperienceLevel = ExperienceLevel.Beginner,
-                    Status = JobStatus.Active,
+                    Status = JobStatus.completed,
                     ClientId = 8,
                     AcceptedFreelancerId = 8,
                     CategoryId = 5
@@ -160,7 +160,7 @@ namespace Shoghlana.EF.Configurations
                     MinBudget = 200,
                     MaxBudget = 600,
                     ExperienceLevel = ExperienceLevel.Intermediate,
-                    Status = JobStatus.Active,
+                    Status = JobStatus.completed,
                     ClientId = 9,
                     AcceptedFreelancerId = 9,
                     CategoryId = 6
@@ -174,7 +174,7 @@ namespace Shoghlana.EF.Configurations
                     MinBudget = 100,
                     MaxBudget = 300,
                     ExperienceLevel = ExperienceLevel.Beginner,
-                    Status = JobStatus.Active,
+                    Status = JobStatus.completed,
                     ClientId = 10,
                     AcceptedFreelancerId = 10,
                     CategoryId = 1
@@ -313,7 +313,7 @@ namespace Shoghlana.EF.Configurations
                     MinBudget = 300,
                     MaxBudget = 1000,
                     ExperienceLevel = ExperienceLevel.Intermediate,
-                    Status = JobStatus.Active,
+                    Status = JobStatus.Closed,
                     ClientId = 2,
                     //AcceptedFreelancerId = 20,
                     CategoryId = 5
@@ -327,7 +327,7 @@ namespace Shoghlana.EF.Configurations
                     MinBudget = 500,
                     MaxBudget = 1500,
                     ExperienceLevel = ExperienceLevel.Professional,
-                    Status = JobStatus.Active,
+                    Status = JobStatus.Closed,
                     ClientId = 3,
                     //AcceptedFreelancerId = 21,
                     CategoryId = 6
@@ -425,7 +425,7 @@ namespace Shoghlana.EF.Configurations
                     MinBudget = 400,
                     MaxBudget = 1500,
                     ExperienceLevel = ExperienceLevel.Intermediate,
-                    Status = JobStatus.Active,
+                    Status = JobStatus.Closed,
                     ClientId = 10,
                     //AcceptedFreelancerId = 28,
                     CategoryId = 1
@@ -439,7 +439,7 @@ namespace Shoghlana.EF.Configurations
                     MinBudget = 600,
                     MaxBudget = 2000,
                     ExperienceLevel = ExperienceLevel.Intermediate,
-                    Status = JobStatus.Active,
+                    Status = JobStatus.Closed,
                     ClientId = 11,
                     //AcceptedFreelancerId = 29,
                     CategoryId = 2
@@ -453,7 +453,7 @@ namespace Shoghlana.EF.Configurations
                     MinBudget = 300,
                     MaxBudget = 1200,
                     ExperienceLevel = ExperienceLevel.Beginner,
-                    Status = JobStatus.Active,
+                    Status = JobStatus.Closed,
                     ClientId = 12,
                     //AcceptedFreelancerId = 30,
                     CategoryId = 3
@@ -467,7 +467,7 @@ namespace Shoghlana.EF.Configurations
                     MinBudget = 200,
                     MaxBudget = 700,
                     ExperienceLevel = ExperienceLevel.Beginner,
-                    Status = JobStatus.Active,
+                    Status = JobStatus.Closed,
                     ClientId = 13,
                     //AcceptedFreelancerId = 31,
                     CategoryId = 4

@@ -31,10 +31,29 @@ namespace Shoghlana.EF.Repositories
             return user;
         }
 
-        public async Task<IdentityResult> InsertAsync(ApplicationUser User)  
+        public async Task<IdentityResult> InsertAsync(ApplicationUser User , string Role, string Password = null)  
         {
-           IdentityResult result = await userManager.CreateAsync(User);
+            IdentityResult result;
+
+            if (Password == null)
+            {
+               result  = await userManager.CreateAsync(User);
+            }
+
+            else
+            {
+               result = await userManager.CreateAsync(User, Password);
+            }
+
+            await userManager.AddToRoleAsync(User, Role);
             return result;
         }
+
+        //public async Task<IdentityResult> InsertWithPasswordAsync(ApplicationUser User, string Role, string Password) 
+        //{
+        //    IdentityResult result = await userManager.CreateAsync(User, Password);
+        //    await userManager.AddToRoleAsync(User, Role);
+        //    return result;
+        //}
     }
 }

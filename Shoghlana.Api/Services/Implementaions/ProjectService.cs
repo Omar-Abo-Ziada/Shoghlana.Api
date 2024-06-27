@@ -11,13 +11,14 @@ namespace Shoghlana.Api.Services.Implementaions
 {
     public class ProjectService : GenericService<Project>, IProjectService
     {
+        // TODO I fixed the GetbyfreelancerID skills dto and getprojectDTO and tested it ,, Don't forget to check the others (get all , get by ID)
         private readonly IMapper mapper;
 
         private readonly List<string> allowedExtensions = new List<string>() { ".jpg", ".png" };
 
         private readonly long maxAllowedImageSize = 1_048_576; // 1 MB
 
-        public ProjectService(IUnitOfWork unitOfWork, IGenericRepository<Project> repository , IMapper mapper) : base(unitOfWork, repository)
+        public ProjectService(IUnitOfWork unitOfWork, IGenericRepository<Project> repository, IMapper mapper) : base(unitOfWork, repository)
         {
             this.mapper = mapper;
         }
@@ -25,9 +26,9 @@ namespace Shoghlana.Api.Services.Implementaions
         public ActionResult<GeneralResponse> GetByfreelancerIdId(int id)
         {
             List<Project>? projects = _unitOfWork.projectRepository
-                    .FindAll(includes: ["Images" , "Skills"], criteria: p => p.FreelancerId == id).ToList();
+                    .FindAll(includes: ["Images", "Skills"], criteria: p => p.FreelancerId == id).ToList();
 
-            if(projects is null || projects.Count == 0)
+            if (projects is null || projects.Count == 0)
             {
                 return new GeneralResponse()
                 {
@@ -44,11 +45,22 @@ namespace Shoghlana.Api.Services.Implementaions
             {
                 GetProjectDTO projectDTO = mapper.Map<GetProjectDTO>(project);
 
-                foreach (var skill in project.Skills)
-                {
-                    SkillDTO skillDTO = mapper.Map<SkillDTO>(skill);
+                List<int>? skillsIDs = project?.Skills?.Select(s => s.SkillId).ToList();
 
-                    projectDTO.Skills.Add(skillDTO);
+                if (skillsIDs is not null && skillsIDs.Any())
+                {
+                    List<Skill> skills = _unitOfWork.skillRepository.FindAll(criteria: s => skillsIDs.Contains(s.Id)).ToList();
+
+                    List<SkillDTO> skillsDTOs = new List<SkillDTO>();
+
+                    foreach (var skill in skills)
+                    {
+                        SkillDTO skillDTO = mapper.Map<SkillDTO>(skill);
+
+                        skillsDTOs.Add(skillDTO);
+                    }
+
+                    projectDTO.Skills = skillsDTOs;
                 }
 
                 foreach (var image in project.Images)
@@ -58,7 +70,7 @@ namespace Shoghlana.Api.Services.Implementaions
                     projectDTO.Images.Add(imageDTO);
                 }
 
-                projectDTO.Poster = project.Poster ;
+                projectDTO.Poster = project.Poster;
 
                 projectDTOs.Add(projectDTO);
             }
@@ -74,7 +86,7 @@ namespace Shoghlana.Api.Services.Implementaions
 
         public ActionResult<GeneralResponse> GetAll()
         {
-            List<Project> projects = _unitOfWork.projectRepository.FindAll(includes :["Skills", "Images" ]).ToList();
+            List<Project> projects = _unitOfWork.projectRepository.FindAll(includes: ["Skills", "Images"]).ToList();
 
             List<GetProjectDTO> projectDTOs = projects.Select(project => new GetProjectDTO
             {
@@ -105,11 +117,11 @@ namespace Shoghlana.Api.Services.Implementaions
                 Status = 200,
                 Data = projectDTOs
             };
-        }   
+        }
 
         public ActionResult<GeneralResponse> GetById(int id)
         {
-            Project? project = _unitOfWork.projectRepository.Find(includes: ["Skills", "Images" ], criteria: p => p.Id == id);
+            Project? project = _unitOfWork.projectRepository.Find(includes: ["Skills", "Images"], criteria: p => p.Id == id);
 
             if (project == null)
             {
@@ -128,7 +140,7 @@ namespace Shoghlana.Api.Services.Implementaions
                 Link = project.Link,
                 Poster = project.Poster, // Assuming Poster is already byte[]
                 Images = project.Images?.Select(image => new GetImageDTO { Image = image.Image }).ToList(),
-                
+
                 Skills = project.Skills?.Select(skill => new SkillDTO
                 {
                     // TODO : Omar => Check for null first
@@ -148,20 +160,9 @@ namespace Shoghlana.Api.Services.Implementaions
             };
         }
 
-        public async Task<ActionResult<GeneralResponse>> AddAsync([FromForm] ProjectDTO projectDTO)
+        public async Task<ActionResult<GeneralResponse>> AddAsync([FromForm] AddProjectDTO projectDTO)
         {
-            //if (!ModelState.IsValid)
-            //{
-            //    return new GeneralResponse
-            //    {
-            //        IsSuccess = false,
-            //        Status = 400,
-            //        Data = ModelState,
-            //        Message = "Invalid Model State!"
-            //    };
-            //}
-
-            if (projectDTO.Poster == null)
+            if (projectDTO.Poster is null)
             {
                 return new GeneralResponse
                 {
@@ -192,9 +193,11 @@ namespace Shoghlana.Api.Services.Implementaions
             }
 
             using var posterDataStream = new MemoryStream();
+
             await projectDTO.Poster.CopyToAsync(posterDataStream);
 
             List<ProjectImages> images = new List<ProjectImages>();
+
             if (projectDTO.Images != null)
             {
                 foreach (var imageDTO in projectDTO.Images)
@@ -237,43 +240,50 @@ namespace Shoghlana.Api.Services.Implementaions
             };
 
             await _unitOfWork.projectRepository.AddAsync(project);
-            _unitOfWork.Save();
 
-            project.Skills = projectDTO.Skills?.Select(skillDTO => new ProjectSkills   // skills are added after project id is generated
+            await _unitOfWork.SaveAsync(); // so that the project takes ID from EF
+
+            List<Skill> skills = (await _unitOfWork.skillRepository.FindAllAsync(criteria: s => projectDTO.SkillIDs.Contains(s.Id))).ToList();
+
+            List<ProjectSkills> projectSkills = new List<ProjectSkills>(skills.Count);
+
+            foreach (var skill in skills)
             {
-                //SkillId = skillDTO.Id,
-                ProjectId = project.Id
-            }).ToList();
+                ProjectSkills projectSkill = new ProjectSkills()
+                {
+                    SkillId = skill.Id,
+                    ProjectId = project.Id
+                };
 
-            _unitOfWork.projectRepository.Update(project);
+                projectSkills.Add(projectSkill);
+            }
 
-            _unitOfWork.Save();
+            project.Skills = projectSkills;
+
+            await _unitOfWork.SaveAsync();
+
+            //project.Skills = projectDTO.Skills?.Select(skillDTO => new ProjectSkills   // skills are added after project id is generated
+            //{
+            //    //SkillId = skillDTO.Id,
+            //    ProjectId = project.Id
+            //}).ToList();
+
+            //_unitOfWork.projectRepository.Update(project);
 
             return new GeneralResponse
             {
                 IsSuccess = true,
                 Status = 201,
-                Data = projectDTO,
+                Data = null,
                 Message = "Added Successfully"
             };
         }
 
-        public async Task<ActionResult<GeneralResponse>> UpdateAsync(int id, [FromForm] ProjectDTO updateProjectDTO)
+        public async Task<ActionResult<GeneralResponse>> UpdateAsync(int id, [FromForm] AddProjectDTO updateProjectDTO)
         {
-            //if (!ModelState.IsValid)
-            //{
-            //    return new GeneralResponse
-            //    {
-            //        IsSuccess = false,
-            //        Status = 400,
-            //        Data = ModelState,
-            //        Message = "Invalid Model State!"
-            //    };
-            //}
+            Project? project = await _unitOfWork.projectRepository.GetByIdAsync(updateProjectDTO.ProjectId);
 
-            Project project = _unitOfWork.projectRepository.GetById(id);
-
-            if (project == null)
+            if (project is null)
             {
                 return new GeneralResponse
                 {
@@ -283,7 +293,7 @@ namespace Shoghlana.Api.Services.Implementaions
                 };
             }
 
-            if (updateProjectDTO.Poster != null)
+            if (updateProjectDTO.Poster is not null)
             {
                 if (!allowedExtensions.Contains(Path.GetExtension(updateProjectDTO.Poster.FileName).ToLower()))
                 {
@@ -311,7 +321,8 @@ namespace Shoghlana.Api.Services.Implementaions
             }
 
             List<ProjectImages> images = new List<ProjectImages>();
-            if (updateProjectDTO.Images != null)
+
+            if (updateProjectDTO.Images is not null && updateProjectDTO.Images.Any())
             {
                 foreach (var imageDTO in updateProjectDTO.Images)
                 {
@@ -338,8 +349,9 @@ namespace Shoghlana.Api.Services.Implementaions
                     using var imageDataStream = new MemoryStream();
                     await imageDTO.Image.CopyToAsync(imageDataStream);
                     images.Add(new ProjectImages { Image = imageDataStream.ToArray() });
+
+                    project.Images = images;
                 }
-                project.Images = images;
             }
 
             project.Title = updateProjectDTO.Title;
@@ -348,43 +360,70 @@ namespace Shoghlana.Api.Services.Implementaions
             project.TimePublished = updateProjectDTO.TimePublished;
             project.FreelancerId = updateProjectDTO.FreelancerId;
 
-            project.Skills ??= new List<ProjectSkills>();
-            project.Skills.Clear();
-            if (updateProjectDTO.Skills != null)
+            if(updateProjectDTO.SkillIDs is not null && updateProjectDTO.SkillIDs.Any())
             {
-                project.Skills.AddRange(updateProjectDTO.Skills.Select(skillDTO => new ProjectSkills
-                {
-                    ProjectId = project.Id,
-                    //SkillId = skillDTO.Id
-                }));
-            }
+                // deleing the prev list first before adding the new one
 
+                IEnumerable<ProjectSkills> oldprojectSkills = await _unitOfWork.projectSkillsRepository.FindAllAsync(criteria: ps => ps.ProjectId == updateProjectDTO.ProjectId);
+
+                _unitOfWork.projectSkillsRepository.DeleteRange(oldprojectSkills);
+
+                List<Skill> skills = (await _unitOfWork.skillRepository.FindAllAsync(criteria: s => updateProjectDTO.SkillIDs.Contains(s.Id))).ToList();
+
+                List<ProjectSkills> newProjectSkills = new List<ProjectSkills>(skills.Count);
+
+                foreach (var skill in skills)
+                {
+                    ProjectSkills projectSkill = new ProjectSkills()
+                    {
+                        SkillId = skill.Id,
+                        ProjectId = project.Id
+                    };
+
+                    newProjectSkills.Add(projectSkill);
+                }
+
+                project.Skills = newProjectSkills;
+            }
+         
             _unitOfWork.Save();
 
-            ProjectDTO updatedProjectDTO = new ProjectDTO
-            {
-                Title = project.Title,
-                Description = project.Description,
-                Link = project.Link,
-                Poster = project.Poster != null ? new FormFile(new MemoryStream(project.Poster), 0, project.Poster.Length, null, Path.GetFileName(project.Poster.ToString())) : null,
-                Images = project.Images?.Select(image => new ImageDTO { Image = new FormFile(new MemoryStream(image.Image), 0, image.Image.Length, null, Path.GetFileName(image.Image.ToString())) }).ToList(),
-                Skills = project.Skills?.Select(skill =>
+            //project.Skills ??= new List<ProjectSkills>();
+            //project?.Skills?.Clear();
 
-                new SkillDTO
-                {
-                    // TODO : Omar => Check for null first
-                    Title = _unitOfWork.skillRepository.GetById(skill.SkillId).Title,
-                    Description = _unitOfWork.skillRepository.GetById(skill.SkillId).Description,
-                }).ToList(),
-                TimePublished = project.TimePublished,
-                FreelancerId = project.FreelancerId
-            };
+            //if (updateProjectDTO.Skills != null)
+            //{
+            //    project?.Skills?.AddRange(updateProjectDTO.Skills.Select(skillDTO => new ProjectSkills
+            //    {
+            //        ProjectId = project.Id,
+            //        SkillId = skillDTO.Id
+            //    }));
+            //}
+
+            //AddProjectDTO updatedProjectDTO = new AddProjectDTO
+            //{
+            //    Title = project.Title,
+            //    Description = project.Description,
+            //    Link = project.Link,
+            //    Poster = project.Poster != null ? new FormFile(new MemoryStream(project.Poster), 0, project.Poster.Length, null, Path.GetFileName(project.Poster.ToString())) : null,
+            //    Images = project.Images?.Select(image => new ImageDTO { Image = new FormFile(new MemoryStream(image.Image), 0, image.Image.Length, null, Path.GetFileName(image.Image.ToString())) }).ToList(),
+            //    Skills = project.Skills?.Select(skill =>
+
+            //    new SkillDTO
+            //    {
+            //        // TODO : Omar => Check for null first
+            //        Title = _unitOfWork.skillRepository.GetById(skill.SkillId).Title,
+            //        Description = _unitOfWork.skillRepository.GetById(skill.SkillId).Description,
+            //    }).ToList(),
+            //    TimePublished = project.TimePublished,
+            //    FreelancerId = project.FreelancerId
+            //};
 
             return new GeneralResponse
             {
                 IsSuccess = true,
                 Status = 200,
-                Data = updatedProjectDTO,
+                //Data = updatedProjectDTO,
                 Message = "Project updated successfully"
             };
         }
@@ -403,6 +442,12 @@ namespace Shoghlana.Api.Services.Implementaions
                 };
             }
 
+            // deleing the prev list first before adding the new one
+
+            IEnumerable<ProjectSkills> oldprojectSkills =  _unitOfWork.projectSkillsRepository.FindAll(criteria: ps => ps.ProjectId == id);
+
+            _unitOfWork.projectSkillsRepository.DeleteRange(oldprojectSkills);
+
             _unitOfWork.projectRepository.Delete(project);
 
             _unitOfWork.Save();
@@ -415,6 +460,5 @@ namespace Shoghlana.Api.Services.Implementaions
             };
         }
 
-    
     }
 }

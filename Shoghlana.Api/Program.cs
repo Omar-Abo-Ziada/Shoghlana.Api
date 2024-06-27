@@ -15,7 +15,6 @@ using Shoghlana.EF.Configurations;
 using Shoghlana.EF.Repositories;
 using Shoghlana.EF.Repository;
 using System.Text;
-using System.Text.Json.Serialization;
 
 namespace Shoghlana.Api
 {
@@ -153,7 +152,6 @@ namespace Shoghlana.Api
                 });
             });
 
-
             //************************************************************************
 
 
@@ -170,11 +168,13 @@ namespace Shoghlana.Api
 
             app.UseAuthorization();
 
-            //app.UseCors(c => c.AllowAnyHeader().AllowAnyMethod().AllowAnyOrigin().AllowCredentials());
+          
+
+            app.UseRouting();
+
             app.UseCors("AllowAll");
             app.UseCors();
 
-            app.UseRouting();
             app.MapHub<NotificationHub>("/notificationHub");
             app.MapHub<ChatHub>("/ChatHub");
             //app.UseEndpoints(Endpoint =>

@@ -24,5 +24,8 @@ namespace Shoghlana.Core.Models
 
         [Required, StringLength(50)]
         public string PhoneNumber { get; set; }
+
+        public int role { get; set; }
+
     }
 }
