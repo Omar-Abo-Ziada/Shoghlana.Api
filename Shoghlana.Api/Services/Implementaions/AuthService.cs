@@ -318,7 +318,7 @@ namespace Shoghlana.Api.Services.Implementaions
             return new RefreshToken
             {
                 Token = Convert.ToBase64String(randomNumber),
-                ExpiresOn = DateTime.UtcNow.AddDays(10),
+                ExpiresOn = DateTime.UtcNow.AddDays(60),
                 CreatedOn = DateTime.UtcNow
             };
         }
