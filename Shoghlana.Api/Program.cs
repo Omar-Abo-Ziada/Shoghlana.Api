@@ -168,11 +168,13 @@ namespace Shoghlana.Api
 
             app.UseAuthorization();
 
+          
+
+            app.UseRouting();
+
             app.UseCors("AllowAll");
             app.UseCors();
 
-            app.UseRouting();
-          
             app.MapHub<NotificationHub>("/notificationHub");
             app.MapHub<ChatHub>("/ChatHub");
             //app.UseEndpoints(Endpoint =>

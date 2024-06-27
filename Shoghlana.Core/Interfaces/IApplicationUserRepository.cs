@@ -12,7 +12,7 @@ namespace Shoghlana.Core.Interfaces
     {
         Task<ApplicationUser> GetByIdAsync(string id);
         Task<ApplicationUser> GetByEmailAsync(string email);
-        Task<IdentityResult> InsertAsync(ApplicationUser User);
+        Task<IdentityResult> InsertAsync(ApplicationUser User, string Role, string Password = null);
 
     }
 }

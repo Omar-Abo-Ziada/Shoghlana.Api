@@ -113,7 +113,7 @@ namespace Shoghlana.EF.Repository
                 }
             }
 
-            return await query.ToListAsync();
+            return await query.ToListAsync(); 
         }
 
         public int GetCount()
