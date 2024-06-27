@@ -24,20 +24,68 @@ namespace Shoghlana.Api.Services.Implementaions
             this.mapper = mapper;
         }
 
-        [HttpGet]
         public ActionResult<GeneralResponse> GetAll()
-        { 
+        {
             List<Freelancer> freelancers = _unitOfWork.freelancerRepository
-                                           .FindAll(includes: ["Skills"]).ToList();
+                                    .FindAll(includes: new[] { "Skills.Skill", "Portfolio", "WorkingHistory" }).ToList();
 
-            List<FreelancerDTO> freelancerDTOs = new List<FreelancerDTO>(freelancers.Count);
-
-            foreach (Freelancer freelancer in freelancers)
+            List<GetFreelancerDTO> freelancerDTOs = freelancers.Select(freelancer =>
             {
-                FreelancerDTO freelancerDTO = mapper.Map<Freelancer, FreelancerDTO>(freelancer);
+                // Mapping skills
+                List<Skill> Skills = new List<Skill>();
+                foreach (FreelancerSkills FreelancerSkill in freelancer.Skills)
+                {
+                    Skill? skill = _unitOfWork.skillRepository.GetById(FreelancerSkill.SkillId);
+                    Skills.Add(skill);
+                }
+                List<SkillDTO> SkillsDtos = mapper.Map<List<Skill>, List<SkillDTO>>(Skills);
 
-                freelancerDTOs.Add(freelancerDTO);
-            }
+                // Mapping portfolio projects and their skills
+                List<GetProjectDTO> getProjectsDTOs = mapper.Map<List<Project>, List<GetProjectDTO>>(freelancer.Portfolio);
+                for (int i = 0; i < freelancer.Portfolio.Count; i++)
+                {
+                    List<int> ProjectSkillsIds = _unitOfWork.projectSkillsRepository
+                                                .FindAll(criteria: ps => ps.ProjectId == freelancer.Portfolio[i].Id)
+                                                .Select(ps => ps.SkillId).ToList();
+
+                    List<Skill> ProjectSkills = new List<Skill>();
+                    foreach (int skillId in ProjectSkillsIds)
+                    {
+                        Skill skill = _unitOfWork.skillRepository.GetById(skillId);
+                        ProjectSkills.Add(skill);
+                    }
+
+                    List<SkillDTO> skillDTOs = mapper.Map<List<Skill>, List<SkillDTO>>(ProjectSkills);
+                    getProjectsDTOs[i].Skills = skillDTOs;
+                }
+
+                // Mapping working history and their rates
+                List<GetJobDTO> jobDTOs = new List<GetJobDTO>();
+                foreach (Job job in freelancer.WorkingHistory)
+                {
+                    GetJobDTO jobDto = mapper.Map<Job, GetJobDTO>(job);
+                    Rate? rate = _unitOfWork.rateRepository.Find(r => r.JobId == job.Id);
+                    RateDTO rateDto = mapper.Map<Rate, RateDTO>(rate);
+                    jobDto.Rate = rateDto;
+                    Category category = _unitOfWork.categoryRepository.GetById(job.CategoryId);
+                    jobDto.CategoryTitle = category.Title;
+                    jobDTOs.Add(jobDto);
+                }
+
+                // Mapping freelancer details
+                return new GetFreelancerDTO
+                {
+                    Id = freelancer.Id,
+                    Name = freelancer.Name,
+                    Title = freelancer.Title,
+                    Address = freelancer.Address,
+                    Overview = freelancer.Overview,
+                    PersonalImageBytes = freelancer.PersonalImageBytes,
+                    skills = SkillsDtos,
+                    Portfolio = getProjectsDTOs,
+                    WorkingHistory = jobDTOs
+                };
+            }).ToList();
 
             return new GeneralResponse()
             {
@@ -47,7 +95,7 @@ namespace Shoghlana.Api.Services.Implementaions
             };
         }
 
-        [HttpGet("{id:int}")]
+
         public ActionResult<GeneralResponse> GetById(int id)
         {
             Freelancer? freelancer = _unitOfWork.freelancerRepository
@@ -128,19 +176,11 @@ namespace Shoghlana.Api.Services.Implementaions
             };
         }
 
-        [HttpPost]
-        public async Task<ActionResult<GeneralResponse>> AddAsync( AddFreelancerDTO addedFreelancerDTO)
+        public async Task<ActionResult<GeneralResponse>> AddAsync(AddFreelancerDTO addedFreelancerDTO)
         {
-            Freelancer freelancer;
-            if (addedFreelancerDTO.PersonalImageBytes is not null)
+            if (addedFreelancerDTO.PersonalImageBytes != null)
             {
-                //return new GeneralResponse()
-                //{
-                //    IsSuccess = false,
-                //    Status = 400,
-                //    Message = "Personal Image is required"
-                //};
-
+                // Validation for personal image
                 if (!allowedExtensions.Contains(Path.GetExtension(addedFreelancerDTO.PersonalImageBytes.FileName).ToLower()))
                 {
                     return new GeneralResponse()
@@ -160,53 +200,62 @@ namespace Shoghlana.Api.Services.Implementaions
                         Message = "The max Allowed Personal Image Size => 1 MB ",
                     };
                 }
-
-                using var dataStream = new MemoryStream();
-
-                await addedFreelancerDTO.PersonalImageBytes.CopyToAsync(dataStream);
-
-                freelancer = new Freelancer()
-                {
-                    Name = addedFreelancerDTO.Name,
-                    Title = addedFreelancerDTO.Title,
-                    Address = addedFreelancerDTO.Address,
-                    Overview = addedFreelancerDTO.Overview,
-                    PersonalImageBytes = dataStream?.ToArray(),
-                };
             }
 
-            else
+            Freelancer freelancer = new Freelancer()
             {
-                freelancer = new Freelancer()
-                {
-                    Name = addedFreelancerDTO.Name,
-                    Title = addedFreelancerDTO.Title,
-                    Address = addedFreelancerDTO.Address,
-                    Overview = addedFreelancerDTO.Overview,
-                };
+                Name = addedFreelancerDTO.Name,
+                Title = addedFreelancerDTO.Title,
+                Address = addedFreelancerDTO.Address,
+                Overview = addedFreelancerDTO.Overview
+            };
+
+            if (addedFreelancerDTO.PersonalImageBytes != null)
+            {
+                using var dataStream = new MemoryStream();
+                await addedFreelancerDTO.PersonalImageBytes.CopyToAsync(dataStream);
+                freelancer.PersonalImageBytes = dataStream.ToArray();
             }
-          
 
-            Freelancer addedFreelancer = await _unitOfWork.freelancerRepository.AddAsync(freelancer);
+            await _unitOfWork.freelancerRepository.AddAsync(freelancer);
+            await _unitOfWork.SaveAsync(); // Ensure the freelancer gets an ID
 
-            _unitOfWork.Save();
+            List<Skill> skills = (await _unitOfWork.skillRepository.FindAllAsync(criteria: s => addedFreelancerDTO.SkillIDs.Contains(s.Id))).ToList();
 
-            FreelancerDTO freelancerDTO = mapper.Map<Freelancer, FreelancerDTO>(freelancer);
+            List<FreelancerSkills> freelancerSkills = new List<FreelancerSkills>();
 
-            return new GeneralResponse()
+            foreach (var skill in skills)
+            {
+                FreelancerSkills freelancerSkill = new FreelancerSkills()
+                {
+                    SkillId = skill.Id,
+                    FreelancerId = freelancer.Id // Assuming freelancer is already retrieved or available
+                };
+
+                freelancerSkills.Add(freelancerSkill);
+            }
+
+            // Assuming freelancer is already retrieved or available
+            freelancer.Skills = freelancerSkills;
+
+            _unitOfWork.freelancerRepository.Update(freelancer);
+            await _unitOfWork.SaveAsync();
+
+            //FreelancerDTO freelancerDTO = mapper.Map<Freelancer, FreelancerDTO>(freelancer);
+
+            return new GeneralResponse
             {
                 IsSuccess = true,
                 Status = 201,
-                Data = freelancerDTO,
+                Data = null,
                 Message = "Added Successfully"
             };
-            //freelancer = mapper.Map<FreelancerDTO, Freelancer>(freelancerDTO);
         }
-        
-        [HttpPut("{id:int}")]
-        public async Task<ActionResult<GeneralResponse>> UpdateAsync(int id, [FromForm] AddFreelancerDTO addedFreelancerDTO)
+
+
+        public async Task<ActionResult<GeneralResponse>> UpdateAsync(int id, [FromForm] AddFreelancerDTO updatedFreelancerDTO)
         {
-            Freelancer? freelancer = _unitOfWork.freelancerRepository.GetById(id);
+            Freelancer? freelancer = await _unitOfWork.freelancerRepository.GetByIdAsync(id);
 
             if (freelancer is null)
             {
@@ -214,62 +263,79 @@ namespace Shoghlana.Api.Services.Implementaions
                 {
                     IsSuccess = false,
                     Status = 404,
-                    Message = "There is no Freelancer found with this ID !"
+                    Message = "There is no Freelancer found with this ID!"
                 };
             }
 
-            if (addedFreelancerDTO.PersonalImageBytes != null)
+            if (updatedFreelancerDTO.PersonalImageBytes != null)
             {
-                if (!allowedExtensions.Contains(Path.GetExtension(addedFreelancerDTO.PersonalImageBytes.FileName).ToLower()))
+                // Validation for personal image
+                if (!allowedExtensions.Contains(Path.GetExtension(updatedFreelancerDTO.PersonalImageBytes.FileName).ToLower()))
                 {
                     return new GeneralResponse()
                     {
                         IsSuccess = false,
                         Status = 400,
-                        Message = "The allowed Personal Image Extensions => {jpg , png}",
+                        Message = "The allowed Personal Image Extensions are: jpg, png",
                     };
                 }
 
-                if (addedFreelancerDTO.PersonalImageBytes.Length > maxAllowedPersonalImageSize)
+                if (updatedFreelancerDTO.PersonalImageBytes.Length > maxAllowedPersonalImageSize)
                 {
                     return new GeneralResponse()
                     {
                         IsSuccess = false,
                         Status = 400,
-                        Message = "The max Allowed Personal Image Size => 1 MB ",
+                        Message = "The max allowed Personal Image size is 1 MB",
                     };
                 }
 
                 using var dataStream = new MemoryStream();
-
-                await addedFreelancerDTO.PersonalImageBytes.CopyToAsync(dataStream);
-
+                await updatedFreelancerDTO.PersonalImageBytes.CopyToAsync(dataStream);
                 freelancer.PersonalImageBytes = dataStream.ToArray();
             }
 
-            #region Don't use Automapper here
-            // can't use update here because the same instance is already tracked when I got him by Id
-            // so I just map with my self and save changes => also cant use automapper because it creates a new instance and doesn't modify the existed one 
-            // so SaveChanges won't take effect unless I Mapped manually 
-            #endregion
+            freelancer.Name = updatedFreelancerDTO.Name;
+            freelancer.Title = updatedFreelancerDTO.Title;
+            freelancer.Address = updatedFreelancerDTO.Address;
+            freelancer.Overview = updatedFreelancerDTO.Overview;
 
-            freelancer.Title = addedFreelancerDTO.Title;
-            freelancer.Overview = addedFreelancerDTO.Overview;
-            freelancer.Address = addedFreelancerDTO.Address;
+            if (updatedFreelancerDTO.SkillIDs != null && updatedFreelancerDTO.SkillIDs.Any())
+            {
+                IEnumerable<FreelancerSkills> oldFreelancerSkills = await _unitOfWork.freelancerSkillsRepository.FindAllAsync(criteria: fs => fs.FreelancerId == freelancer.Id);
+                _unitOfWork.freelancerSkillsRepository.DeleteRange(oldFreelancerSkills);
+
+                List<Skill> skills = (await _unitOfWork.skillRepository.FindAllAsync(criteria: s => updatedFreelancerDTO.SkillIDs.Contains(s.Id))).ToList();
+
+                List<FreelancerSkills> newFreelancerSkills = new List<FreelancerSkills>(skills.Count);
+
+                foreach (var skill in skills)
+                {
+                    FreelancerSkills freelancerSkill = new FreelancerSkills()
+                    {
+                        SkillId = skill.Id,
+                        FreelancerId = freelancer.Id
+                    };
+
+                    newFreelancerSkills.Add(freelancerSkill);
+                }
+
+                freelancer.Skills = newFreelancerSkills;
+            }
 
             _unitOfWork.Save();
 
-            FreelancerDTO freelancerDTO = mapper.Map<Freelancer, FreelancerDTO>(freelancer);
 
             return new GeneralResponse()
             {
                 IsSuccess = true,
                 Status = 200,
-                Data = freelancerDTO
+                Message = "Freelancer updated successfully"
             };
         }
 
-        [HttpDelete("{id:int}")]
+
+
         public ActionResult<GeneralResponse> Delete(int id)
         {
             Freelancer? freelancer = _unitOfWork.freelancerRepository.GetById(id);

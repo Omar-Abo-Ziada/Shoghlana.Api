@@ -10,7 +10,7 @@ namespace Shoghlana.Core.DTO
 
         //public string? PersonalImage { get; set; }
 
-        public IFormFile? PersonalImageBytes { get; set; }
+        public byte[]? PersonalImageBytes { get; set; }
 
         public string Name { get; set; }
 
@@ -28,7 +28,7 @@ namespace Shoghlana.Core.DTO
 
         public List<ProposalDTO>? Proposals { get; set; }
 
-        public List<SkillDTO>? skills { get; set; }
+        public List<SkillDTO>? Skills { get; set; }
 
         //public List<Notification>? notifications { get; set; }
     }

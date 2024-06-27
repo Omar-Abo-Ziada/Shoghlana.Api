@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Http;
+using Shoghlana.Core.Models;
 
 namespace Shoghlana.Core.DTO
 {
@@ -17,15 +18,19 @@ namespace Shoghlana.Core.DTO
 
         public string? Address { get; set; }
 
-        public string? Overview { get; set; } 
+        public string? Overview { get; set; }
 
         //public List<Project>? Portfolio { get; set; }
 
         //public List<Job>? WorkingHistory { get; set; }
 
-        //public List<Proposal>? Proposals { get; set; }
+        //public List<Proposal>? Proposals { get; set;
+        
+        public List<int>? SkillIDs { get; set; } = new List<int> { };
 
-        //public List<Skill>? skills { get; set; }
+
+
+        //public List<SkillDTO>? Skills { get; set; } = new List<SkillDTO> { };
 
         //public List<Notification>? notifications { get; set; }
     }
