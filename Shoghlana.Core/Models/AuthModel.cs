@@ -9,6 +9,7 @@ namespace Shoghlana.Core.Models
 {
     public class AuthModel
     {
+        public int Id { get; set; }         // represent client / freelancer id based on his role
         public string Message { get; set; }
 
         public bool IsAuthenticated { get; set; }  // false by default

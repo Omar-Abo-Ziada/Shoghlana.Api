@@ -491,20 +491,20 @@ namespace Shoghlana.Api.Services.Implementaions
 
         public ActionResult<GeneralResponse> update(AddJobDTO jobDto)
         {
-            Job? job = _unitOfWork.jobRepository.GetById(jobDto.Id);
+            Job? job = _unitOfWork.jobRepository.GetById((int)jobDto.Id);
 
-            job.Id = jobDto.Id;
+            job.Id = (int) jobDto.Id;
             job.Description = jobDto.Description;
             job.Title = jobDto.Title;
             job.MaxBudget = jobDto.MaxBudget;
             job.MinBudget = jobDto.MinBudget;
             job.ExperienceLevel = jobDto.ExperienceLevel;
             job.CategoryId = jobDto.CategoryId;
-            job.PostTime = jobDto.PostTime;
-            job.Status = jobDto.Status;
+            job.PostTime = (DateTime) jobDto.PostTime;
+            job.Status = (JobStatus) jobDto.Status;
             job.DurationInDays = jobDto.DurationInDays;
             job.ExperienceLevel = jobDto.ExperienceLevel;
-            job.ClientId = jobDto.ClientId;
+        //    job.ClientId = jobDto.ClientId;
 
             List<JobSkills> jobSkills = _unitOfWork.jobSkillsRepository
                                    .FindAll(criteria: js => js.JobId == jobDto.Id)
@@ -521,7 +521,7 @@ namespace Shoghlana.Api.Services.Implementaions
                     skills.Add(new JobSkills
                     {
                         SkillId = skill.Id,
-                        JobId = jobDto.Id
+                        JobId = (int)jobDto.Id
                     });
                 }
                

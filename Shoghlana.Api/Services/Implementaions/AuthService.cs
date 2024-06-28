@@ -222,6 +222,14 @@ namespace Shoghlana.Api.Services.Implementaions
             var jwtSecurityToken = await CreateJwtToken(user);
             var rolesList = await _userManager.GetRolesAsync(user);
 
+            if(user.ClientId != null)
+            {
+                authModel.Id = (int)user.ClientId;
+            }
+            else if(user.FreeLancerId != null)
+            {
+                authModel.Id = (int)user.FreeLancerId;
+            }
             authModel.IsAuthenticated = true;
             authModel.Token = new JwtSecurityTokenHandler().WriteToken(jwtSecurityToken);
             authModel.Email = user.Email;
@@ -342,6 +350,7 @@ namespace Shoghlana.Api.Services.Implementaions
 
         public async Task<GeneralResponse> GoogleAuthentication(GoogleSignupDto googleSignupDto)
         {
+            
             ApplicationUser? User = await _unitOfWork.ApplicationUserRepository
                                           .GetByEmailAsync(googleSignupDto.email);
             if (User == null)
@@ -402,7 +411,7 @@ namespace Shoghlana.Api.Services.Implementaions
                     }
                 }
 
-                else
+                else if(googleSignupDto.role == (int)Core.Enums.UserRole.Client)
                 {
                     Client client = new Client()
                     {
@@ -468,6 +477,16 @@ namespace Shoghlana.Api.Services.Implementaions
 
             // logic for login
             AuthModel authModel = new AuthModel();
+
+            if(User.ClientId != null)
+            {
+                authModel.Id = (int)User.ClientId;
+            }
+
+            else if(User.FreeLancerId != null)
+            {
+                authModel.Id = (int)User.FreeLancerId;
+            }
 
             var jwtSecurityToken = await CreateJwtToken(User);
             var rolesList = await _userManager.GetRolesAsync(User);
