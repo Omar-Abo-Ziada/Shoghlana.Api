@@ -38,6 +38,7 @@ namespace Shoghlana.EF.Repositories
             if (Password == null)
             {
                result  = await userManager.CreateAsync(User);
+                
             }
 
             else
