@@ -16,7 +16,7 @@ namespace Shoghlana.Api.Services.Interfaces
 
         public Task<ActionResult<GeneralResponse>> CreateClient([FromForm] ClientDTO clientDTO);
 
-        public  Task<ActionResult<GeneralResponse>> UpdateClient(int id, [FromForm] ClientDTO clientDTO);
+        public  Task<ActionResult<GeneralResponse>> UpdateClient(ClientDTO clientDTO);
 
         public ActionResult<GeneralResponse> DeleteClient(int id);
     }
