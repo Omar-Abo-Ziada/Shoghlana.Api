@@ -53,11 +53,11 @@ namespace Shoghlana.Api.Controllers
             return await clientService.CreateClient(clientDTO);
         }
 
-        [HttpPut("{id}")]
-        public async Task<ActionResult<GeneralResponse>> UpdateClient(int id, [FromForm] ClientDTO clientDTO)
+        [HttpPut]
+        public async Task<ActionResult<GeneralResponse>> UpdateClient(ClientDTO clientDTO)
         {
             if (!ModelState.IsValid)
-            {
+            { 
                 return new GeneralResponse()
                 {
                     IsSuccess = false,
@@ -67,7 +67,7 @@ namespace Shoghlana.Api.Controllers
                 };
             }
 
-            return await clientService.UpdateClient(id, clientDTO);
+            return await clientService.UpdateClient(clientDTO);
         }
 
 

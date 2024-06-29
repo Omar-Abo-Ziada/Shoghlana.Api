@@ -14,7 +14,7 @@ namespace Shoghlana.Api.Services.Implementaions
 {
     public class ClientService : GenericService<Client> , IClientService
     {
-        private List<string> allowedExtensions = new List<string>() { ".jpg", ".png" };
+        private List<string> allowedExtensions = new List<string>() { ".jpg", ".png", ".jpeg" };
 
         private long maxAllowedImageSize = 1_048_576;
 
@@ -77,7 +77,6 @@ namespace Shoghlana.Api.Services.Implementaions
             };
         }
 
-        [HttpGet("{id}")]
         public ActionResult<GeneralResponse> GetById(int id)
         {
             //Client? client = _unitOfWork.clientRepository.GetById(id);
@@ -187,7 +186,7 @@ namespace Shoghlana.Api.Services.Implementaions
                 {
                     IsSuccess = false,
                     Status = 400,
-                    Message = "Only JPG and PNG image formats are allowed!"
+                    Message = "Only JPG, PNG and Jpeg image formats are allowed!"
                 };
             }
 
@@ -238,43 +237,10 @@ namespace Shoghlana.Api.Services.Implementaions
             };
         }
 
-        [HttpPut("{id}")]
-        public async Task<ActionResult<GeneralResponse>> UpdateClient(int id, [FromForm] ClientDTO clientDTO)
+        public async Task<ActionResult<GeneralResponse>> UpdateClient(ClientDTO clientDTO)
         {
-            if (clientDTO.Image is null)
-            {
-                return new GeneralResponse()
-                {
-                    IsSuccess = false,
-                    Status = 400,
-                    Message = "Image is required"
-                };
-            }
 
-            if (!allowedExtensions.Contains(Path.GetExtension(clientDTO.Image.FileName).ToLower()))
-            {
-                return new GeneralResponse()
-                {
-                    IsSuccess = false,
-                    Status = 400,
-                    Message = "The allowed Image Extensions => {jpg , png}",
-                };
-            }
-
-            if (clientDTO.Image.Length > maxAllowedImageSize)
-            {
-                return new GeneralResponse()
-                {
-                    IsSuccess = false,
-                    Status = 400,
-                    Message = "The max Allowed Image Size => 1 MB ",
-                };
-            }
-
-            using var dataStream = new MemoryStream();
-            clientDTO.Image.CopyTo(dataStream);
-
-            Client? existingClient = _unitOfWork.clientRepository.GetById(id);
+            Client? existingClient = _unitOfWork.clientRepository.GetById(clientDTO.Id);
 
             if (existingClient == null)
             {
@@ -286,26 +252,65 @@ namespace Shoghlana.Api.Services.Implementaions
                 };
             }
 
+            if (clientDTO.Image is not null)
+            {
+                if (!allowedExtensions.Contains(Path.GetExtension(clientDTO.Image.FileName).ToLower()))
+                {
+                    return new GeneralResponse()
+                    {
+                        IsSuccess = false,
+                        Status = 400,
+                        Message = "(Jpg , Png, Jpeg) يرجي استخدام ملف",
+                        Data = GetById(clientDTO.Id)
+                    };
+                }
+
+                if (clientDTO.Image.Length > maxAllowedImageSize)
+                {
+                    return new GeneralResponse()
+                    {
+                        IsSuccess = false,
+                        Status = 400,
+                        Message = "The max Allowed Image Size => 1 MB ",
+                    };
+                }
+
+                using var dataStream = new MemoryStream();
+                clientDTO.Image.CopyTo(dataStream);
+                existingClient.Image = dataStream.ToArray();
+
+                //return new GeneralResponse()
+                //{
+                //    IsSuccess = false,
+                //    Status = 400,
+                //    Message = "Image is required"
+                //};
+            }
+
+           
+
+          
+
+
             existingClient.Name = clientDTO.Name;
             existingClient.Description = clientDTO.Description;
             existingClient.Country = clientDTO.Country;
-            existingClient.Phone = clientDTO.Phone;
-            existingClient.Image = dataStream.ToArray();
+           // existingClient.Phone = clientDTO.Phone;
 
             _unitOfWork.clientRepository.Update(existingClient);
 
             _unitOfWork.Save();
 
-            return new GeneralResponse()
-            {
-                IsSuccess = true,
-                Status = 200,
-                Data = clientDTO
-            };
+            //return new GeneralResponse()
+            //{
+            //    IsSuccess = true,
+            //    Status = 200,
+            //    Data = clientDTO
+            //};
+            return GetById(clientDTO.Id);
         }
 
 
-        [HttpDelete("{id}")]
         public ActionResult<GeneralResponse> DeleteClient(int id)
         {
             Client? existingClient = _unitOfWork.clientRepository.GetById(id);
