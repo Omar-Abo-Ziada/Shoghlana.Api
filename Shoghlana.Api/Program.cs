@@ -131,7 +131,8 @@ namespace Shoghlana.Api
             {
                 options.AddDefaultPolicy(builder =>
                 {
-                    builder.AllowAnyOrigin()
+                    //builder.AllowAnyOrigin()
+                       builder.WithOrigins("http://localhost:4200")
                            .AllowAnyMethod()
                            .AllowAnyHeader();
                 });
@@ -154,13 +155,14 @@ namespace Shoghlana.Api
 
             app.UseCors();
 
-            app.UseAuthentication();
+            app.UseAuthentication();  
 
             app.UseAuthorization();
 
             app.UseStaticFiles();
 
             app.MapHub<NotificationHub>("/notificationHub");
+
             app.MapHub<ChatHub>("/ChatHub");
 
             //app.UseEndpoints(Endpoint =>
@@ -168,7 +170,7 @@ namespace Shoghlana.Api
             //    Endpoint.MapHub<ChatHub>("/CharHub");
             //});
 
-            app.UseAuthorization();  // why repeated here ?
+            //app.UseAuthorization();  // why repeated here ?
 
             app.MapControllers();
 
