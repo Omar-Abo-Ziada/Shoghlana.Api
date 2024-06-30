@@ -137,19 +137,19 @@ namespace Shoghlana.Api
                     .AllowAnyMethod()
                     .AllowCredentials();
                 });
-                options.AddPolicy("AllowAll", builder =>
-                {
-                    builder.AllowAnyOrigin()
-                           .AllowAnyMethod()
-                           .AllowAnyHeader();
-                });
+                //options.AddPolicy("AllowAll", builder =>
+                //{
+                //    builder.AllowAnyOrigin()
+                //           .AllowAnyMethod()
+                //           .AllowAnyHeader();
+                //});
 
-                options.AddPolicy("AllowAngular", builder =>
-                {
-                    builder.WithOrigins("http://localhost:4200/")
-                           .AllowAnyMethod()
-                           .AllowAnyHeader();
-                });
+                //options.AddPolicy("AllowAngular", builder =>
+                //{
+                //    builder.WithOrigins("http://localhost:4200/")
+                //           .AllowAnyMethod()
+                //           .AllowAnyHeader();
+                //});
             });
 
             //************************************************************************
@@ -171,6 +171,7 @@ namespace Shoghlana.Api
           
 
             app.UseRouting();
+            app.UseStaticFiles();
 
             app.UseCors("AllowAll");
             app.UseCors();
