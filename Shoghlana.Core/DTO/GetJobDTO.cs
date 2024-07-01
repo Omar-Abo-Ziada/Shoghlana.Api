@@ -33,6 +33,8 @@ namespace Shoghlana.Core.DTO
 
         public List<GetProposalDTO>? Proposals { get; set; } = new List<GetProposalDTO>();
 
+        public int ProposalsCount { get; set; }
+
         /// <summary>
         ///  any time you access the readonly ProposalsCount property,
         ///  it will always return the current count of the Proposals list.
