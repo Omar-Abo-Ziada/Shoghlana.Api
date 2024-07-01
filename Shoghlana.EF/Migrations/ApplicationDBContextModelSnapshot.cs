@@ -470,6 +470,7 @@ namespace Shoghlana.EF.Migrations
                             Name = "أحمد علي",
                             Phone = "+962123456789",
                             RegisterationTime = new DateTime(2024, 2, 1, 19, 17, 58, 140, DateTimeKind.Local).AddTicks(3697)
+                        },
                         new
                         {
                             Id = 10,
