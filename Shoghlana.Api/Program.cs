@@ -127,30 +127,17 @@ namespace Shoghlana.Api
 
             builder.Services.AddAutoMapper(typeof(Program));
 
-            // Define CORS policies
             builder.Services.AddCors(options =>
             {
                 options.AddDefaultPolicy(builder =>
                 {
-                    builder.WithOrigins("http://localhost:4200")
-                    .AllowAnyHeader()
-                    .AllowAnyMethod()
-                    .AllowCredentials();
-                });
-                options.AddPolicy("AllowAll", builder =>
-                {
-                    builder.AllowAnyOrigin()
-                           .AllowAnyMethod()
-                           .AllowAnyHeader();
-                });
-
-                options.AddPolicy("AllowAngular", builder =>
-                {
-                    builder.WithOrigins("http://localhost:4200/")
+                    //builder.AllowAnyOrigin()
+                       builder.WithOrigins("http://localhost:4200")
                            .AllowAnyMethod()
                            .AllowAnyHeader();
                 });
             });
+
 
             //************************************************************************
 
@@ -164,24 +151,26 @@ namespace Shoghlana.Api
                 app.UseSwaggerUI();
             }
 
-            app.UseAuthentication();
+            app.UseRouting();
+
+            app.UseCors();
+
+            app.UseAuthentication();  
 
             app.UseAuthorization();
 
-          
-
-            app.UseRouting();
-
-            app.UseCors("AllowAll");
-            app.UseCors();
+            app.UseStaticFiles();
 
             app.MapHub<NotificationHub>("/notificationHub");
+
             app.MapHub<ChatHub>("/ChatHub");
+
             //app.UseEndpoints(Endpoint =>
             //{
             //    Endpoint.MapHub<ChatHub>("/CharHub");
             //});
-            app.UseAuthorization();
+
+            //app.UseAuthorization();  // why repeated here ?
 
             app.MapControllers();
 
