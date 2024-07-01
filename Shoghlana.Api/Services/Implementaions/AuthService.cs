@@ -129,8 +129,8 @@ namespace Shoghlana.Api.Services.Implementaions
 
             // Determine the user's roles
             var roles = await _userManager.GetRolesAsync(user);
-            var refreshToken = GenerateRefreshToken();
-            user.RefreshTokens?.Add(refreshToken);
+            //var refreshToken = GenerateRefreshToken();
+            //user.RefreshTokens?.Add(refreshToken);
             await _userManager.UpdateAsync(user);
 
             return new AuthModel
@@ -141,8 +141,8 @@ namespace Shoghlana.Api.Services.Implementaions
                 Roles = roles.ToList(),
              //   Token = new JwtSecurityTokenHandler().WriteToken(jwtSecurityToken),
                 Username = user.UserName,
-                RefreshToken = refreshToken.Token,
-                RefreshTokenExpiration = refreshToken.ExpiresOn
+                //RefreshToken = refreshToken.Token,
+                //RefreshTokenExpiration = refreshToken.ExpiresOn
             };
         }
 
@@ -490,6 +490,11 @@ namespace Shoghlana.Api.Services.Implementaions
 
             var jwtSecurityToken = await CreateJwtToken(User);
             var rolesList = await _userManager.GetRolesAsync(User);
+            // refresh token 
+
+            var refreshToken = GenerateRefreshToken();
+
+            User.RefreshTokens.Add(refreshToken);
 
             authModel.IsAuthenticated = true;
             authModel.Token = new JwtSecurityTokenHandler().WriteToken(jwtSecurityToken);
@@ -497,23 +502,9 @@ namespace Shoghlana.Api.Services.Implementaions
             authModel.Username = User.UserName;
             authModel.ExpiresOn = jwtSecurityToken.ValidTo;
             authModel.Roles = rolesList.ToList();
+            authModel.RefreshToken = refreshToken.Token;
+            authModel.RefreshTokenExpiration = refreshToken.ExpiresOn;
 
-            // refresh token 
-
-            //if (User.RefreshTokens.Any(t => t.IsActive))
-            //{
-            //    var activeRefreshToken = User.RefreshTokens.FirstOrDefault(t => t.IsActive);
-            //    authModel.RefreshToken = activeRefreshToken.Token;
-            //    authModel.RefreshTokenExpiration = activeRefreshToken.ExpiresOn;
-            //}
-            //else
-            //{
-            //    var refreshToken = GenerateRefreshToken();
-            //    authModel.RefreshToken = refreshToken.Token;
-            //    authModel.RefreshTokenExpiration = refreshToken.ExpiresOn;
-            //    User.RefreshTokens.Add(refreshToken);
-            //    await _userManager.UpdateAsync(User);
-            //}
 
             return new GeneralResponse()
             {
@@ -564,7 +555,7 @@ namespace Shoghlana.Api.Services.Implementaions
                 Message = "Valid gmail token"
             };
         }
-
+        
 
     }
 }
