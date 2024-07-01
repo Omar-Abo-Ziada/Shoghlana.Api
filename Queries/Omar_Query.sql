@@ -54,5 +54,8 @@ select * from AspNetRoles
 
 select * from Jobs
 
+--delete from AspNetUserRoles
+--go
+--delete from AspNetUsers
 
 

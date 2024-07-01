@@ -1,6 +1,6 @@
 ﻿namespace Shoghlana.Core.DTO
 {
-    public class PaginatedListDTO<T>
+    public class PaginatedListDTO<T> // : List<T> where T : class  // so that I can iterate on PaginatedListDTO
     {
         public IEnumerable<T> Items { get; set; }
 
