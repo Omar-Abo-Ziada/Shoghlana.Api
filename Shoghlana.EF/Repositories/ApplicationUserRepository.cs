@@ -46,7 +46,11 @@ namespace Shoghlana.EF.Repositories
                result = await userManager.CreateAsync(User, Password);
             }
 
-            await userManager.AddToRoleAsync(User, Role);
+            if(result.Succeeded)
+            {
+                 await userManager.AddToRoleAsync(User, Role);
+            }
+
             return result;
         }
 

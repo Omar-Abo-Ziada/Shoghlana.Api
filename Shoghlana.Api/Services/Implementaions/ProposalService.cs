@@ -148,8 +148,11 @@ namespace Shoghlana.Api.Services.Implementaions
 
             foreach (Proposal proposal in proposals)
             {
-                GetProposalDTO getProposalDTO = mapper.Map<Proposal, GetProposalDTO>(proposal);
+                Job? job = _unitOfWork.jobRepository.Find(j => j.Id == proposal.JobId , ["Client"]);
 
+                GetProposalDTO getProposalDTO = mapper.Map<Proposal, GetProposalDTO>(proposal);
+                getProposalDTO.JobTitle = job?.Title;
+                getProposalDTO.ClientName = job?.Client.Name;
                 getProposalDTOs.Add(getProposalDTO);
             }
 
