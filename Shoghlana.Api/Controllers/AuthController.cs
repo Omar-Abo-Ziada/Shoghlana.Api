@@ -238,6 +238,44 @@ namespace Shoghlana.Api.Controllers
             Response.Cookies.Append("refreshToken", refreshToken, cookieOptions);
         }
 
-       
+        [HttpPost("forgot-password")]
+        public async Task<GeneralResponse> ForgotPassword(string email)
+        {
+            var result = await _authService.ForgotPasswordAsync(email);
+            if (result == null || !result.IsAuthenticated)
+            {
+                return new GeneralResponse
+                {
+                    Data = result,
+                    IsSuccess = false,
+                    Message = result?.Message ?? "An error occurred during the password reset process."
+                };
+            }
+            return new GeneralResponse
+            {
+                IsSuccess = true,
+                Message = result.Message
+            };
+        }
+
+        [HttpPost("reset-password")]
+        public async Task<GeneralResponse> ResetPassword([FromBody] Shoghlana.Core.Models.ResetPasswordRequest request)
+        {
+            var result = await _authService.ResetPasswordAsync(request);
+            if (result == null || !result.IsAuthenticated)
+            {
+                return new GeneralResponse
+                {
+                    IsSuccess = false,
+                    Message = result?.Message ?? "An error occurred during the password reset process."
+                };
+            }
+            return new GeneralResponse
+            {
+                IsSuccess = true,
+                Message = result.Message
+            };
+        }
+
     }
 }

@@ -555,7 +555,70 @@ namespace Shoghlana.Api.Services.Implementaions
                 Message = "Valid gmail token"
             };
         }
-        
 
+
+
+        //New methods for handling password reset
+
+        public async Task<AuthModel> ForgotPasswordAsync(string email)
+        {
+            var user = await _userManager.FindByEmailAsync(email);
+            if (user == null)
+            {
+                return new AuthModel { Message = "User not found." };
+            }
+                var resetToken = await _userManager.GeneratePasswordResetTokenAsync(user);
+                user.PasswordResetToken = resetToken;
+
+            //var jwtToken = await CreateJwtToken(user);
+            //user.PasswordResetToken = new JwtSecurityTokenHandler().WriteToken(jwtToken);
+            user.ResetTokenExpires = DateTime.UtcNow.AddHours(1); // Token valid for 1 hour
+
+
+            await _userManager.UpdateAsync(user);
+
+            return new AuthModel {
+                Message = "You may now reset your password.",
+                IsAuthenticated = true 
+
+            };
+        }
+
+        public async Task<AuthModel> ResetPasswordAsync(ResetPasswordRequest request)
+        {
+            var user = await _userManager.Users.FirstOrDefaultAsync(u => u.PasswordResetToken == request.Token);
+
+            if (user == null)
+            {
+                return new AuthModel { Message = "User not found." };
+            }
+
+            if (user.ResetTokenExpires < DateTime.UtcNow)
+            {
+                return new AuthModel { Message = "Reset token has expired." };
+            }
+
+            var resetPassResult = await _userManager.ResetPasswordAsync(user, request.Token, request.Password);
+
+            if (!resetPassResult.Succeeded)
+            {
+                var errors = string.Join(", ", resetPassResult.Errors.Select(e => e.Description));
+                return new AuthModel { Message = errors };
+            }
+
+            user.PasswordResetToken = null;
+            user.ResetTokenExpires = null;
+
+            await _userManager.UpdateAsync(user);
+
+            return new AuthModel { Message = "Password successfully reset.",
+            IsAuthenticated = true };
+        }
+
+
+
+
+
+       
     }
 }

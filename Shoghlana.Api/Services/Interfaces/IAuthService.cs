@@ -22,8 +22,8 @@ namespace Shoghlana.Api.Services.Interfaces
         Task<JwtSecurityToken> CreateJwtToken(ApplicationUser user);
 
         //reset password 
-        //Task<AuthModel> ForgotPasswordAsync(string email);
-        //Task<AuthModel> ResetPasswordAsync(ResetPasswordRequest request);
+        Task<AuthModel> ForgotPasswordAsync(string email);
+        Task<AuthModel> ResetPasswordAsync(ResetPasswordRequest request);
 
         // google authentication
         Task<ApplicationUser> GetByIdAsync(string id);
