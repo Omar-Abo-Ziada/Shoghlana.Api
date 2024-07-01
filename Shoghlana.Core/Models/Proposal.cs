@@ -24,7 +24,7 @@ namespace Shoghlana.Core.Models
         [Column(TypeName = "decimal(18, 2)")]
         public decimal Price { get; set; }
 
-        public ProposalStatus Status { get; set; } // not in the DTO
+        public ProposalStatus Status { get; set; } // not in the DTO >> saeed added it there
 
         public List<string>? ReposLinks { get; set; }
 
