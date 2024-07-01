@@ -1,10 +1,12 @@
 ﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.Data;
 using Microsoft.AspNetCore.Mvc;
 using Shoghlana.Api.Response;
 using Shoghlana.Api.Services.Interfaces;
 using Shoghlana.Core.DTO;
 using Shoghlana.Core.Models;
 using System.Net;
+using static Google.Apis.Auth.OAuth2.Web.AuthorizationCodeWebApp;
 
 namespace Shoghlana.Api.Controllers
 {
@@ -37,7 +39,7 @@ namespace Shoghlana.Api.Controllers
               
                 if (result.IsAuthenticated )
                 {
-                    SetRefreshTokenInCookie(result.RefreshToken, result.RefreshTokenExpiration);
+                    //SetRefreshTokenInCookie(result.RefreshToken, result.RefreshTokenExpiration);
 
                     return new GeneralResponse
                     {
@@ -94,7 +96,18 @@ namespace Shoghlana.Api.Controllers
 
             if(result.IsSuccess)
             {
-                return await _authService.GoogleAuthentication(googleSignupDto);
+                var authResult = await _authService.GoogleAuthentication(googleSignupDto);
+
+                if (authResult.IsSuccess)
+                {
+                    var authModel = (AuthModel)result.Data;
+                    if (!string.IsNullOrEmpty(authModel.RefreshToken))
+                    {
+                        SetRefreshTokenInCookie(authModel.RefreshToken, authModel.RefreshTokenExpiration);
+                    }
+                }
+
+                return authResult;
             }
 
             return result;
@@ -224,5 +237,7 @@ namespace Shoghlana.Api.Controllers
 
             Response.Cookies.Append("refreshToken", refreshToken, cookieOptions);
         }
+
+       
     }
 }
