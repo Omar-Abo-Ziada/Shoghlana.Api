@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Shoghlana.EF;
 
@@ -11,9 +12,11 @@ using Shoghlana.EF;
 namespace Shoghlana.EF.Migrations
 {
     [DbContext(typeof(ApplicationDBContext))]
-    partial class ApplicationDBContextModelSnapshot : ModelSnapshot
+    [Migration("20240701170055_init")]
+    partial class init
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -51,25 +54,22 @@ namespace Shoghlana.EF.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "0369b125-f431-4548-a6bf-eb7227c7aa47",
-                            ConcurrencyStamp = "ea6b758b-01fc-40a9-b850-512dbe9dff0d",
-
+                            Id = "ec8506ed-3fae-4e89-81e0-863082ca5f80",
+                            ConcurrencyStamp = "1c8ee5f3-702f-47f9-a09d-d34a5424afb4",
                             Name = "Admin",
                             NormalizedName = "ADMIN"
                         },
                         new
                         {
-                            Id = "cbadf61f-2a52-4e16-a2a0-b0f3ad4de0ac",
-                            ConcurrencyStamp = "30a618f4-258b-446d-8bef-bbe4914847f7",
-
+                            Id = "e41fdcee-6c98-476a-8520-e0f428b01f47",
+                            ConcurrencyStamp = "65298053-6e64-4c2a-9357-83107931ad44",
                             Name = "Client",
                             NormalizedName = "CLIENT"
                         },
                         new
                         {
-                            Id = "b59bf35d-1ad5-4284-a382-3811109e5f9c",
-                            ConcurrencyStamp = "01077dec-ae8a-4a5f-bbb9-ed8a2171ba9d",
-
+                            Id = "af92b751-e21b-48b7-8dda-dbc7fea4fefc",
+                            ConcurrencyStamp = "5d6dcf61-49ec-4efc-bc92-145f0fc2123b",
                             Name = "Freelancer",
                             NormalizedName = "FREELANCER"
                         });
@@ -252,19 +252,11 @@ namespace Shoghlana.EF.Migrations
                     b.Property<string>("PasswordHash")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("PasswordResetToken")
-                        .HasColumnType("nvarchar(max)");
-
-
                     b.Property<string>("PhoneNumber")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("PhoneNumberConfirmed")
                         .HasColumnType("bit");
-
-                    b.Property<DateTime?>("ResetTokenExpires")
-                        .HasColumnType("datetime2");
-
 
                     b.Property<string>("SecurityStamp")
                         .HasColumnType("nvarchar(max)");
@@ -404,8 +396,7 @@ namespace Shoghlana.EF.Migrations
                             Description = "مبرمج ومطور تطبيقات متخصص في تطوير الويب",
                             Name = "عبد الرحمن أحمد",
                             Phone = "+966123456789",
-                            RegisterationTime = new DateTime(2024, 1, 1, 9, 43, 51, 422, DateTimeKind.Local).AddTicks(1676)
-
+                            RegisterationTime = new DateTime(2024, 1, 1, 20, 0, 54, 585, DateTimeKind.Local).AddTicks(1702)
                         },
                         new
                         {
@@ -414,8 +405,7 @@ namespace Shoghlana.EF.Migrations
                             Description = "مصممة جرافيك محترفة تعمل في تصميم اللوجوهات والبوسترات",
                             Name = "فاطمة محمد",
                             Phone = "+201234567890",
-                            RegisterationTime = new DateTime(2023, 7, 1, 9, 43, 51, 422, DateTimeKind.Local).AddTicks(1732)
-
+                            RegisterationTime = new DateTime(2023, 7, 1, 20, 0, 54, 585, DateTimeKind.Local).AddTicks(1788)
                         },
                         new
                         {
@@ -424,8 +414,7 @@ namespace Shoghlana.EF.Migrations
                             Description = "مسوق رقمي محترف بخبرة في إدارة الحملات الإعلانية عبر وسائل التواصل الاجتماعي",
                             Name = "علي العبدالله",
                             Phone = "+971123456789",
-                            RegisterationTime = new DateTime(2024, 4, 1, 9, 43, 51, 422, DateTimeKind.Local).AddTicks(1737)
-
+                            RegisterationTime = new DateTime(2024, 4, 1, 20, 0, 54, 585, DateTimeKind.Local).AddTicks(1794)
                         },
                         new
                         {
@@ -434,8 +423,7 @@ namespace Shoghlana.EF.Migrations
                             Description = "كاتبة محتوى متخصصة في الكتابة الإبداعية والمقالات الفنية",
                             Name = "مريم حسن",
                             Phone = "+962123456789",
-                            RegisterationTime = new DateTime(2023, 10, 1, 9, 43, 51, 422, DateTimeKind.Local).AddTicks(1741)
-
+                            RegisterationTime = new DateTime(2023, 10, 1, 20, 0, 54, 585, DateTimeKind.Local).AddTicks(1798)
                         },
                         new
                         {
@@ -444,8 +432,7 @@ namespace Shoghlana.EF.Migrations
                             Description = "مصور فوتوغرافي متخصص في تصوير الأحداث والمناسبات الخاصة",
                             Name = "يوسف خالد",
                             Phone = "+964123456789",
-                            RegisterationTime = new DateTime(2023, 12, 1, 9, 43, 51, 422, DateTimeKind.Local).AddTicks(1744)
-
+                            RegisterationTime = new DateTime(2023, 12, 1, 20, 0, 54, 585, DateTimeKind.Local).AddTicks(1802)
                         },
                         new
                         {
@@ -454,8 +441,7 @@ namespace Shoghlana.EF.Migrations
                             Description = "مديرة مشروع محترفة في إدارة المشاريع التقنية والتطوير البرمجي",
                             Name = "لمى عبدالله",
                             Phone = "+966123456789",
-                            RegisterationTime = new DateTime(2024, 3, 1, 9, 43, 51, 422, DateTimeKind.Local).AddTicks(1748)
-
+                            RegisterationTime = new DateTime(2024, 3, 1, 20, 0, 54, 585, DateTimeKind.Local).AddTicks(1806)
                         },
                         new
                         {
@@ -464,8 +450,7 @@ namespace Shoghlana.EF.Migrations
                             Description = "مسوق محتوى إبداعي يعمل على ترويج المحتوى الرقمي للشركات الناشئة",
                             Name = "عمر أحمد",
                             Phone = "+201234567890",
-                            RegisterationTime = new DateTime(2023, 8, 1, 9, 43, 51, 422, DateTimeKind.Local).AddTicks(1752)
-
+                            RegisterationTime = new DateTime(2023, 8, 1, 20, 0, 54, 585, DateTimeKind.Local).AddTicks(1811)
                         },
                         new
                         {
@@ -474,8 +459,7 @@ namespace Shoghlana.EF.Migrations
                             Description = "مطورة تطبيقات محترفة تعمل في تطوير تطبيقات الهواتف الذكية",
                             Name = "رنا محمود",
                             Phone = "+961123456789",
-                            RegisterationTime = new DateTime(2023, 11, 1, 9, 43, 51, 422, DateTimeKind.Local).AddTicks(1755)
-
+                            RegisterationTime = new DateTime(2023, 11, 1, 20, 0, 54, 585, DateTimeKind.Local).AddTicks(1815)
                         },
                         new
                         {
@@ -484,8 +468,7 @@ namespace Shoghlana.EF.Migrations
                             Description = "مدير تسويق متخصص في إدارة استراتيجيات التسويق الرقمي",
                             Name = "أحمد علي",
                             Phone = "+962123456789",
-                            RegisterationTime = new DateTime(2024, 2, 1, 9, 43, 51, 422, DateTimeKind.Local).AddTicks(1759)
-
+                            RegisterationTime = new DateTime(2024, 2, 1, 20, 0, 54, 585, DateTimeKind.Local).AddTicks(1819)
                         },
                         new
                         {
@@ -494,8 +477,7 @@ namespace Shoghlana.EF.Migrations
                             Description = "خبيرة في تصميم وإدارة مواقع الويب للشركات الصغيرة والمتوسطة",
                             Name = "هدى صالح",
                             Phone = "+966123456789",
-                            RegisterationTime = new DateTime(2023, 9, 1, 9, 43, 51, 422, DateTimeKind.Local).AddTicks(1762)
-
+                            RegisterationTime = new DateTime(2023, 9, 1, 20, 0, 54, 585, DateTimeKind.Local).AddTicks(1822)
                         },
                         new
                         {
@@ -504,8 +486,7 @@ namespace Shoghlana.EF.Migrations
                             Description = "محاسبة مالية محترفة تعمل في مجال إعداد التقارير المالية",
                             Name = "سلمى عبدالله",
                             Phone = "+971123456789",
-                            RegisterationTime = new DateTime(2024, 4, 1, 9, 43, 51, 422, DateTimeKind.Local).AddTicks(1765)
-
+                            RegisterationTime = new DateTime(2024, 4, 1, 20, 0, 54, 585, DateTimeKind.Local).AddTicks(1826)
                         },
                         new
                         {
@@ -514,8 +495,7 @@ namespace Shoghlana.EF.Migrations
                             Description = "مهندس معماري متخصص في تصميم المباني السكنية",
                             Name = "محمد حسن",
                             Phone = "+201234567890",
-                            RegisterationTime = new DateTime(2023, 12, 1, 9, 43, 51, 422, DateTimeKind.Local).AddTicks(1769)
-
+                            RegisterationTime = new DateTime(2023, 12, 1, 20, 0, 54, 585, DateTimeKind.Local).AddTicks(1830)
                         },
                         new
                         {
@@ -524,8 +504,7 @@ namespace Shoghlana.EF.Migrations
                             Description = "طبيبة مختصة في طب الأطفال والأمراض النفسية",
                             Name = "زينب عبدالله",
                             Phone = "+964123456789",
-                            RegisterationTime = new DateTime(2024, 5, 1, 9, 43, 51, 422, DateTimeKind.Local).AddTicks(1772)
-
+                            RegisterationTime = new DateTime(2024, 5, 1, 20, 0, 54, 585, DateTimeKind.Local).AddTicks(1834)
                         },
                         new
                         {
@@ -534,8 +513,7 @@ namespace Shoghlana.EF.Migrations
                             Description = "مصمم جرافيك مبدع يعمل في تصميم الإعلانات التجارية",
                             Name = "أحمد حسين",
                             Phone = "+961123456789",
-                            RegisterationTime = new DateTime(2023, 10, 1, 9, 43, 51, 422, DateTimeKind.Local).AddTicks(1775)
-
+                            RegisterationTime = new DateTime(2023, 10, 1, 20, 0, 54, 585, DateTimeKind.Local).AddTicks(1838)
                         },
                         new
                         {
@@ -544,8 +522,7 @@ namespace Shoghlana.EF.Migrations
                             Description = "مترجمة محترفة تعمل في ترجمة النصوص الطبية والعلمية",
                             Name = "فاطمة علي",
                             Phone = "+962123456789",
-                            RegisterationTime = new DateTime(2024, 2, 1, 9, 43, 51, 422, DateTimeKind.Local).AddTicks(1779)
-
+                            RegisterationTime = new DateTime(2024, 2, 1, 20, 0, 54, 585, DateTimeKind.Local).AddTicks(1842)
                         },
                         new
                         {
@@ -554,8 +531,7 @@ namespace Shoghlana.EF.Migrations
                             Description = "مطور ويب محترف في تطوير التطبيقات الإلكترونية",
                             Name = "عبدالله محمود",
                             Phone = "+966123456789",
-                            RegisterationTime = new DateTime(2023, 8, 1, 9, 43, 51, 422, DateTimeKind.Local).AddTicks(1782)
-
+                            RegisterationTime = new DateTime(2023, 8, 1, 20, 0, 54, 585, DateTimeKind.Local).AddTicks(1846)
                         },
                         new
                         {
@@ -564,8 +540,7 @@ namespace Shoghlana.EF.Migrations
                             Description = "مهندسة معمارية متخصصة في تصميم المنشآت الصناعية",
                             Name = "ريم عبدالله",
                             Phone = "+201234567890",
-                            RegisterationTime = new DateTime(2023, 11, 1, 9, 43, 51, 422, DateTimeKind.Local).AddTicks(1786)
-
+                            RegisterationTime = new DateTime(2023, 11, 1, 20, 0, 54, 585, DateTimeKind.Local).AddTicks(1849)
                         },
                         new
                         {
@@ -574,8 +549,7 @@ namespace Shoghlana.EF.Migrations
                             Description = "محاسب مالي يتمتع بخبرة واسعة في المحاسبة المالية",
                             Name = "عمر حسن",
                             Phone = "+961123456789",
-                            RegisterationTime = new DateTime(2024, 3, 1, 9, 43, 51, 422, DateTimeKind.Local).AddTicks(1789)
-
+                            RegisterationTime = new DateTime(2024, 3, 1, 20, 0, 54, 585, DateTimeKind.Local).AddTicks(1853)
                         });
                 });
 
@@ -836,8 +810,7 @@ namespace Shoghlana.EF.Migrations
                             ExperienceLevel = 0,
                             MaxBudget = 500m,
                             MinBudget = 100m,
-                            PostTime = new DateTime(2024, 7, 1, 9, 43, 51, 424, DateTimeKind.Local).AddTicks(9974),
-
+                            PostTime = new DateTime(2024, 7, 1, 20, 0, 54, 588, DateTimeKind.Local).AddTicks(836),
                             Status = 0,
                             Title = "تصميم شعار احترافي ومميز"
                         },
@@ -852,8 +825,7 @@ namespace Shoghlana.EF.Migrations
                             ExperienceLevel = 1,
                             MaxBudget = 700m,
                             MinBudget = 200m,
-                            PostTime = new DateTime(2024, 7, 1, 9, 43, 51, 424, DateTimeKind.Local).AddTicks(9988),
-
+                            PostTime = new DateTime(2024, 7, 1, 20, 0, 54, 588, DateTimeKind.Local).AddTicks(854),
                             Status = 0,
                             Title = "تصميم بوستر إعلاني لمواقع التواصل"
                         },
@@ -868,8 +840,7 @@ namespace Shoghlana.EF.Migrations
                             ExperienceLevel = 2,
                             MaxBudget = 600m,
                             MinBudget = 150m,
-                            PostTime = new DateTime(2024, 7, 1, 9, 43, 51, 424, DateTimeKind.Local).AddTicks(9995),
-
+                            PostTime = new DateTime(2024, 7, 1, 20, 0, 54, 588, DateTimeKind.Local).AddTicks(861),
                             Status = 0,
                             Title = "تصميم كارت شخصي احترافي للطباعة"
                         },
@@ -884,8 +855,7 @@ namespace Shoghlana.EF.Migrations
                             ExperienceLevel = 1,
                             MaxBudget = 800m,
                             MinBudget = 300m,
-                            PostTime = new DateTime(2024, 7, 1, 9, 43, 51, 425, DateTimeKind.Local).AddTicks(1),
-
+                            PostTime = new DateTime(2024, 7, 1, 20, 0, 54, 588, DateTimeKind.Local).AddTicks(868),
                             Status = 0,
                             Title = "تركيب لوحة تحكم مجانية مدى الحياة"
                         },
@@ -900,8 +870,7 @@ namespace Shoghlana.EF.Migrations
                             ExperienceLevel = 0,
                             MaxBudget = 700m,
                             MinBudget = 200m,
-                            PostTime = new DateTime(2024, 7, 1, 9, 43, 51, 425, DateTimeKind.Local).AddTicks(56),
-
+                            PostTime = new DateTime(2024, 7, 1, 20, 0, 54, 588, DateTimeKind.Local).AddTicks(875),
                             Status = 0,
                             Title = "تصميم موقع تعريفي للشركات"
                         },
@@ -916,8 +885,7 @@ namespace Shoghlana.EF.Migrations
                             ExperienceLevel = 2,
                             MaxBudget = 3000m,
                             MinBudget = 1000m,
-                            PostTime = new DateTime(2024, 7, 1, 9, 43, 51, 425, DateTimeKind.Local).AddTicks(62),
-
+                            PostTime = new DateTime(2024, 7, 1, 20, 0, 54, 588, DateTimeKind.Local).AddTicks(882),
                             Status = 0,
                             Title = "تطوير تطبيق موبايل لنظام iOS و Android"
                         },
@@ -932,8 +900,7 @@ namespace Shoghlana.EF.Migrations
                             ExperienceLevel = 1,
                             MaxBudget = 1500m,
                             MinBudget = 500m,
-                            PostTime = new DateTime(2024, 7, 1, 9, 43, 51, 425, DateTimeKind.Local).AddTicks(68),
-
+                            PostTime = new DateTime(2024, 7, 1, 20, 0, 54, 588, DateTimeKind.Local).AddTicks(889),
                             Status = 2,
                             Title = "تصميم وتطوير موقع تجارة إلكترونية"
                         },
@@ -948,8 +915,7 @@ namespace Shoghlana.EF.Migrations
                             ExperienceLevel = 0,
                             MaxBudget = 1000m,
                             MinBudget = 300m,
-                            PostTime = new DateTime(2024, 7, 1, 9, 43, 51, 425, DateTimeKind.Local).AddTicks(75),
-
+                            PostTime = new DateTime(2024, 7, 1, 20, 0, 54, 588, DateTimeKind.Local).AddTicks(898),
                             Status = 2,
                             Title = "إدارة حملة إعلانية على وسائل التواصل الاجتماعي"
                         },
@@ -964,8 +930,7 @@ namespace Shoghlana.EF.Migrations
                             ExperienceLevel = 1,
                             MaxBudget = 600m,
                             MinBudget = 200m,
-                            PostTime = new DateTime(2024, 7, 1, 9, 43, 51, 425, DateTimeKind.Local).AddTicks(81),
-
+                            PostTime = new DateTime(2024, 7, 1, 20, 0, 54, 588, DateTimeKind.Local).AddTicks(905),
                             Status = 2,
                             Title = "تصميم مجموعة من الرسوم التوضيحية للكتب الأطفال"
                         },
@@ -980,8 +945,7 @@ namespace Shoghlana.EF.Migrations
                             ExperienceLevel = 0,
                             MaxBudget = 300m,
                             MinBudget = 100m,
-                            PostTime = new DateTime(2024, 7, 1, 9, 43, 51, 425, DateTimeKind.Local).AddTicks(86),
-
+                            PostTime = new DateTime(2024, 7, 1, 20, 0, 54, 588, DateTimeKind.Local).AddTicks(912),
                             Status = 2,
                             Title = "كتابة محتوى إعلاني لموقع الويب"
                         },
@@ -995,8 +959,7 @@ namespace Shoghlana.EF.Migrations
                             ExperienceLevel = 2,
                             MaxBudget = 2000m,
                             MinBudget = 500m,
-                            PostTime = new DateTime(2024, 7, 1, 9, 43, 51, 425, DateTimeKind.Local).AddTicks(92),
-
+                            PostTime = new DateTime(2024, 7, 1, 20, 0, 54, 588, DateTimeKind.Local).AddTicks(919),
                             Status = 0,
                             Title = "تصميم وبرمجة نظام إدارة للموظفين"
                         },
@@ -1010,8 +973,7 @@ namespace Shoghlana.EF.Migrations
                             ExperienceLevel = 2,
                             MaxBudget = 5000m,
                             MinBudget = 1000m,
-                            PostTime = new DateTime(2024, 7, 1, 9, 43, 51, 425, DateTimeKind.Local).AddTicks(97),
-
+                            PostTime = new DateTime(2024, 7, 1, 20, 0, 54, 588, DateTimeKind.Local).AddTicks(926),
                             Status = 0,
                             Title = "إعداد دراسة جدوى لمشروع تجاري مستقبلي"
                         },
@@ -1025,8 +987,7 @@ namespace Shoghlana.EF.Migrations
                             ExperienceLevel = 0,
                             MaxBudget = 200m,
                             MinBudget = 50m,
-                            PostTime = new DateTime(2024, 7, 1, 9, 43, 51, 425, DateTimeKind.Local).AddTicks(104),
-
+                            PostTime = new DateTime(2024, 7, 1, 20, 0, 54, 588, DateTimeKind.Local).AddTicks(932),
                             Status = 0,
                             Title = "تعليم البرمجة للمبتدئين عبر الإنترنت"
                         },
@@ -1040,8 +1001,7 @@ namespace Shoghlana.EF.Migrations
                             ExperienceLevel = 1,
                             MaxBudget = 500m,
                             MinBudget = 150m,
-                            PostTime = new DateTime(2024, 7, 1, 9, 43, 51, 425, DateTimeKind.Local).AddTicks(110),
-
+                            PostTime = new DateTime(2024, 7, 1, 20, 0, 54, 588, DateTimeKind.Local).AddTicks(938),
                             Status = 0,
                             Title = "تصميم مطبوعات دعائية لفعالية ثقافية"
                         },
@@ -1055,8 +1015,7 @@ namespace Shoghlana.EF.Migrations
                             ExperienceLevel = 2,
                             MaxBudget = 800m,
                             MinBudget = 200m,
-                            PostTime = new DateTime(2024, 7, 1, 9, 43, 51, 425, DateTimeKind.Local).AddTicks(115),
-
+                            PostTime = new DateTime(2024, 7, 1, 20, 0, 54, 588, DateTimeKind.Local).AddTicks(1003),
                             Status = 0,
                             Title = "ترجمة مقالات علمية من الإنجليزية إلى العربية"
                         },
@@ -1070,8 +1029,7 @@ namespace Shoghlana.EF.Migrations
                             ExperienceLevel = 2,
                             MaxBudget = 5000m,
                             MinBudget = 1000m,
-                            PostTime = new DateTime(2024, 7, 1, 9, 43, 51, 425, DateTimeKind.Local).AddTicks(122),
-
+                            PostTime = new DateTime(2024, 7, 1, 20, 0, 54, 588, DateTimeKind.Local).AddTicks(1010),
                             Status = 0,
                             Title = "تصميم وتطوير لعبة فيديو متنقلة"
                         },
@@ -1085,8 +1043,7 @@ namespace Shoghlana.EF.Migrations
                             ExperienceLevel = 1,
                             MaxBudget = 1500m,
                             MinBudget = 500m,
-                            PostTime = new DateTime(2024, 7, 1, 9, 43, 51, 425, DateTimeKind.Local).AddTicks(128),
-
+                            PostTime = new DateTime(2024, 7, 1, 20, 0, 54, 588, DateTimeKind.Local).AddTicks(1022),
                             Status = 0,
                             Title = "تصميم منصة تعليمية عبر الإنترنت"
                         },
@@ -1100,8 +1057,7 @@ namespace Shoghlana.EF.Migrations
                             ExperienceLevel = 1,
                             MaxBudget = 700m,
                             MinBudget = 200m,
-                            PostTime = new DateTime(2024, 7, 1, 9, 43, 51, 425, DateTimeKind.Local).AddTicks(133),
-
+                            PostTime = new DateTime(2024, 7, 1, 20, 0, 54, 588, DateTimeKind.Local).AddTicks(1028),
                             Status = 0,
                             Title = "إدارة محتوى لمدونة تقنية"
                         },
@@ -1115,8 +1071,7 @@ namespace Shoghlana.EF.Migrations
                             ExperienceLevel = 2,
                             MaxBudget = 2500m,
                             MinBudget = 800m,
-                            PostTime = new DateTime(2024, 7, 1, 9, 43, 51, 425, DateTimeKind.Local).AddTicks(138),
-
+                            PostTime = new DateTime(2024, 7, 1, 20, 0, 54, 588, DateTimeKind.Local).AddTicks(1035),
                             Status = 0,
                             Title = "تصميم وتطوير نظام إدارة العلاقات مع العملاء (CRM)"
                         },
@@ -1130,8 +1085,7 @@ namespace Shoghlana.EF.Migrations
                             ExperienceLevel = 1,
                             MaxBudget = 1000m,
                             MinBudget = 300m,
-                            PostTime = new DateTime(2024, 7, 1, 9, 43, 51, 425, DateTimeKind.Local).AddTicks(144),
-
+                            PostTime = new DateTime(2024, 7, 1, 20, 0, 54, 588, DateTimeKind.Local).AddTicks(1041),
                             Status = 1,
                             Title = "تحليل بيانات وإعداد تقرير استراتيجي للشركات"
                         },
@@ -1145,8 +1099,7 @@ namespace Shoghlana.EF.Migrations
                             ExperienceLevel = 2,
                             MaxBudget = 1500m,
                             MinBudget = 500m,
-                            PostTime = new DateTime(2024, 7, 1, 9, 43, 51, 425, DateTimeKind.Local).AddTicks(149),
-
+                            PostTime = new DateTime(2024, 7, 1, 20, 0, 54, 588, DateTimeKind.Local).AddTicks(1048),
                             Status = 1,
                             Title = "كتابة وتحرير كتب إلكترونية في مجال الذكاء الاصطناعي"
                         },
@@ -1160,8 +1113,7 @@ namespace Shoghlana.EF.Migrations
                             ExperienceLevel = 1,
                             MaxBudget = 1200m,
                             MinBudget = 400m,
-                            PostTime = new DateTime(2024, 7, 1, 9, 43, 51, 425, DateTimeKind.Local).AddTicks(154),
-
+                            PostTime = new DateTime(2024, 7, 1, 20, 0, 54, 588, DateTimeKind.Local).AddTicks(1054),
                             Status = 0,
                             Title = "تصميم وتطوير موقع تعليمي للطلاب"
                         },
@@ -1175,7 +1127,7 @@ namespace Shoghlana.EF.Migrations
                             ExperienceLevel = 1,
                             MaxBudget = 1800m,
                             MinBudget = 600m,
-                            PostTime = new DateTime(2024, 7, 1, 9, 43, 51, 425, DateTimeKind.Local).AddTicks(160),
+                            PostTime = new DateTime(2024, 7, 1, 20, 0, 54, 588, DateTimeKind.Local).AddTicks(1060),
                             Status = 0,
                             Title = "تصميم وبرمجة منصة للحجز الإلكتروني للفعاليات"
                         },
@@ -1189,8 +1141,7 @@ namespace Shoghlana.EF.Migrations
                             ExperienceLevel = 0,
                             MaxBudget = 800m,
                             MinBudget = 200m,
-                            PostTime = new DateTime(2024, 7, 1, 9, 43, 51, 425, DateTimeKind.Local).AddTicks(165),
-
+                            PostTime = new DateTime(2024, 7, 1, 20, 0, 54, 588, DateTimeKind.Local).AddTicks(1066),
                             Status = 0,
                             Title = "تحسين محركات البحث (SEO) لموقع الويب"
                         },
@@ -1204,8 +1155,7 @@ namespace Shoghlana.EF.Migrations
                             ExperienceLevel = 2,
                             MaxBudget = 2500m,
                             MinBudget = 700m,
-                            PostTime = new DateTime(2024, 7, 1, 9, 43, 51, 425, DateTimeKind.Local).AddTicks(170),
-
+                            PostTime = new DateTime(2024, 7, 1, 20, 0, 54, 588, DateTimeKind.Local).AddTicks(1073),
                             Status = 0,
                             Title = "تطوير نظام لإدارة المخزون والمبيعات للشركات الصغيرة"
                         },
@@ -1219,8 +1169,7 @@ namespace Shoghlana.EF.Migrations
                             ExperienceLevel = 2,
                             MaxBudget = 5000m,
                             MinBudget = 1500m,
-                            PostTime = new DateTime(2024, 7, 1, 9, 43, 51, 425, DateTimeKind.Local).AddTicks(177),
-
+                            PostTime = new DateTime(2024, 7, 1, 20, 0, 54, 588, DateTimeKind.Local).AddTicks(1079),
                             Status = 0,
                             Title = "إعداد دراسة جدوى لمشروع سكني جديد"
                         },
@@ -1234,8 +1183,7 @@ namespace Shoghlana.EF.Migrations
                             ExperienceLevel = 2,
                             MaxBudget = 3000m,
                             MinBudget = 800m,
-                            PostTime = new DateTime(2024, 7, 1, 9, 43, 51, 425, DateTimeKind.Local).AddTicks(182),
-
+                            PostTime = new DateTime(2024, 7, 1, 20, 0, 54, 588, DateTimeKind.Local).AddTicks(1086),
                             Status = 0,
                             Title = "تصميم وتطوير تطبيق للمساعدة الشخصية عبر الإنترنت"
                         },
@@ -1249,8 +1197,7 @@ namespace Shoghlana.EF.Migrations
                             ExperienceLevel = 1,
                             MaxBudget = 1500m,
                             MinBudget = 400m,
-                            PostTime = new DateTime(2024, 7, 1, 9, 43, 51, 425, DateTimeKind.Local).AddTicks(188),
-
+                            PostTime = new DateTime(2024, 7, 1, 20, 0, 54, 588, DateTimeKind.Local).AddTicks(1093),
                             Status = 1,
                             Title = "إنشاء وإدارة حملة تبرعات عبر الإنترنت"
                         },
@@ -1264,8 +1211,7 @@ namespace Shoghlana.EF.Migrations
                             ExperienceLevel = 1,
                             MaxBudget = 2000m,
                             MinBudget = 600m,
-                            PostTime = new DateTime(2024, 7, 1, 9, 43, 51, 425, DateTimeKind.Local).AddTicks(193),
-
+                            PostTime = new DateTime(2024, 7, 1, 20, 0, 54, 588, DateTimeKind.Local).AddTicks(1099),
                             Status = 1,
                             Title = "تطوير منصة تعليمية تفاعلية لتعليم الرياضيات"
                         },
@@ -1279,8 +1225,7 @@ namespace Shoghlana.EF.Migrations
                             ExperienceLevel = 0,
                             MaxBudget = 1200m,
                             MinBudget = 300m,
-                            PostTime = new DateTime(2024, 7, 1, 9, 43, 51, 425, DateTimeKind.Local).AddTicks(198),
-
+                            PostTime = new DateTime(2024, 7, 1, 20, 0, 54, 588, DateTimeKind.Local).AddTicks(1105),
                             Status = 1,
                             Title = "تصميم وتطوير لعبة فيديو تعليمية للأطفال"
                         },
@@ -1294,8 +1239,7 @@ namespace Shoghlana.EF.Migrations
                             ExperienceLevel = 0,
                             MaxBudget = 700m,
                             MinBudget = 200m,
-                            PostTime = new DateTime(2024, 7, 1, 9, 43, 51, 425, DateTimeKind.Local).AddTicks(203),
-
+                            PostTime = new DateTime(2024, 7, 1, 20, 0, 54, 588, DateTimeKind.Local).AddTicks(1111),
                             Status = 1,
                             Title = "إعداد تقرير بحثي عن السياسات العامة"
                         },
@@ -1309,8 +1253,7 @@ namespace Shoghlana.EF.Migrations
                             ExperienceLevel = 1,
                             MaxBudget = 1500m,
                             MinBudget = 400m,
-                            PostTime = new DateTime(2024, 7, 1, 9, 43, 51, 425, DateTimeKind.Local).AddTicks(209),
-
+                            PostTime = new DateTime(2024, 7, 1, 20, 0, 54, 588, DateTimeKind.Local).AddTicks(1117),
                             Status = 0,
                             Title = "تصميم وبرمجة نظام إدارة المحتوى للمدونات"
                         },
@@ -1324,8 +1267,7 @@ namespace Shoghlana.EF.Migrations
                             ExperienceLevel = 0,
                             MaxBudget = 1000m,
                             MinBudget = 300m,
-                            PostTime = new DateTime(2024, 7, 1, 9, 43, 51, 425, DateTimeKind.Local).AddTicks(214),
-
+                            PostTime = new DateTime(2024, 7, 1, 20, 0, 54, 588, DateTimeKind.Local).AddTicks(1123),
                             Status = 0,
                             Title = "إعداد وتنفيذ حملة تسويقية لمنتج جديد"
                         },
@@ -1339,8 +1281,7 @@ namespace Shoghlana.EF.Migrations
                             ExperienceLevel = 2,
                             MaxBudget = 2500m,
                             MinBudget = 600m,
-                            PostTime = new DateTime(2024, 7, 1, 9, 43, 51, 425, DateTimeKind.Local).AddTicks(220),
-
+                            PostTime = new DateTime(2024, 7, 1, 20, 0, 54, 588, DateTimeKind.Local).AddTicks(1130),
                             Status = 0,
                             Title = "تصميم وبرمجة نظام لإدارة المشاريع الهندسية"
                         },
@@ -1354,8 +1295,7 @@ namespace Shoghlana.EF.Migrations
                             ExperienceLevel = 1,
                             MaxBudget = 1800m,
                             MinBudget = 500m,
-                            PostTime = new DateTime(2024, 7, 1, 9, 43, 51, 425, DateTimeKind.Local).AddTicks(226),
-
+                            PostTime = new DateTime(2024, 7, 1, 20, 0, 54, 588, DateTimeKind.Local).AddTicks(1136),
                             Status = 0,
                             Title = "تصميم وتطوير تطبيق لتعليم لغات البرمجة"
                         });
@@ -1425,8 +1365,7 @@ namespace Shoghlana.EF.Migrations
                             Description = "Description for Project1",
                             FreelancerId = 1,
                             Poster = new byte[] { 32, 33, 34, 35 },
-                            TimePublished = new DateTime(2024, 7, 1, 9, 43, 51, 425, DateTimeKind.Local).AddTicks(4737),
-
+                            TimePublished = new DateTime(2024, 7, 1, 20, 0, 54, 588, DateTimeKind.Local).AddTicks(6114),
                             Title = "Project1"
                         },
                         new
@@ -1435,8 +1374,7 @@ namespace Shoghlana.EF.Migrations
                             Description = "Description for Project2",
                             FreelancerId = 2,
                             Poster = new byte[] { 32, 33, 34, 35 },
-                            TimePublished = new DateTime(2024, 7, 1, 9, 43, 51, 425, DateTimeKind.Local).AddTicks(4865),
-
+                            TimePublished = new DateTime(2024, 7, 1, 20, 0, 54, 588, DateTimeKind.Local).AddTicks(6188),
                             Title = "Project2"
                         });
                 });

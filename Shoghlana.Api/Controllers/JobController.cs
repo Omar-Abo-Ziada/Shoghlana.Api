@@ -4,12 +4,12 @@ using Shoghlana.Api.Response;
 using Shoghlana.Api.Services.Interfaces;
 using Shoghlana.Core.DTO;
 using Shoghlana.Core.Enums;
+using System.Collections.ObjectModel;
 
 namespace Shoghlana.Api.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    [EnableCors("AllowAll")] // Apply Allow All policy now for testing
     public class JobController : ControllerBase
     {
         private readonly IJobService jobService;

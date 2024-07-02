@@ -35,5 +35,10 @@ namespace Shoghlana.Core.DTO
         public int? JobId { get; set; }
 
         //public Job Job { get; set; }
+        public ProposalStatus Status { get; set; } 
+        public string? JobTitle { get; set; } 
+
+        public string? ClientName { get; set; }
+
     }
 }

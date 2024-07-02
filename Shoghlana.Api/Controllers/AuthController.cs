@@ -70,8 +70,6 @@ namespace Shoghlana.Api.Controllers
             }
         }
 
-        
-
 
         [HttpPost("GoogleAuthentication")]
         public async Task<GeneralResponse> GoogleAuthentication(GoogleSignupDto googleSignupDto)

@@ -215,7 +215,7 @@ namespace Shoghlana.Api.Services.Implementaions
 
             if (user is null || !await _userManager.CheckPasswordAsync(user, model.Password))
             {
-                authModel.Message = "Email or Password is incorrect!";
+                authModel.Message = "كلمة المرور او البريد الالكتروني غير صحيح";
                 return authModel;
             }
 
