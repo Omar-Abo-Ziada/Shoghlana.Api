@@ -98,7 +98,7 @@ namespace Shoghlana.Api.Controllers
 
                 if (authResult.IsSuccess)
                 {
-                    var authModel = (AuthModel)result.Data;
+                    var authModel = (AuthModel)authResult.Data;
                     if (!string.IsNullOrEmpty(authModel.RefreshToken))
                     {
                         SetRefreshTokenInCookie(authModel.RefreshToken, authModel.RefreshTokenExpiration);
