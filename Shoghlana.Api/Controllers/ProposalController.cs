@@ -82,5 +82,11 @@ namespace Shoghlana.Api.Controllers
         {
            return proposalService.Delete(id);
         }
+
+        [HttpGet("Accept")]
+        public ActionResult<GeneralResponse> AcceptProposal(int proposalId)
+        {
+            return proposalService.AcceptProposal(proposalId);
+        }
     }
 }
