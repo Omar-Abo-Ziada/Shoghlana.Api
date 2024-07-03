@@ -15,7 +15,7 @@ namespace Shoghlana.Core.Models
 
         public DateTime DeadLine { get; set; } // calulated after approve
 
-        public DateTime ApprovedTime { get; set; } // known when the client approves
+        public DateTime? ApprovedTime { get; set; } = null;   // known when the client approves
 
         public double Duration { get; set; } // given from the freelancer
 
@@ -24,7 +24,7 @@ namespace Shoghlana.Core.Models
         [Column(TypeName = "decimal(18, 2)")]
         public decimal Price { get; set; }
 
-        public ProposalStatus Status { get; set; } // not in the DTO >> saeed added it there
+        public ProposalStatus Status { get; set; } = ProposalStatus.Waiting; // not in the DTO >> saeed added it there
 
         public List<string>? ReposLinks { get; set; }
 

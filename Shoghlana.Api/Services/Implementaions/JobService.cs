@@ -654,7 +654,6 @@ namespace Shoghlana.Api.Services.Implementaions
             };
         }
 
-
         public async Task <ActionResult<GeneralResponse>> SearchByJobTitleAsync(string KeyWord) 
         {
 
