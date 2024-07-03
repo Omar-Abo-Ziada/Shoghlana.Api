@@ -296,7 +296,6 @@ namespace Shoghlana.Api.Services.Implementaions
         }
 
         // TODO : Try To use Async in Find to reduce waiting time
-        [HttpPut("{id:int}")]
         public async Task<ActionResult<GeneralResponse>> UpdateAsync(int id, [FromForm] AddProposalDTO addProposalDTO)
         {
             //if (!ModelState.IsValid)

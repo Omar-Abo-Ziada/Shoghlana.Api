@@ -28,7 +28,6 @@ namespace Shoghlana.Api.Services.Implementaions
             this.mapper = mapper;
         }
 
-        [HttpGet]
         public ActionResult<GeneralResponse> GetAll()
         {
             IEnumerable<Client> clients = _unitOfWork.clientRepository.FindAll();
@@ -121,7 +120,6 @@ namespace Shoghlana.Api.Services.Implementaions
             };
         }
 
-        [HttpGet("jobs/{id}")]
         public ActionResult<GeneralResponse> GetJobsByClientId(int id)
         {
             Client? client = _unitOfWork.clientRepository.Find(includes: ["Jobs"], criteria: c => c.Id == id);
@@ -156,7 +154,6 @@ namespace Shoghlana.Api.Services.Implementaions
             };
         }
 
-        [HttpPost]
         public async Task<ActionResult<GeneralResponse>> CreateClient([FromForm] ClientDTO clientDTO)
         {
             //if (!ModelState.IsValid)
@@ -309,7 +306,6 @@ namespace Shoghlana.Api.Services.Implementaions
             //};
             return GetById(clientDTO.Id);
         }
-
 
         public ActionResult<GeneralResponse> DeleteClient(int id)
         {
