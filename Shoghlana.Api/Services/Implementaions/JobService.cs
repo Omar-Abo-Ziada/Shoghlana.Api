@@ -59,10 +59,35 @@ namespace Shoghlana.Api.Services.Implementaions
         {
             PaginatedListDTO<GetJobDTO> paginatedJobs = new PaginatedListDTO<GetJobDTO>();
 
+            requestBody.Includes = ["Proposals"];
+
             PaginatedListDTO<Job> jobs = _unitOfWork.jobRepository
                   .GetPaginatedJobs(status , MinBudget, MaxBudget,ClientId, FreelancerId, HasManyProposals, IsNew, page, pageSize, requestBody);
 
             paginatedJobs.Items = mapper.Map<IEnumerable<Job>, IEnumerable<GetJobDTO>>(jobs.Items); // if jobs.items = null >> paginatedjobs.items = empty array not null
+
+            // Iterate through the paginated jobs to manually set the additional property
+            foreach (var jobDTO in paginatedJobs.Items)
+            {
+                //Job correspondingJob = jobs.Items.FirstOrDefault(job => job.Id == jobDTO.Id); // Or any unique identifier
+
+                if(jobDTO.ClientId > 0)
+                {
+                    jobDTO.clientName = _unitOfWork.clientRepository.Find(criteria: c => c.Id == jobDTO.ClientId)?.Name ?? "NA";
+                }
+
+                if (jobDTO.AcceptedFreelancerId > 0)
+                {
+                    jobDTO.AcceptedFreelancerName = _unitOfWork.freelancerRepository.Find(criteria: f => f.Id == jobDTO.AcceptedFreelancerId)?.Name??"NA";
+                }
+
+                jobDTO.ProposalsCount = jobDTO?.Proposals?.Count??0;
+
+                // then I don't need the proposal list any more to make the payload lighter
+                jobDTO.Proposals = null;
+
+            }
+
             paginatedJobs.TotalItems = jobs.TotalItems;
             paginatedJobs.CurrentPage = jobs.CurrentPage;
             paginatedJobs.TotalPages = jobs.TotalPages;
@@ -105,10 +130,12 @@ namespace Shoghlana.Api.Services.Implementaions
 
             PaginatedListDTO<GetJobDTO> paginatedJobs = new PaginatedListDTO<GetJobDTO>();
 
+
             PaginatedListDTO<Job> jobs = await _unitOfWork.jobRepository
                   .GetPaginatedJobsAsync(status, MinBudget, MaxBudget, ClientId, FreelancerId, HasManyProposals, IsNew, page, pageSize, requestBody);
 
             paginatedJobs.Items = mapper.Map<IEnumerable<Job>, IEnumerable<GetJobDTO>>(jobs.Items);
+          
             paginatedJobs.TotalItems = jobs.TotalItems;
             paginatedJobs.CurrentPage = jobs.CurrentPage;
             paginatedJobs.TotalPages = jobs.TotalPages;
@@ -626,7 +653,6 @@ namespace Shoghlana.Api.Services.Implementaions
                 Message = "Job was deleted successfully"
             };
         }
-
 
         public async Task <ActionResult<GeneralResponse>> SearchByJobTitleAsync(string KeyWord) 
         {

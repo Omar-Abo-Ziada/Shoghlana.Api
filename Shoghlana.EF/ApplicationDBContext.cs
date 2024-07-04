@@ -32,6 +32,8 @@ namespace Shoghlana.EF
         public DbSet<Category> Categories { get; set; }
         public DbSet<Rate> Rates { get; set; }
 
+
+
         public ApplicationDBContext(DbContextOptions<ApplicationDBContext> options) : base(options) { }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)

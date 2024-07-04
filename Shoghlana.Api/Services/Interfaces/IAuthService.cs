@@ -17,10 +17,13 @@ namespace Shoghlana.Api.Services.Interfaces
 
         Task<AuthModel> RefreshTokenAsync(string token);
 
+
         Task<bool> RevokeTokenAsync(string token);
         Task<JwtSecurityToken> CreateJwtToken(ApplicationUser user);
 
-
+        //reset password 
+        Task<AuthModel> ForgotPasswordAsync(string email);
+        Task<AuthModel> ResetPasswordAsync(ResetPasswordRequest request);
 
         // google authentication
         Task<ApplicationUser> GetByIdAsync(string id);

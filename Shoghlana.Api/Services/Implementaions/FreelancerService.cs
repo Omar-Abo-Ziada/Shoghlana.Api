@@ -252,7 +252,6 @@ namespace Shoghlana.Api.Services.Implementaions
             };
         }
 
-
         public async Task<ActionResult<GeneralResponse>> UpdateAsync(int id, [FromForm] AddFreelancerDTO updatedFreelancerDTO)
         {
             Freelancer? freelancer = await _unitOfWork.freelancerRepository.GetByIdAsync(id);
@@ -333,8 +332,6 @@ namespace Shoghlana.Api.Services.Implementaions
                 Message = "Freelancer updated successfully"
             };
         }
-
-
 
         public ActionResult<GeneralResponse> Delete(int id)
         {

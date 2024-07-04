@@ -129,8 +129,8 @@ namespace Shoghlana.Api.Services.Implementaions
 
             // Determine the user's roles
             var roles = await _userManager.GetRolesAsync(user);
-            var refreshToken = GenerateRefreshToken();
-            user.RefreshTokens?.Add(refreshToken);
+            //var refreshToken = GenerateRefreshToken();
+            //user.RefreshTokens?.Add(refreshToken);
             await _userManager.UpdateAsync(user);
 
             return new AuthModel
@@ -141,8 +141,8 @@ namespace Shoghlana.Api.Services.Implementaions
                 Roles = roles.ToList(),
              //   Token = new JwtSecurityTokenHandler().WriteToken(jwtSecurityToken),
                 Username = user.UserName,
-                RefreshToken = refreshToken.Token,
-                RefreshTokenExpiration = refreshToken.ExpiresOn
+                //RefreshToken = refreshToken.Token,
+                //RefreshTokenExpiration = refreshToken.ExpiresOn
             };
         }
 
@@ -215,7 +215,7 @@ namespace Shoghlana.Api.Services.Implementaions
 
             if (user is null || !await _userManager.CheckPasswordAsync(user, model.Password))
             {
-                authModel.Message = "Email or Password is incorrect!";
+                authModel.Message = "كلمة المرور او البريد الالكتروني غير صحيح";
                 return authModel;
             }
 
@@ -490,6 +490,11 @@ namespace Shoghlana.Api.Services.Implementaions
 
             var jwtSecurityToken = await CreateJwtToken(User);
             var rolesList = await _userManager.GetRolesAsync(User);
+            // refresh token 
+
+            var refreshToken = GenerateRefreshToken();
+
+            User.RefreshTokens.Add(refreshToken);
 
             authModel.IsAuthenticated = true;
             authModel.Token = new JwtSecurityTokenHandler().WriteToken(jwtSecurityToken);
@@ -497,23 +502,9 @@ namespace Shoghlana.Api.Services.Implementaions
             authModel.Username = User.UserName;
             authModel.ExpiresOn = jwtSecurityToken.ValidTo;
             authModel.Roles = rolesList.ToList();
+            authModel.RefreshToken = refreshToken.Token;
+            authModel.RefreshTokenExpiration = refreshToken.ExpiresOn;
 
-            // refresh token 
-
-            //if (User.RefreshTokens.Any(t => t.IsActive))
-            //{
-            //    var activeRefreshToken = User.RefreshTokens.FirstOrDefault(t => t.IsActive);
-            //    authModel.RefreshToken = activeRefreshToken.Token;
-            //    authModel.RefreshTokenExpiration = activeRefreshToken.ExpiresOn;
-            //}
-            //else
-            //{
-            //    var refreshToken = GenerateRefreshToken();
-            //    authModel.RefreshToken = refreshToken.Token;
-            //    authModel.RefreshTokenExpiration = refreshToken.ExpiresOn;
-            //    User.RefreshTokens.Add(refreshToken);
-            //    await _userManager.UpdateAsync(User);
-            //}
 
             return new GeneralResponse()
             {
@@ -566,5 +557,68 @@ namespace Shoghlana.Api.Services.Implementaions
         }
 
 
+
+        //New methods for handling password reset
+
+        public async Task<AuthModel> ForgotPasswordAsync(string email)
+        {
+            var user = await _userManager.FindByEmailAsync(email);
+            if (user == null)
+            {
+                return new AuthModel { Message = "User not found." };
+            }
+                var resetToken = await _userManager.GeneratePasswordResetTokenAsync(user);
+                user.PasswordResetToken = resetToken;
+
+            //var jwtToken = await CreateJwtToken(user);
+            //user.PasswordResetToken = new JwtSecurityTokenHandler().WriteToken(jwtToken);
+            user.ResetTokenExpires = DateTime.UtcNow.AddHours(1); // Token valid for 1 hour
+
+
+            await _userManager.UpdateAsync(user);
+
+            return new AuthModel {
+                Message = "You may now reset your password.",
+                IsAuthenticated = true ,
+                Token = user.PasswordResetToken
+            };
+        }
+
+        public async Task<AuthModel> ResetPasswordAsync(ResetPasswordRequest request)
+        {
+            var user = await _userManager.Users.FirstOrDefaultAsync(u => u.PasswordResetToken == request.Token);
+
+            if (user == null)
+            {
+                return new AuthModel { Message = "User not found." };
+            }
+
+            if (user.ResetTokenExpires < DateTime.UtcNow)
+            {
+                return new AuthModel { Message = "Reset token has expired." };
+            }
+
+            var resetPassResult = await _userManager.ResetPasswordAsync(user, request.Token, request.Password);
+
+            if (!resetPassResult.Succeeded)
+            {
+                var errors = string.Join(", ", resetPassResult.Errors.Select(e => e.Description));
+                return new AuthModel { Message = errors };
+            }
+
+            user.PasswordResetToken = null;
+            user.ResetTokenExpires = null;
+
+            await _userManager.UpdateAsync(user);
+
+            return new AuthModel { Message = "Password successfully reset.",
+            IsAuthenticated = true };
+        }
+
+
+
+
+
+       
     }
 }

@@ -1,10 +1,12 @@
 ﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.Data;
 using Microsoft.AspNetCore.Mvc;
 using Shoghlana.Api.Response;
 using Shoghlana.Api.Services.Interfaces;
 using Shoghlana.Core.DTO;
 using Shoghlana.Core.Models;
 using System.Net;
+using static Google.Apis.Auth.OAuth2.Web.AuthorizationCodeWebApp;
 
 namespace Shoghlana.Api.Controllers
 {
@@ -37,7 +39,7 @@ namespace Shoghlana.Api.Controllers
               
                 if (result.IsAuthenticated )
                 {
-                    SetRefreshTokenInCookie(result.RefreshToken, result.RefreshTokenExpiration);
+                    //SetRefreshTokenInCookie(result.RefreshToken, result.RefreshTokenExpiration);
 
                     return new GeneralResponse
                     {
@@ -68,8 +70,6 @@ namespace Shoghlana.Api.Controllers
             }
         }
 
-        
-
 
         [HttpPost("GoogleAuthentication")]
         public async Task<GeneralResponse> GoogleAuthentication(GoogleSignupDto googleSignupDto)
@@ -94,7 +94,18 @@ namespace Shoghlana.Api.Controllers
 
             if(result.IsSuccess)
             {
-                return await _authService.GoogleAuthentication(googleSignupDto);
+                var authResult = await _authService.GoogleAuthentication(googleSignupDto);
+
+                if (authResult.IsSuccess)
+                {
+                    var authModel = (AuthModel)authResult.Data;
+                    if (!string.IsNullOrEmpty(authModel.RefreshToken))
+                    {
+                        SetRefreshTokenInCookie(authModel.RefreshToken, authModel.RefreshTokenExpiration);
+                    }
+                }
+
+                return authResult;
             }
 
             return result;
@@ -224,5 +235,47 @@ namespace Shoghlana.Api.Controllers
 
             Response.Cookies.Append("refreshToken", refreshToken, cookieOptions);
         }
+
+        [HttpPost("forgot-password")]
+        public async Task<GeneralResponse> ForgotPassword(string email)
+        {
+            var result = await _authService.ForgotPasswordAsync(email);
+            if (result == null || !result.IsAuthenticated)
+            {
+                return new GeneralResponse
+                {
+                    Data = result,
+                    IsSuccess = false,
+                    Message = result?.Message ?? "An error occurred during the password reset process." 
+                    
+                };
+            }
+            return new GeneralResponse
+            {
+                IsSuccess = true,
+                Message = result.Message ,
+                Token = result.Token
+            };
+        }
+
+        [HttpPost("reset-password")]
+        public async Task<GeneralResponse> ResetPassword([FromBody] Shoghlana.Core.Models.ResetPasswordRequest request)
+        {
+            var result = await _authService.ResetPasswordAsync(request);
+            if (result == null || !result.IsAuthenticated)
+            {
+                return new GeneralResponse
+                {
+                    IsSuccess = false,
+                    Message = result?.Message ?? "An error occurred during the password reset process."
+                };
+            }
+            return new GeneralResponse
+            {
+                IsSuccess = true,
+                Message = result.Message
+            };
+        }
+
     }
 }

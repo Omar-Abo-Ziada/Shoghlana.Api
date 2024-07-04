@@ -15,4 +15,5 @@ namespace Shoghlana.Core.Models
         [Required]
         public string Password { get; set; }
     }
+
 }

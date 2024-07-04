@@ -26,5 +26,8 @@ namespace Shoghlana.Core.Models
         public Admin? Admin { get; set; }
 
         public List<RefreshToken>? RefreshTokens { get; set; }
+
+        public string? PasswordResetToken { get; set; }
+        public DateTime? ResetTokenExpires { get; set; }
     }
 }

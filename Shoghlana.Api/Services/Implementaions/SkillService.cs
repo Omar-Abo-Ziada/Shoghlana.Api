@@ -21,7 +21,6 @@ namespace Shoghlana.Api.Services.Implementaions
             this.mapper = mapper;
         }
 
-
         public async Task <GeneralResponse> GetAllAsync() 
         {
           IEnumerable<Skill> Skills = await _unitOfWork.skillRepository.FindAllAsync();
@@ -43,7 +42,6 @@ namespace Shoghlana.Api.Services.Implementaions
                 Message = "Skills were retrieved successfully"
             };
         }
-
 
         public async Task<GeneralResponse> GetByIdAsync(int id) 
         {

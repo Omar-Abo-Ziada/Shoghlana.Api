@@ -1,14 +1,7 @@
-﻿using Azure;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using Shoghlana.Core.DTO;
-using Shoghlana.Core.Enums;
 using Shoghlana.Core.Interfaces;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Linq.Expressions;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Shoghlana.EF.Repository
 {
