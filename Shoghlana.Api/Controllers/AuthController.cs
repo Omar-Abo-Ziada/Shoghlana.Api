@@ -246,13 +246,15 @@ namespace Shoghlana.Api.Controllers
                 {
                     Data = result,
                     IsSuccess = false,
-                    Message = result?.Message ?? "An error occurred during the password reset process."
+                    Message = result?.Message ?? "An error occurred during the password reset process." 
+                    
                 };
             }
             return new GeneralResponse
             {
                 IsSuccess = true,
-                Message = result.Message
+                Message = result.Message ,
+                Token = result.Token
             };
         }
 
