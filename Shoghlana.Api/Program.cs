@@ -132,7 +132,10 @@ namespace Shoghlana.Api
             {
                 options.AddDefaultPolicy(builder =>
                 {
-                    builder.WithOrigins("http://localhost:4200")
+
+                    //builder.WithOrigins("http://localhost:4200")
+                    //builder.AllowAnyOrigin()
+                       builder.WithOrigins("http://localhost:4200")
                            .AllowAnyMethod()
                            .AllowAnyHeader()
                            .AllowCredentials();
