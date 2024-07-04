@@ -1,12 +1,12 @@
-﻿namespace Shoghlana.Core.Models
+﻿namespace Shoghlana.Core.DTO
 {
-    public class FreelancerNotification
+    public class GetFreelancerNotificationsDTO
     {
         public int Id { get; set; }
 
         public int FreelancerId { get; set; }
 
-        public Freelancer Freelancer { get; set; }
+        //public Freelancer Freelancer { get; set; }
 
         public string Title { get; set; }
 

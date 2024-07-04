@@ -1,7 +1,5 @@
-﻿using AutoMapper;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Shoghlana.Api.Response;
-using Shoghlana.Api.Services.Implementaions;
 using Shoghlana.Core.DTO;
 using Shoghlana.Core.Models;
 
@@ -18,5 +16,7 @@ namespace Shoghlana.Api.Services.Interfaces
         public Task<ActionResult<GeneralResponse>> UpdateAsync(int id, [FromForm] AddFreelancerDTO addedFreelancerDTO);
 
         public ActionResult<GeneralResponse> Delete(int id);
+
+        public ActionResult<GeneralResponse> GetNotificationsByFreelancerId(int freelancerId);
     }
 }
