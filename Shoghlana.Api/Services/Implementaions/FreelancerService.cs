@@ -14,11 +14,11 @@ namespace Shoghlana.Api.Services.Implementaions
     {
         private readonly IMapper mapper;
 
-        private List<string> allowedExtensions = new List<string>() { ".jpg", ".png" , "jpeg" };
+        private List<string> allowedExtensions = new List<string>() { ".jpg", ".png", "jpeg" };
 
         private long maxAllowedPersonalImageSize = 1_048_576;  // 1 MB = 1024 * 1024 bytes
 
-        public FreelancerService(IUnitOfWork unitOfWork, IGenericRepository<Freelancer> repository , IMapper mapper) 
+        public FreelancerService(IUnitOfWork unitOfWork, IGenericRepository<Freelancer> repository, IMapper mapper)
             : base(unitOfWork, repository)
         {
             this.mapper = mapper;
@@ -123,26 +123,26 @@ namespace Shoghlana.Api.Services.Implementaions
             };
 
             List<Skill> Skills = new List<Skill>();
-            foreach(FreelancerSkills FreelancerSkill in freelancer.Skills)
+            foreach (FreelancerSkills FreelancerSkill in freelancer.Skills)
             {
-              Skill? skill = _unitOfWork.skillRepository.GetById(FreelancerSkill.SkillId);
+                Skill? skill = _unitOfWork.skillRepository.GetById(FreelancerSkill.SkillId);
                 Skills.Add(skill);
-            } 
+            }
             List<SkillDTO> SkillsDtos = mapper.Map<List<Skill>, List<SkillDTO>>(Skills);
             GetFreelancerDTO.skills = SkillsDtos;
 
             List<GetProjectDTO> getProjectsDTOs = new List<GetProjectDTO>();
-            getProjectsDTOs = mapper.Map <List<Project> , List<GetProjectDTO>> (freelancer.Portfolio);
+            getProjectsDTOs = mapper.Map<List<Project>, List<GetProjectDTO>>(freelancer.Portfolio);
 
 
-            for(int i = 0; i < freelancer.Portfolio.Count; i++)
+            for (int i = 0; i < freelancer.Portfolio.Count; i++)
             {
                 List<int> ProjectSkillsIds = _unitOfWork.projectSkillsRepository
                                             .FindAll(criteria: ps => ps.ProjectId == freelancer.Portfolio[i].Id)
                                             .Select(ps => ps.SkillId).ToList();
 
                 List<Skill> ProjectSkills = new List<Skill>();
-                foreach(int skillId in ProjectSkillsIds)
+                foreach (int skillId in ProjectSkillsIds)
                 {
                     Skill skill = _unitOfWork.skillRepository.GetById(skillId);
                     ProjectSkills.Add(skill);
@@ -151,12 +151,12 @@ namespace Shoghlana.Api.Services.Implementaions
                 List<SkillDTO> skillDTOs = mapper.Map<List<Skill>, List<SkillDTO>>(ProjectSkills);
                 getProjectsDTOs[i].Skills = skillDTOs;
             }
-           
+
             GetFreelancerDTO.Portfolio = getProjectsDTOs;
 
 
             List<GetJobDTO> jobDTOs = new List<GetJobDTO>();
-            foreach(Job job in freelancer.WorkingHistory)
+            foreach (Job job in freelancer.WorkingHistory)
             {
                 GetJobDTO jobDto = mapper.Map<Job, GetJobDTO>(job);
                 Rate? rate = _unitOfWork.rateRepository.Find(r => r.JobId == job.Id);
@@ -172,7 +172,7 @@ namespace Shoghlana.Api.Services.Implementaions
             {
                 IsSuccess = true,
                 Status = 200,
-                Data = GetFreelancerDTO 
+                Data = GetFreelancerDTO
             };
         }
 
@@ -356,6 +356,47 @@ namespace Shoghlana.Api.Services.Implementaions
                 IsSuccess = true,
                 Status = 204, // no content
                 Message = $"The Freelancer with ID ({freelancer.Id}) is deleted successfully !"
+            };
+        }
+
+        public ActionResult<GeneralResponse> GetNotificationsByFreelancerId(int freelancerId)
+        {
+            Freelancer? freelancer = _unitOfWork.freelancerRepository.Find(criteria: f => f.Id == freelancerId, includes: ["Notifications"]);
+
+            if (freelancer is null)
+            {
+                return new GeneralResponse()
+                {
+                    IsSuccess = false,
+                    Status = 400,
+                    Message = $"Invalid Freelancer ID : {freelancerId}"
+                };
+            }
+
+            if(freelancer?.Notifications?.Count == 0)
+            {
+                return new GeneralResponse()
+                {
+                    IsSuccess = false,
+                    Status = 404,
+                    Message = $"No Notifications found for this freelancer: {freelancerId}"
+                };
+            }
+
+            List<GetFreelancerNotificationsDTO> FreelancerNotificationsDTOs = new List<GetFreelancerNotificationsDTO>();
+
+            foreach (FreelancerNotification notification in freelancer.Notifications)
+            {
+                GetFreelancerNotificationsDTO FreelancerNotificationsDTO = mapper.Map<FreelancerNotification, GetFreelancerNotificationsDTO>(notification);
+
+                FreelancerNotificationsDTOs.Add(FreelancerNotificationsDTO);
+            }
+
+            return new GeneralResponse()
+            {
+                IsSuccess = true,
+                Data = FreelancerNotificationsDTOs,
+                Message = $"Freelancer with ID : {freelancerId} => All Notifications"
             };
         }
     }

@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.SignalR;
 using Shoghlana.Api.Hubs;
 using Shoghlana.Api.Response;
+using Shoghlana.Api.Services.Implementaions;
 using Shoghlana.Api.Services.Interfaces;
 using Shoghlana.Core.DTO;
 
@@ -75,6 +76,12 @@ namespace Shoghlana.Api.Controllers
         public ActionResult<GeneralResponse> DeleteClient(int id)
         {
             return clientService.DeleteClient(id);
+        }
+
+        [HttpGet("Notifications/{clientId:int}")]
+        public ActionResult<GeneralResponse> GetNotificationsByClientId(int clientId)
+        {
+            return clientService.GetNotificationsByClientId(clientId);
         }
     }
 }

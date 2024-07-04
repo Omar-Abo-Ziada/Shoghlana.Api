@@ -14,11 +14,11 @@ namespace Shoghlana.Api.Services.Implementaions
     {
         private readonly IMapper mapper;
 
-        private List<string> allowedExtensions = new List<string>() { ".jpg", ".png" , "jpeg"};
+        private List<string> allowedExtensions = new List<string>() { ".jpg", ".png", "jpeg" };
 
         private long maxAllowedPersonalImageSize = 1_048_576;  // 1 MB = 1024 * 1024 bytes
 
-        public ProposalService(IUnitOfWork unitOfWork, IGenericRepository<Proposal> repository , IMapper mapper)
+        public ProposalService(IUnitOfWork unitOfWork, IGenericRepository<Proposal> repository, IMapper mapper)
            : base(unitOfWork, repository)
         {
             this.mapper = mapper;
@@ -143,7 +143,7 @@ namespace Shoghlana.Api.Services.Implementaions
 
             foreach (Proposal proposal in proposals)
             {
-                Job? job = _unitOfWork.jobRepository.Find(j => j.Id == proposal.JobId , ["Client"]);
+                Job? job = _unitOfWork.jobRepository.Find(j => j.Id == proposal.JobId, ["Client"]);
 
                 GetProposalDTO getProposalDTO = mapper.Map<Proposal, GetProposalDTO>(proposal);
                 getProposalDTO.JobTitle = job?.Title;
@@ -493,7 +493,7 @@ namespace Shoghlana.Api.Services.Implementaions
         {
             Proposal? proposal = _unitOfWork.proposalRepository.GetById(proposalId);
 
-            if(proposal is null)
+            if (proposal is null)
             {
                 return new GeneralResponse()
                 {
@@ -524,6 +524,59 @@ namespace Shoghlana.Api.Services.Implementaions
             job.ApproveTime = DateTime.Now;
             job.Status = JobStatus.Closed;
             job.AcceptedFreelancerId = proposal.FreelancerId;
+
+            //--------------------------------------------------------
+
+            Freelancer? freelancer = _unitOfWork.freelancerRepository.Find(criteria: f => f.Id == proposal.FreelancerId, includes: ["Notifications"]);
+
+            if (freelancer is null)
+            {
+                return new GeneralResponse()
+                {
+                    IsSuccess = false,
+                    Status = 400,
+                    Message = $"Invalid freelancer ID : {proposal.FreelancerId}"
+                };
+            }
+
+            FreelancerNotification freelancerNotification = new FreelancerNotification()
+            {
+                FreelancerId = proposal.FreelancerId,
+                Title = "Proposal Accepted: Congratulations!",
+                sentTime = DateTime.Now,
+                description = $"Your proposal for {job.Title} has been accepted by the client. Get ready to start the project!"
+            };
+
+            _unitOfWork.freelancerNotificationRepository.Add(freelancerNotification);
+
+            //_unitOfWork.Save();
+
+
+            //--------------------------------------------------------
+
+            Client? client = _unitOfWork.clientRepository.Find(criteria: c => c.Id == job.ClientId, includes: ["Notifications"]);
+
+            if (client is null)
+            {
+                return new GeneralResponse()
+                {
+                    IsSuccess = false,
+                    Status = 400,
+                    Message = $"Invalid client ID : {job.ClientId}"
+                };
+            }
+
+            ClientNotification clientNotification = new ClientNotification()
+            {
+                ClientId = job.ClientId,
+                Title = "Freelancer Accepted Proposal",
+                sentTime = DateTime.Now,
+                description = $"Congratulations , You successfully Accepted The freelancer {freelancer.Name} proposal for {job.Title}. You can now proceed with the next steps."
+            };
+
+            _unitOfWork.clientNotificationRepository.Add(clientNotification);
+
+            //--------------------------------------------------------
 
             _unitOfWork.Save();
 

@@ -1,12 +1,7 @@
-﻿using AutoMapper;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using Shoghlana.Core.DTO;
+﻿using Microsoft.AspNetCore.Mvc;
 using Shoghlana.Api.Response;
-using Shoghlana.Core.Interfaces;
-using Shoghlana.Core.Models;
 using Shoghlana.Api.Services.Interfaces;
+using Shoghlana.Core.DTO;
 
 namespace Shoghlana.Api.Controllers
 {
@@ -71,6 +66,12 @@ namespace Shoghlana.Api.Controllers
         public ActionResult<GeneralResponse> Delete(int id)
         {
             return freelancerService.Delete(id);
+        }
+
+        [HttpGet("Notifications/{freelancerId:int}")]
+        public ActionResult<GeneralResponse> GetNotificationsByFreelancerId(int freelancerId)
+        {
+            return freelancerService.GetNotificationsByFreelancerId(freelancerId);
         }
     }
 }

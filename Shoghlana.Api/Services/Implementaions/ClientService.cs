@@ -332,5 +332,47 @@ namespace Shoghlana.Api.Services.Implementaions
                 Message = $"Client is deleted successfully !"
             };
         }
+
+        public ActionResult<GeneralResponse> GetNotificationsByClientId(int clientId)
+        {
+            Client? client = _unitOfWork.clientRepository.Find(criteria: c => c.Id == clientId, includes: ["Notifications"]);
+
+            if (client is null)
+            {
+                return new GeneralResponse()
+                {
+                    IsSuccess = false,
+                    Status = 400,
+                    Message = $"Invalid client ID : {clientId}"
+                };
+            }
+
+            if (client?.Notifications?.Count == 0)
+            {
+                return new GeneralResponse()
+                {
+                    IsSuccess = false,
+                    Status = 404,
+                    Message = $"No Notifications found for this client: {clientId}"
+                };
+            }
+
+            List<GetClientNotificationsDTO> clientNotificationsDTOs = new List<GetClientNotificationsDTO>();
+
+            foreach (ClientNotification notification in client.Notifications)
+            {
+                GetClientNotificationsDTO clientNotificationsDTO = mapper.Map<ClientNotification, GetClientNotificationsDTO>(notification);
+
+                clientNotificationsDTOs.Add(clientNotificationsDTO);
+            }
+
+            return new GeneralResponse()
+            {
+                IsSuccess = true,
+                Data = clientNotificationsDTOs,
+                Message = $"Client with ID : {clientId} => All Notifications"
+            };
+        }
+
     }
 }

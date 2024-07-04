@@ -1,10 +1,4 @@
-﻿using Microsoft.AspNetCore.Identity;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace Shoghlana.Core.Models
 {
@@ -33,11 +27,9 @@ namespace Shoghlana.Core.Models
 
         public List<FreelancerSkills>? Skills { get; set; } = new List<FreelancerSkills> { };
 
-        public List<FreelancerNotification>? Notifications { get; set; }
+        public List<FreelancerNotification>? Notifications { get; set; } = new List<FreelancerNotification> { };
 
         public ApplicationUser? User { get; set; }
-
-        ///TODO : add service from freelancer
 
         // list<Notification> notifications {get; set;}  >> time , desc "url" navigate to dif pages
         // ai guide client how write requirements , recommend freelancers  

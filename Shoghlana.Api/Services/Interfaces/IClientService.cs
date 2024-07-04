@@ -19,5 +19,7 @@ namespace Shoghlana.Api.Services.Interfaces
         public  Task<ActionResult<GeneralResponse>> UpdateClient(ClientDTO clientDTO);
 
         public ActionResult<GeneralResponse> DeleteClient(int id);
+
+       public ActionResult<GeneralResponse> GetNotificationsByClientId(int clientId);
     }
 }
