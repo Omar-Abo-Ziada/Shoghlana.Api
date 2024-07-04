@@ -579,8 +579,8 @@ namespace Shoghlana.Api.Services.Implementaions
 
             return new AuthModel {
                 Message = "You may now reset your password.",
-                IsAuthenticated = true 
-
+                IsAuthenticated = true ,
+                Token = user.PasswordResetToken
             };
         }
 
