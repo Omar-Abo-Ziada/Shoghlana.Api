@@ -36,6 +36,8 @@ namespace Shoghlana.Api
             new Dictionary<string, UserRoomConnection>());
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
+            builder.Services.AddSingleton<ChatServices>();
+
             builder.Services.AddSwaggerGen();
 
             builder.Services.AddIdentity<ApplicationUser, IdentityRole>()
@@ -124,20 +126,21 @@ namespace Shoghlana.Api
             builder.Services.AddScoped<IProposalImageService, ProposalImageService>();
             builder.Services.AddScoped<ISkillService, SkillService>();
             // builder.Services.AddScoped<IGoogleAuthService, GoogleAuthService>();
-
             builder.Services.AddAutoMapper(typeof(Program));
 
             builder.Services.AddCors(options =>
             {
                 options.AddDefaultPolicy(builder =>
                 {
+
+                    //builder.WithOrigins("http://localhost:4200")
                     //builder.AllowAnyOrigin()
                        builder.WithOrigins("http://localhost:4200")
                            .AllowAnyMethod()
-                           .AllowAnyHeader();
+                           .AllowAnyHeader()
+                           .AllowCredentials();
                 });
             });
-
 
             //************************************************************************
 
@@ -164,6 +167,7 @@ namespace Shoghlana.Api
             app.MapHub<NotificationHub>("/notificationHub");
 
             app.MapHub<ChatHub>("/ChatHub");
+            app.MapHub<individualChatHub>("/individualChatHub");
 
             //app.UseEndpoints(Endpoint =>
             //{
@@ -175,6 +179,7 @@ namespace Shoghlana.Api
             app.MapControllers();
 
             app.Run();
+
         }
     }
 }
