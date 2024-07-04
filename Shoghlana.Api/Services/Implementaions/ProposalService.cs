@@ -14,7 +14,7 @@ namespace Shoghlana.Api.Services.Implementaions
     {
         private readonly IMapper mapper;
 
-        private List<string> allowedExtensions = new List<string>() { ".jpg", ".png" };
+        private List<string> allowedExtensions = new List<string>() { ".jpg", ".png" , "jpeg"};
 
         private long maxAllowedPersonalImageSize = 1_048_576;  // 1 MB = 1024 * 1024 bytes
 
