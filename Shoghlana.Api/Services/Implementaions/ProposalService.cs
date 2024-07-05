@@ -546,8 +546,8 @@ namespace Shoghlana.Api.Services.Implementaions
                 Title = "Proposal Accepted: Congratulations!",
                 sentTime = DateTime.Now,
                 description = $"Your proposal for {job.Title} has been accepted by the client. Get ready to start the project!",
-                //Reason = NotificationReason.AcceptedProposal,
-                //NotificationTriggerId = job.Id 
+                Reason = NotificationReason.AcceptedProposal,
+                NotificationTriggerId = job.Id
             };
 
             _unitOfWork.freelancerNotificationRepository.Add(freelancerNotification);
@@ -575,8 +575,8 @@ namespace Shoghlana.Api.Services.Implementaions
                 Title = "Freelancer Accepted Proposal",
                 sentTime = DateTime.Now,
                 description = $"Congratulations , You successfully Accepted The freelancer {freelancer.Name} proposal for {job.Title}. You can now proceed with the next steps.",
-                //Reason = NotificationReason.AcceptedProposal,
-                //NotificationTriggerId = job.Id
+                Reason = NotificationReason.AcceptedProposal,
+                NotificationTriggerId = job.Id
             };
 
             _unitOfWork.clientNotificationRepository.Add(clientNotification);
