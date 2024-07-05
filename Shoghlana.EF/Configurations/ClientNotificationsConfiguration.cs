@@ -19,7 +19,7 @@ namespace Shoghlana.EF.Configurations
             builder.HasKey(cn => cn.Id);
 
             builder.Property(cn => cn.Title).IsRequired().HasMaxLength(50);
-            builder.Property(cn => cn.description).IsRequired(false).HasMaxLength(200);
+            builder.Property(cn => cn.description).IsRequired(false).HasMaxLength(2000);
 
             builder.HasOne(cn => cn.Client)
                       .WithMany(c => c.Notifications)

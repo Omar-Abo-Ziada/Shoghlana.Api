@@ -84,7 +84,7 @@ namespace Shoghlana.Api.Services.Implementaions
                 };
             }
 
-            List<Proposal> proposals = _unitOfWork.proposalRepository.FindAll(includes: null, criteria: p => p.JobId == id).ToList();
+            List<Proposal> proposals = _unitOfWork.proposalRepository.FindAll(includes: ["Freelancer"], criteria: p => p.JobId == id).ToList();
 
             if (proposals.Count == 0)
             {
@@ -101,6 +101,7 @@ namespace Shoghlana.Api.Services.Implementaions
             foreach (Proposal proposal in proposals)
             {
                 GetProposalDTO getProposalDTO = mapper.Map<Proposal, GetProposalDTO>(proposal);
+                getProposalDTO.FreelancerName = proposal.Freelancer.Name;
 
                 getProposalDTOs.Add(getProposalDTO);
             }
@@ -522,7 +523,7 @@ namespace Shoghlana.Api.Services.Implementaions
             }
 
             job.ApproveTime = DateTime.Now;
-            job.Status = JobStatus.Closed;
+            job.Status = JobStatus.Closed;  
             job.AcceptedFreelancerId = proposal.FreelancerId;
 
             //--------------------------------------------------------
@@ -544,7 +545,9 @@ namespace Shoghlana.Api.Services.Implementaions
                 FreelancerId = proposal.FreelancerId,
                 Title = "Proposal Accepted: Congratulations!",
                 sentTime = DateTime.Now,
-                description = $"Your proposal for {job.Title} has been accepted by the client. Get ready to start the project!"
+                description = $"Your proposal for {job.Title} has been accepted by the client. Get ready to start the project!",
+                Reason = NotificationReason.AcceptedProposal,
+                NotificationTriggerId = job.Id
             };
 
             _unitOfWork.freelancerNotificationRepository.Add(freelancerNotification);
@@ -571,7 +574,9 @@ namespace Shoghlana.Api.Services.Implementaions
                 ClientId = job.ClientId,
                 Title = "Freelancer Accepted Proposal",
                 sentTime = DateTime.Now,
-                description = $"Congratulations , You successfully Accepted The freelancer {freelancer.Name} proposal for {job.Title}. You can now proceed with the next steps."
+                description = $"Congratulations , You successfully Accepted The freelancer {freelancer.Name} proposal for {job.Title}. You can now proceed with the next steps.",
+                Reason = NotificationReason.AcceptedProposal,
+                NotificationTriggerId = job.Id
             };
 
             _unitOfWork.clientNotificationRepository.Add(clientNotification);

@@ -48,4 +48,11 @@ namespace Shoghlana.Core.Enums
 
         Client = 1
     }
+
+    public enum NotificationReason
+    {
+        Welcome = 0,
+        AcceptedProposal = 1,
+        RejectedProposal = 2,
+    }
 }

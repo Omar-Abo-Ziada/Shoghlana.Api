@@ -29,6 +29,8 @@ namespace Shoghlana.Core.DTO
         public List<GetProposalImageDTO>? Images { get; set; }
 
         public int FreelancerId { get; set; }
+        public string? FreelancerName { get; set; }
+        public string? FreelancerTitle { get; set; }
 
         //public Freelancer Freelancer { get; set; }
 
