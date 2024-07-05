@@ -1,5 +1,4 @@
-﻿
-namespace Shoghlana.Api.Services.Implementaions
+﻿namespace Shoghlana.Api.Services.Implementaions
 {
     public class ChatServices
     {
