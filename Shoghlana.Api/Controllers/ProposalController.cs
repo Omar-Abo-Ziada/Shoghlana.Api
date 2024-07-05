@@ -77,7 +77,7 @@ namespace Shoghlana.Api.Controllers
             return await proposalService.UpdateAsync(id, addProposalDTO);
         }
 
-        [HttpDelete("{id:int}")]
+        [HttpDelete("{id:int}")] 
         public ActionResult<GeneralResponse> Delete(int id)
         {
            return proposalService.Delete(id);
