@@ -470,32 +470,34 @@ namespace Shoghlana.Api.Services.Implementaions
 
                 _unitOfWork.Save();
 
-                List<JobSkills> JobSkills = new List<JobSkills>();
-
-                foreach (int skillID in jobDto.SkillsIds)
+                if(jobDto.SkillsIds is not null && jobDto.SkillsIds.Count > 0)
                 {
+                    List<JobSkills> JobSkills = new List<JobSkills>();
 
-                   Skill? skill = _unitOfWork.skillRepository.GetById(skillID);
-
-
-                    if(skill is not null)
+                    foreach (int skillID in jobDto.SkillsIds)
                     {
-                        var jobSkill = new JobSkills
-                        {
-                            SkillId = skill.Id,
-                            JobId = job.Id
-                        };
 
-                        JobSkills.Add(jobSkill);
+                        Skill? skill = _unitOfWork.skillRepository.GetById(skillID);
+
+
+                        if (skill is not null)
+                        {
+                            var jobSkill = new JobSkills
+                            {
+                                SkillId = skill.Id,
+                                JobId = job.Id
+                            };
+
+                            JobSkills.Add(jobSkill);
+                        }
+                    }
+
+                    if (JobSkills.Any())
+                    {
+                        _unitOfWork.jobSkillsRepository.AddRange(JobSkills);
+                        _unitOfWork.jobSkillsRepository.save();
                     }
                 }
-
-                if(JobSkills.Any())
-                {
-                    _unitOfWork.jobSkillsRepository.AddRange(JobSkills);
-                    _unitOfWork.jobSkillsRepository.save();
-                }
-                
             }
 
             catch (Exception ex)
