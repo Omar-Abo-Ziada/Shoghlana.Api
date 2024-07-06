@@ -28,7 +28,9 @@ namespace Shoghlana.Core.Models
         public string? RefreshToken { get; set; }
 
         public DateTime RefreshTokenExpiration { get; set; }
-
        
+        // public string? UserName { get; set; }
+
+
     }
 }
