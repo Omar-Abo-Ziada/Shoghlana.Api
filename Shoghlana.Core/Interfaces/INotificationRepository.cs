@@ -7,7 +7,8 @@ using System.Threading.Tasks;
 
 namespace Shoghlana.Core.Interfaces
 {
-    public interface IClientNotificationRepository : IGenericRepository<ClientNotification>
+    public interface INotificationRepository : IGenericRepository<Notification>
     {
+
     }
 }

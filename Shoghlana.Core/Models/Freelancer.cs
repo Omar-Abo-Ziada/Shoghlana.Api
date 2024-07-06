@@ -27,7 +27,7 @@ namespace Shoghlana.Core.Models
 
         public List<FreelancerSkills>? Skills { get; set; } = new List<FreelancerSkills> { };
 
-        public List<FreelancerNotification>? Notifications { get; set; } = new List<FreelancerNotification> { };
+        public List<Notification>? Notifications { get; set; } = new List<Notification> { };
 
         public ApplicationUser? User { get; set; }
 

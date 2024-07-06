@@ -22,9 +22,9 @@ namespace Shoghlana.EF
         public DbSet<JobSkills> JobSkills { get; set; }
         public DbSet<ProjectSkills> ProjectSkills { get; set; }
 
-        public DbSet<FreelancerNotification> FreelancerNotifications { get; set; }
+        //public DbSet<FreelancerNotification> FreelancerNotifications { get; set; }
 
-        public DbSet<ClientNotification> ClientNotifications { get; set; }
+        public DbSet<Notification> Notifications { get; set; }
 
         public DbSet<Proposal> Proposals { get; set; }
         public DbSet<ProjectImages> ProjectImages { get; set; }

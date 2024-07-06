@@ -9,9 +9,9 @@ namespace Shoghlana.EF.Repositories
 
         public IFreelancerRepository freelancerRepository { get; private set; }
         public IFreelancerSkillsRepository freelancerSkillsRepository { get; private set; }
-        public IFreelancerNotificationRepository freelancerNotificationRepository { get; private set; }
+        //public IFreelancerNotificationRepository freelancerNotificationRepository { get; private set; }
         public IClientRepository clientRepository { get; private set; }
-        public IClientNotificationRepository clientNotificationRepository { get; private set; }
+        public INotificationRepository NotificationRepository { get; private set; }
         public ICategoryRepository categoryRepository { get; private set; }
         public IProjectRepository projectRepository { get; private set; }
         public IProjectImagesRepository projectImagesRepository { get; private set; }
@@ -28,8 +28,8 @@ namespace Shoghlana.EF.Repositories
 
         public UnitOfWork
         (ApplicationDBContext context, IFreelancerRepository freelancerRepository,
-        IFreelancerSkillsRepository freelancerSkillsRepository, IFreelancerNotificationRepository freelancerNotificationRepository,
-        IClientRepository clientRepository, IClientNotificationRepository clientNotificationRepository, ICategoryRepository categoryRepository,
+        IFreelancerSkillsRepository freelancerSkillsRepository,
+        IClientRepository clientRepository, INotificationRepository NotificationRepository, ICategoryRepository categoryRepository,
         IProjectRepository projectRepository, IProjectImagesRepository projectImagesRepository, IJobRepository jobRepository,
         IProjectSkillsRepository projectSkillsRepository, IProposalRepository proposalRepository, IJobSkillsRepository jobSkillsRepository,
         IProposalImageRepository proposalImageRepository, ISkillRepository skillRepository, IRateRepository rateRepository, IApplicationUserRepository applicationUserRepository)
@@ -37,9 +37,9 @@ namespace Shoghlana.EF.Repositories
             this.context = context;
             this.freelancerRepository = freelancerRepository;
             this.freelancerSkillsRepository = freelancerSkillsRepository;
-            this.freelancerNotificationRepository = freelancerNotificationRepository;
+            //this.freelancerNotificationRepository = freelancerNotificationRepository;
             this.clientRepository = clientRepository;
-            this.clientNotificationRepository = clientNotificationRepository;
+            this.NotificationRepository = NotificationRepository;
             this.categoryRepository = categoryRepository;
             this.projectRepository = projectRepository;
             this.projectImagesRepository = projectImagesRepository;

@@ -247,10 +247,22 @@ namespace Shoghlana.Api.Services.Implementaions
 
                 Proposal addedProposal = await _unitOfWork.proposalRepository.AddAsync(proposal);
 
+                Notification ClientNotification = new Notification()
+                {
+                    ClientId = job.ClientId,
+                    Title = "عرض جديد !",
+                    description = $"قام {freelancer.Name} بتقديم عرض علي مشروعك",
+                    Reason = NotificationReason.NewProposalAdded,
+                    NotificationTriggerId = job.Id
+                };
+
+                _unitOfWork.NotificationRepository.Add(ClientNotification);
+
                 _unitOfWork.Save();
 
                 GetProposalDTO getProposalDTO = mapper.Map<Proposal, GetProposalDTO>(addedProposal);
 
+              
                 return new GeneralResponse()
                 {
                     IsSuccess = true,
@@ -281,6 +293,17 @@ namespace Shoghlana.Api.Services.Implementaions
                 //proposal = mapper.Map<AddProposalDTO, Proposal>(addProposalDTO);
 
                 Proposal addedProposal = await _unitOfWork.proposalRepository.AddAsync(proposal);
+
+                Notification ClientNotification = new Notification()
+                {
+                    ClientId = job.ClientId,
+                    Title = "عرض جديد !",
+                    description = $"قام \"{freelancer.Name}\" بتقديم عرض علي مشروعك",
+                    Reason = NotificationReason.NewProposalAdded,
+                    NotificationTriggerId = job.Id
+                };
+
+                _unitOfWork.NotificationRepository.Add(ClientNotification);
 
                 _unitOfWork.Save();
 
@@ -540,17 +563,18 @@ namespace Shoghlana.Api.Services.Implementaions
                 };
             }
 
-            FreelancerNotification freelancerNotification = new FreelancerNotification()
+            Notification freelancerNotification = new Notification()
             {
                 FreelancerId = proposal.FreelancerId,
-                Title = "Proposal Accepted: Congratulations!",
+                Title = "تهانينا تم قبول عرضك !",
                 sentTime = DateTime.Now,
-                description = $"Your proposal for {job.Title} has been accepted by the client. Get ready to start the project!",
+               // description = $"Your proposal for {job.Title} has been accepted by the client. Get ready to start the project!",
+                description = $"لقد تم قبول عرضك علي عمل \"{job.Title}\" بواسطة العميل .. كن مستعدا لبداية العمل!",
                 Reason = NotificationReason.AcceptedProposal,
                 NotificationTriggerId = job.Id
             };
 
-            _unitOfWork.freelancerNotificationRepository.Add(freelancerNotification);
+            _unitOfWork.NotificationRepository.Add(freelancerNotification);
 
             //_unitOfWork.Save();
 
@@ -569,17 +593,18 @@ namespace Shoghlana.Api.Services.Implementaions
                 };
             }
 
-            ClientNotification clientNotification = new ClientNotification()
+            Notification clientNotification = new Notification()
             {
                 ClientId = job.ClientId,
-                Title = "Freelancer Accepted Proposal",
+                Title = "تم قبول العرض !",
                 sentTime = DateTime.Now,
-                description = $"Congratulations , You successfully Accepted The freelancer {freelancer.Name} proposal for {job.Title}. You can now proceed with the next steps.",
+                //description = $"Congratulations , You successfully Accepted The freelancer {freelancer.Name} proposal for {job.Title}. You can now proceed with the next steps.",
+                description = $"لقد قمت بقبول عرض الفريلانسر \"{freelancer.Name}\" علي مشروع \"{job.Title}\" ",
                 Reason = NotificationReason.AcceptedProposal,
                 NotificationTriggerId = job.Id
             };
 
-            _unitOfWork.clientNotificationRepository.Add(clientNotification);
+            _unitOfWork.NotificationRepository.Add(clientNotification);
 
             //--------------------------------------------------------
 

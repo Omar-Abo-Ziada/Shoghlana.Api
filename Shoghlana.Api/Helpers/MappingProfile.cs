@@ -52,11 +52,11 @@ namespace Shoghlana.Api.Helpers
             CreateMap<Category, GetTitleofCategoryDTO>();
             CreateMap<GetTitleofCategoryDTO, Category>();
 
-            CreateMap<FreelancerNotification, GetFreelancerNotificationsDTO>();  
-            CreateMap<GetFreelancerNotificationsDTO, FreelancerNotification>();
+            //CreateMap<FreelancerNotification, GetFreelancerNotificationsDTO>();  
+            //CreateMap<GetFreelancerNotificationsDTO, FreelancerNotification>();
 
-            CreateMap<ClientNotification, GetClientNotificationsDTO>();
-            CreateMap<GetClientNotificationsDTO, ClientNotification>();
+            CreateMap<Notification, GetNotificationsDTO>();
+            CreateMap<GetNotificationsDTO, Notification>();
         }
     }
 }
