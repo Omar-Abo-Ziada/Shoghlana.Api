@@ -253,7 +253,8 @@ namespace Shoghlana.Api.Services.Implementaions
                     Title = "عرض جديد !",
                     description = $"قام {freelancer.Name} بتقديم عرض علي مشروعك",
                     Reason = NotificationReason.NewProposalAdded,
-                    NotificationTriggerId = job.Id
+                    NotificationTriggerId = job.Id,
+                    sentTime = DateTime.Now
                 };
 
                 _unitOfWork.NotificationRepository.Add(ClientNotification);
@@ -300,7 +301,8 @@ namespace Shoghlana.Api.Services.Implementaions
                     Title = "عرض جديد !",
                     description = $"قام \"{freelancer.Name}\" بتقديم عرض علي مشروعك",
                     Reason = NotificationReason.NewProposalAdded,
-                    NotificationTriggerId = job.Id
+                    NotificationTriggerId = job.Id,
+                    sentTime = DateTime.Now 
                 };
 
                 _unitOfWork.NotificationRepository.Add(ClientNotification);

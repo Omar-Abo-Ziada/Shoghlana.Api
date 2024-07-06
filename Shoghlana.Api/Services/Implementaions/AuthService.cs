@@ -236,6 +236,7 @@ namespace Shoghlana.Api.Services.Implementaions
             authModel.Username = user.UserName;
             authModel.ExpiresOn = jwtSecurityToken.ValidTo;
             authModel.Roles = rolesList.ToList();
+           // authModel.Username = user?.UserName;
 
             if (user.RefreshTokens.Any(t => t.IsActive))
             {
