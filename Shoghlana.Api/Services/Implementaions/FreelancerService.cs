@@ -383,11 +383,11 @@ namespace Shoghlana.Api.Services.Implementaions
                 };
             }
 
-            List<GetFreelancerNotificationsDTO> FreelancerNotificationsDTOs = new List<GetFreelancerNotificationsDTO>();
+            List<GetNotificationsDTO> FreelancerNotificationsDTOs = new List<GetNotificationsDTO>();
 
-            foreach (FreelancerNotification notification in freelancer.Notifications)
+            foreach (Notification notification in freelancer.Notifications)
             {
-                GetFreelancerNotificationsDTO FreelancerNotificationsDTO = mapper.Map<FreelancerNotification, GetFreelancerNotificationsDTO>(notification);
+                GetNotificationsDTO FreelancerNotificationsDTO = mapper.Map<Notification, GetNotificationsDTO>(notification);
 
                 FreelancerNotificationsDTOs.Add(FreelancerNotificationsDTO);
             }

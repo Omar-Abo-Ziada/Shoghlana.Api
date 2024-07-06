@@ -36,6 +36,6 @@ namespace Shoghlana.Core.Models
 
         public ApplicationUser? User { get; set; }
 
-        public List<ClientNotification>? Notifications { get; set; } = new List<ClientNotification> { };
+        public List<Notification>? Notifications { get; set; } = new List<Notification> { };
     }
 }

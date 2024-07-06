@@ -357,11 +357,11 @@ namespace Shoghlana.Api.Services.Implementaions
                 };
             }
 
-            List<GetClientNotificationsDTO> clientNotificationsDTOs = new List<GetClientNotificationsDTO>();
+            List<GetNotificationsDTO> clientNotificationsDTOs = new List<GetNotificationsDTO>();
 
-            foreach (ClientNotification notification in client.Notifications)
+            foreach (Notification notification in client.Notifications)
             {
-                GetClientNotificationsDTO clientNotificationsDTO = mapper.Map<ClientNotification, GetClientNotificationsDTO>(notification);
+                GetNotificationsDTO clientNotificationsDTO = mapper.Map<Notification, GetNotificationsDTO>(notification);
 
                 clientNotificationsDTOs.Add(clientNotificationsDTO);
             }
