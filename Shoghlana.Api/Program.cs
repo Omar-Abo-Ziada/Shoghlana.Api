@@ -134,7 +134,6 @@ namespace Shoghlana.Api
                 options.AddDefaultPolicy(builder =>
                 {
 
-                    //builder.WithOrigins("http://localhost:4200")
                     //builder.AllowAnyOrigin()
                        builder.WithOrigins("http://localhost:4200")
                            .AllowAnyMethod()
@@ -168,6 +167,7 @@ namespace Shoghlana.Api
             app.MapHub<NotificationHub>("/notificationHub");
 
             app.MapHub<ChatHub>("/ChatHub");
+
             app.MapHub<individualChatHub>("/individualChatHub");
 
             //app.UseEndpoints(Endpoint =>
