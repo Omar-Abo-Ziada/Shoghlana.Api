@@ -1,13 +1,7 @@
-﻿using AutoMapper;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Shoghlana.Api.Response;
-using Shoghlana.Api.Services.Implementaions;
 using Shoghlana.Api.Services.Interfaces;
 using Shoghlana.Core.DTO;
-using Shoghlana.Core.Interfaces;
-using Shoghlana.Core.Models;
-using Shoghlana.EF.Repositories;
 
 namespace Shoghlana.Api.Controllers
 {

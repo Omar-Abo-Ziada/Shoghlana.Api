@@ -1,9 +1,7 @@
-﻿using Shoghlana.Core.Models;
-using System.IdentityModel.Tokens.Jwt;
-
 ﻿using Shoghlana.Api.Response;
 using Shoghlana.Core.DTO;
 using Shoghlana.Core.Models;
+using System.IdentityModel.Tokens.Jwt;
 
 namespace Shoghlana.Api.Services.Interfaces
 {

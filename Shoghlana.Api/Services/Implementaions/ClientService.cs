@@ -8,7 +8,6 @@ using Shoghlana.Api.Services.Interfaces;
 using Shoghlana.Core.DTO;
 using Shoghlana.Core.Interfaces;
 using Shoghlana.Core.Models;
-using Shoghlana.EF.Repositories;
 
 namespace Shoghlana.Api.Services.Implementaions
 {
