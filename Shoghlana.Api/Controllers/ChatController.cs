@@ -1,15 +1,6 @@
-﻿using AutoMapper;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using Shoghlana.Api.Response;
+﻿using Microsoft.AspNetCore.Mvc;
 using Shoghlana.Api.Services.Implementaions;
-using Shoghlana.Api.Services.Interfaces;
 using Shoghlana.Core.DTO;
-using Shoghlana.Core.Interfaces;
-using Shoghlana.Core.Models;
-using Shoghlana.EF.Repositories;
-using Microsoft.AspNetCore.SignalR;
-using Shoghlana.Api.Hubs;
 namespace Shoghlana.Api.Controllers
 {
     [Route("api/[controller]")]

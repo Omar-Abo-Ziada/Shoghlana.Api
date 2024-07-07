@@ -1,8 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.SignalR;
-using Shoghlana.Api.Hubs;
 using Shoghlana.Api.Response;
-using Shoghlana.Api.Services.Implementaions;
 using Shoghlana.Api.Services.Interfaces;
 using Shoghlana.Core.DTO;
 

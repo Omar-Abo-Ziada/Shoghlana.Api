@@ -1,6 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Shoghlana.Api.Response;
-using Shoghlana.Api.Services.Implementaions;
 using Shoghlana.Core.DTO;
 using Shoghlana.Core.Models;
 

@@ -1,5 +1,4 @@
 ﻿using Microsoft.AspNetCore.Http;
-using Shoghlana.Core.Models;
 
 namespace Shoghlana.Core.DTO
 {

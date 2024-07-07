@@ -1,4 +1,4 @@
-
+﻿
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -43,6 +43,14 @@ namespace Shoghlana.Api
             builder.Services.AddIdentity<ApplicationUser, IdentityRole>()
                             .AddEntityFrameworkStores<ApplicationDBContext>()
                             .AddDefaultTokenProviders();
+
+            builder.Services.Configure<IdentityOptions>(options =>
+            {
+                options.User.AllowedUserNameCharacters =
+                    "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-._@+ " +
+                    "أبجدهوزحطيكلمنسعفصقرشتثخذضظغ";
+                options.User.RequireUniqueEmail = true;
+            });
 
             builder.Services.Configure<Jwt>(builder.Configuration.GetSection("JWT"));
 

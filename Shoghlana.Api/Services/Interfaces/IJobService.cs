@@ -1,13 +1,8 @@
-﻿using AutoMapper;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Shoghlana.Api.Response;
-using Shoghlana.Api.Services.Implementaions;
 using Shoghlana.Core.DTO;
 using Shoghlana.Core.Enums;
 using Shoghlana.Core.Models;
-using Shoghlana.EF.Repositories;
-using System.Drawing.Printing;
-using System.Linq.Expressions;
 
 namespace Shoghlana.Api.Services.Interfaces
 {

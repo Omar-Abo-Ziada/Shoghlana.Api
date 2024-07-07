@@ -1,6 +1,5 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using Shoghlana.Api.Response;
 using Shoghlana.Api.Services.Implementations;
 using Shoghlana.Api.Services.Interfaces;

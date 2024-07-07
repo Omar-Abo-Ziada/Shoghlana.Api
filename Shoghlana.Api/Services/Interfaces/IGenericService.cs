@@ -1,10 +1,4 @@
-﻿using Shoghlana.Core.Interfaces;
-using Shoghlana.EF.Repositories;
-using Shoghlana.EF.Repository;
-using System;
-using System.Collections.Generic;
-using System.Linq.Expressions;
-using System.Threading.Tasks;
+﻿using System.Linq.Expressions;
 
 namespace Shoghlana.Api.Services.Interfaces
 {
