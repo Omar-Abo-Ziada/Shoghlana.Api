@@ -19,6 +19,7 @@ namespace Shoghlana.Core.DTO
 
         public NotificationReason Reason { get; set; }  // these 2 props used by front to create url for this notification
         public int? NotificationTriggerId { get; set; } // saeed: represent id of job you are accepted on , id of user that sent you a message >> used in front to pass in route of the component which will be openend on clicking on tha notification
+        public bool IsRead { get; set; }
 
     }
 }

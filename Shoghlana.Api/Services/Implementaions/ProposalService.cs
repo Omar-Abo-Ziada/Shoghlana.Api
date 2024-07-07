@@ -253,7 +253,8 @@ namespace Shoghlana.Api.Services.Implementaions
                     Title = "عرض جديد !",
                     description = $"قام {freelancer.Name} بتقديم عرض علي مشروعك",
                     Reason = NotificationReason.NewProposalAdded,
-                    NotificationTriggerId = job.Id
+                    NotificationTriggerId = job.Id,
+                    sentTime = DateTime.Now
                 };
 
                 _unitOfWork.NotificationRepository.Add(ClientNotification);
@@ -300,7 +301,8 @@ namespace Shoghlana.Api.Services.Implementaions
                     Title = "عرض جديد !",
                     description = $"قام \"{freelancer.Name}\" بتقديم عرض علي مشروعك",
                     Reason = NotificationReason.NewProposalAdded,
-                    NotificationTriggerId = job.Id
+                    NotificationTriggerId = job.Id,
+                    sentTime = DateTime.Now 
                 };
 
                 _unitOfWork.NotificationRepository.Add(ClientNotification);
@@ -604,7 +606,7 @@ namespace Shoghlana.Api.Services.Implementaions
                 NotificationTriggerId = job.Id
             };
 
-            _unitOfWork.NotificationRepository.Add(clientNotification);
+            _unitOfWork.NotificationRepository.Add(clientNotification); 
 
             //--------------------------------------------------------
 
@@ -614,6 +616,83 @@ namespace Shoghlana.Api.Services.Implementaions
             {
                 IsSuccess = true,
                 Message = $"The client {job.ClientId} Accepted the proposal {proposalId} from freelancer {job.AcceptedFreelancerId} on job {job.Id} successfully"
+            };
+        }
+
+
+        public ActionResult<GeneralResponse> RejectProposal(int proposalId) 
+        {
+            Proposal? proposal = _unitOfWork.proposalRepository.GetById(proposalId);
+
+            if (proposal is null)
+            {
+                return new GeneralResponse()
+                {
+                    IsSuccess = false,
+                    Status = 400,
+                    Message = $"Invalid Proposal ID : {proposalId}"
+                };
+            }
+            proposal.Status = ProposalStatus.Rejected;
+
+
+            Job? job = _unitOfWork.jobRepository.GetById(proposal.JobId);
+
+            if (job is null)
+            {
+                return new GeneralResponse()
+                {
+                    IsSuccess = false,
+                    Status = 400,
+                    Message = $"Invalid job ID : {proposal.JobId}"
+                };
+            }
+
+            Freelancer? freelancer = _unitOfWork.freelancerRepository.Find(criteria: f => f.Id == proposal.FreelancerId, includes: ["Notifications"]);
+
+            if (freelancer is null)
+            {
+                return new GeneralResponse()
+                {
+                    IsSuccess = false,
+                    Status = 400,
+                    Message = $"Invalid freelancer ID : {proposal.FreelancerId}"
+                };
+            }
+
+            Notification freelancerNotification = new Notification()
+            {
+                FreelancerId = proposal.FreelancerId,
+                Title = "لم يحالفك الحظ !",
+                sentTime = DateTime.Now,
+                description = $"تم رفض عرضك علي مشروع {job.Title}!",  
+                Reason = NotificationReason.AcceptedProposal,
+                NotificationTriggerId = job.Id
+            };
+
+            _unitOfWork.NotificationRepository.Add(freelancerNotification);
+
+            Notification clientNotification = new Notification()
+            {
+                ClientId = job.ClientId,
+                Title = "تم رفض العرض !",
+                sentTime = DateTime.Now,
+                //description = $"Congratulations , You successfully Accepted The freelancer {freelancer.Name} proposal for {job.Title}. You can now proceed with the next steps.",
+                description = $"لقد قمت برفض عرض الفريلانسر \"{freelancer.Name}\" علي مشروع \"{job.Title}\" ",
+                Reason = NotificationReason.AcceptedProposal,
+                NotificationTriggerId = job.Id
+            };
+
+            _unitOfWork.NotificationRepository.Add(clientNotification);
+
+            //--------------------------------------------------------
+
+            _unitOfWork.Save();
+
+            return new GeneralResponse
+            {
+                IsSuccess = true,
+                Message = $"The client {job.ClientId} rejected the proposal {proposalId} on job {job.Id} successfully"
             };
         }
     }

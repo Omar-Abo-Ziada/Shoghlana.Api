@@ -8,6 +8,7 @@ using Shoghlana.Api.Hubs;
 using Shoghlana.Api.Response;
 using Shoghlana.Api.Services.Interfaces;
 using Shoghlana.Core.DTO;
+using Shoghlana.Core.Enums;
 using Shoghlana.Core.Helpers;
 using Shoghlana.Core.Interfaces;
 using Shoghlana.Core.Models;
@@ -123,7 +124,7 @@ namespace Shoghlana.Api.Services.Implementaions
           
 
             // Send a welcome notification to the user
-            await SendWelcomeNotificationAsync(user);
+            SendWelcomeNotificationAsync(user);
 
          //   var jwtSecurityToken = await CreateJwtToken(user);
 
@@ -146,18 +147,44 @@ namespace Shoghlana.Api.Services.Implementaions
             };
         }
 
-        private async Task SendWelcomeNotificationAsync(ApplicationUser user)
+        private void SendWelcomeNotificationAsync(ApplicationUser user)
         {
-            var notification = new NotificationDTO
+            Notification notification = new Notification()
             {
-                Title = "Welcome to Shoglana!",
-                description = $"Welcome, {user.UserName}! Thank you for joining us.",
+               // ClientId = job.ClientId,
+                Title = "مرحبا بك في شغلانة !",
                 sentTime = DateTime.Now,
-                // You can include the user's image in the notification if available
-
+                //description = $"Congratulations , You successfully Accepted The freelancer {freelancer.Name} proposal for {job.Title}. You can now proceed with the next steps.",
+                //description = $"لقد قمت برفض عرض الفريلانسر \"{freelancer.Name}\" علي مشروع \"{job.Title}\" ",
+                Reason = NotificationReason.Welcome,
             };
 
-            await _hubContext.Clients.User(user.Id).SendAsync("ReceiveNotification", notification);
+            if(user.ClientId != null)
+            {
+                notification.ClientId = user.ClientId;
+            }
+
+            else if(user.FreeLancerId != null)
+            {
+                notification.FreelancerId = user.FreeLancerId;
+            }
+
+            _unitOfWork.NotificationRepository.Add(notification);
+
+            //--------------------------------------------------------
+
+            _unitOfWork.Save();
+
+            //var notification = new NotificationDTO
+            //{
+            //    Title = "Welcome to Shoglana!",
+            //    description = $"Welcome, {user.UserName}! Thank you for joining us.",
+            //    sentTime = DateTime.Now,
+            //    // You can include the user's image in the notification if available
+
+            //};
+
+            //await _hubContext.Clients.User(user.Id).SendAsync("ReceiveNotification", notification);
         }
 
         public async Task<string> AddRoleAsync(AddRoleModel model)
@@ -225,10 +252,14 @@ namespace Shoghlana.Api.Services.Implementaions
             if(user.ClientId != null)
             {
                 authModel.Id = (int)user.ClientId;
+                authModel.UnReadNotificationsNum = _unitOfWork.NotificationRepository.FindAll(criteria: n => n.ClientId == user.ClientId
+                && n.IsRead == false).ToList().Count();
             }
             else if(user.FreeLancerId != null)
             {
                 authModel.Id = (int)user.FreeLancerId;
+                authModel.UnReadNotificationsNum = _unitOfWork.NotificationRepository.FindAll(criteria: n => n.FreelancerId == user.FreeLancerId
+                && n.IsRead == false).ToList().Count();
             }
             authModel.IsAuthenticated = true;
             authModel.Token = new JwtSecurityTokenHandler().WriteToken(jwtSecurityToken);
@@ -236,6 +267,7 @@ namespace Shoghlana.Api.Services.Implementaions
             authModel.Username = user.UserName;
             authModel.ExpiresOn = jwtSecurityToken.ValidTo;
             authModel.Roles = rolesList.ToList();
+           // authModel.Username = user?.UserName;
 
             if (user.RefreshTokens.Any(t => t.IsActive))
             {
@@ -461,7 +493,7 @@ namespace Shoghlana.Api.Services.Implementaions
 
                 try
                 {
-                    await SendWelcomeNotificationAsync(User);
+                     SendWelcomeNotificationAsync(User);
                 }
                 catch (Exception ex)
                 {
@@ -481,11 +513,15 @@ namespace Shoghlana.Api.Services.Implementaions
             if(User.ClientId != null)
             {
                 authModel.Id = (int)User.ClientId;
+                authModel.UnReadNotificationsNum = _unitOfWork.NotificationRepository.FindAll(criteria: n => n.ClientId == User.ClientId
+                && n.IsRead == false).ToList().Count();
             }
 
             else if(User.FreeLancerId != null)
             {
                 authModel.Id = (int)User.FreeLancerId;
+                authModel.UnReadNotificationsNum = _unitOfWork.NotificationRepository.FindAll(criteria: n => n.FreelancerId == User.FreeLancerId
+                && n.IsRead == false).ToList().Count();
             }
 
             var jwtSecurityToken = await CreateJwtToken(User);
@@ -507,7 +543,7 @@ namespace Shoghlana.Api.Services.Implementaions
 
 
             return new GeneralResponse()
-            {
+            { 
                 IsSuccess = true,
                 Data = authModel,
                 Message = "Successfully authenticated using gmail"

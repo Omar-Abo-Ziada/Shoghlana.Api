@@ -23,5 +23,7 @@ namespace Shoghlana.Api.Services.Interfaces
         public ActionResult<GeneralResponse> Delete(int id);
 
        public ActionResult<GeneralResponse> AcceptProposal(int proposalId);
+        ActionResult<GeneralResponse> RejectProposal(int proposalId);
+
     }
 }

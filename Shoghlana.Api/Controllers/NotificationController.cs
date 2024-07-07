@@ -39,5 +39,7 @@ namespace Shoghlana.Api.Controllers
         {
             return notificationService.GetByClientId(id); 
         }
+
+      
     }
 }

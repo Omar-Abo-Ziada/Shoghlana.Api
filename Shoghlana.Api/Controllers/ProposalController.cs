@@ -88,5 +88,11 @@ namespace Shoghlana.Api.Controllers
         {
             return proposalService.AcceptProposal(proposalId);
         }
+
+        [HttpGet("Reject/{proposalId:int}")]
+        public ActionResult<GeneralResponse> RejectProposal(int proposalId)
+        {
+            return proposalService.RejectProposal(proposalId);
+        }
     }
 }
