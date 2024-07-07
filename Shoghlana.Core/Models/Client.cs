@@ -32,7 +32,7 @@ namespace Shoghlana.Core.Models
         [NotMapped]
         public int JobsCount => Jobs.Count;
         [NotMapped]
-        public int CompletedJobsCount => Jobs.Where(j => j.Status == Enums.JobStatus.completed).Count();
+        public int CompletedJobsCount => Jobs.Where(j => j.Status == Enums.JobStatus.Closed).Count();
 
         public ApplicationUser? User { get; set; }
 
