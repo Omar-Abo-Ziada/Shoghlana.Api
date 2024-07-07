@@ -34,6 +34,12 @@ namespace Shoghlana.Api.Services.Implementaions
                 List<GetNotificationsDTO> NotificationsDTO =
                     mapper.Map<List<GetNotificationsDTO>>(Notifications);
 
+                foreach (Notification notification in Notifications)
+                {
+                    notification.IsRead = true;
+                }
+                _unitOfWork.NotificationRepository.save();
+
                 return new GeneralResponse()
                 {
                     IsSuccess = true,
@@ -60,10 +66,18 @@ namespace Shoghlana.Api.Services.Implementaions
                                                .OrderByDescending(n => n.sentTime)
                                                .ToList();
 
+
+
             if (Notifications.Any())
             {
                 List<GetNotificationsDTO> NotificationsDTO =
                     mapper.Map<List<GetNotificationsDTO>>(Notifications);
+
+                foreach(Notification notification in Notifications)
+                {
+                    notification.IsRead = true;
+                }
+                _unitOfWork.NotificationRepository.save();
 
                 return new GeneralResponse()
                 {
