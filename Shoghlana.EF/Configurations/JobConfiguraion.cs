@@ -51,7 +51,7 @@ namespace Shoghlana.EF.Configurations
                     Status = JobStatus.Active,
                     ClientId = 1,
                     AcceptedFreelancerId = 1,
-                    CategoryId = 1
+                    CategoryId = 1,
                 },
                 new Job
                 {
@@ -76,7 +76,7 @@ namespace Shoghlana.EF.Configurations
                     MinBudget = 150,
                     MaxBudget = 600,
                     ExperienceLevel = ExperienceLevel.Professional,
-                    Status = JobStatus.Active,
+                    Status = JobStatus.completed,
                     ClientId = 3,
                     AcceptedFreelancerId = 3,
                     CategoryId = 1
@@ -90,7 +90,7 @@ namespace Shoghlana.EF.Configurations
                     MinBudget = 300,
                     MaxBudget = 800,
                     ExperienceLevel = ExperienceLevel.Intermediate,
-                    Status = JobStatus.Active,
+                    Status = JobStatus.completed,
                     ClientId = 4,
                     AcceptedFreelancerId = 4,
                     CategoryId = 2
@@ -104,7 +104,7 @@ namespace Shoghlana.EF.Configurations
                     MinBudget = 200,
                     MaxBudget = 700,
                     ExperienceLevel = ExperienceLevel.Beginner,
-                    Status = JobStatus.Active,
+                    Status = JobStatus.Closed,
                     ClientId = 5,
                     AcceptedFreelancerId = 5,
                     CategoryId = 3
@@ -118,7 +118,7 @@ namespace Shoghlana.EF.Configurations
                     MinBudget = 1000,
                     MaxBudget = 3000,
                     ExperienceLevel = ExperienceLevel.Professional,
-                    Status = JobStatus.Active,
+                    Status = JobStatus.Closed,
                     ClientId = 6,
                     AcceptedFreelancerId = 6,
                     CategoryId = 4
@@ -183,7 +183,7 @@ namespace Shoghlana.EF.Configurations
                 {
                     Id = 11,
                     Title = "تصميم وبرمجة نظام إدارة للموظفين",
-                    PostTime = DateTime.Now,
+                    PostTime = DateTime.Now.AddDays(-5),
                     Description = "برمجة نظم إدارية متقدمة",
                     MinBudget = 500,
                     MaxBudget = 2000,
@@ -196,7 +196,7 @@ namespace Shoghlana.EF.Configurations
                 {
                     Id = 12,
                     Title = "إعداد دراسة جدوى لمشروع تجاري مستقبلي",
-                    PostTime = DateTime.Now,
+                    PostTime = DateTime.Now.AddDays(-5),
                     Description = "تحليل اقتصادي ومالي",
                     MinBudget = 1000,
                     MaxBudget = 5000,
@@ -210,12 +210,12 @@ namespace Shoghlana.EF.Configurations
                 {
                     Id = 13,
                     Title = "تعليم البرمجة للمبتدئين عبر الإنترنت",
-                    PostTime = DateTime.Now,
+                    PostTime = DateTime.Now.AddDays(-5),
                     Description = "دورات تعليمية وتدريب",
                     MinBudget = 50,
                     MaxBudget = 200,
                     ExperienceLevel = ExperienceLevel.Beginner,
-                    Status = JobStatus.Active,
+                    Status = JobStatus.Closed,
                     ClientId = 13,
                     //AcceptedFreelancerId = 13,
                     CategoryId = 4
@@ -224,7 +224,7 @@ namespace Shoghlana.EF.Configurations
                 {
                     Id = 14,
                     Title = "تصميم مطبوعات دعائية لفعالية ثقافية",
-                    PostTime = DateTime.Now,
+                    PostTime = DateTime.Now.AddDays(-5),
                     Description = "تصميم جرافيك وإعلان",
                     MinBudget = 150,
                     MaxBudget = 500,
@@ -238,7 +238,7 @@ namespace Shoghlana.EF.Configurations
                 {
                     Id = 15,
                     Title = "ترجمة مقالات علمية من الإنجليزية إلى العربية",
-                    PostTime = DateTime.Now,
+                    PostTime = DateTime.Now.AddDays(-5),
                     Description = "ترجمة وكتابة",
                     MinBudget = 200,
                     MaxBudget = 800,
@@ -252,7 +252,7 @@ namespace Shoghlana.EF.Configurations
                 {
                     Id = 16,
                     Title = "تصميم وتطوير لعبة فيديو متنقلة",
-                    PostTime = DateTime.Now,
+                    PostTime = DateTime.Now.AddDays(-5),
                     Description = "برمجة ألعاب الفيديو",
                     MinBudget = 1000,
                     MaxBudget = 5000,
@@ -266,7 +266,7 @@ namespace Shoghlana.EF.Configurations
                 {
                     Id = 17,
                     Title = "تصميم منصة تعليمية عبر الإنترنت",
-                    PostTime = DateTime.Now,
+                    PostTime = DateTime.Now.AddDays(-5),
                     Description = "تصميم وبرمجة منصات تعليمية إلكترونية",
                     MinBudget = 500,
                     MaxBudget = 1500,
@@ -280,12 +280,12 @@ namespace Shoghlana.EF.Configurations
                 {
                     Id = 18,
                     Title = "إدارة محتوى لمدونة تقنية",
-                    PostTime = DateTime.Now,
+                    PostTime = DateTime.Now.AddDays(-5),
                     Description = "كتابة وتحرير محتوى",
                     MinBudget = 200,
                     MaxBudget = 700,
                     ExperienceLevel = ExperienceLevel.Intermediate,
-                    Status = JobStatus.Active,
+                    Status = JobStatus.completed,
                     ClientId = 18,
                     //AcceptedFreelancerId = 18,
                     CategoryId = 3
@@ -294,12 +294,12 @@ namespace Shoghlana.EF.Configurations
                 {
                     Id = 19,
                     Title = "تصميم وتطوير نظام إدارة العلاقات مع العملاء (CRM)",
-                    PostTime = DateTime.Now,
+                    PostTime = DateTime.Now.AddDays(-5),
                     Description = "برمجة وتخصيص نظم CRM",
                     MinBudget = 800,
                     MaxBudget = 2500,
                     ExperienceLevel = ExperienceLevel.Professional,
-                    Status = JobStatus.Active,
+                    Status = JobStatus.completed,
                     ClientId = 1,
                     //AcceptedFreelancerId = 19,
                     CategoryId = 4
@@ -308,7 +308,7 @@ namespace Shoghlana.EF.Configurations
                 {
                     Id = 20,
                     Title = "تحليل بيانات وإعداد تقرير استراتيجي للشركات",
-                    PostTime = DateTime.Now,
+                    PostTime = DateTime.Now.AddDays(-5),
                     Description = "تحليل بيانات وإعداد تقارير",
                     MinBudget = 300,
                     MaxBudget = 1000,
@@ -322,7 +322,7 @@ namespace Shoghlana.EF.Configurations
                 {
                     Id = 21,
                     Title = "كتابة وتحرير كتب إلكترونية في مجال الذكاء الاصطناعي",
-                    PostTime = DateTime.Now,
+                    PostTime = DateTime.Now.AddDays(5),
                     Description = "كتابة محتوى تعليمي وبحثي",
                     MinBudget = 500,
                     MaxBudget = 1500,
@@ -336,7 +336,7 @@ namespace Shoghlana.EF.Configurations
                 {
                     Id = 22,
                     Title = "تصميم وتطوير موقع تعليمي للطلاب",
-                    PostTime = DateTime.Now,
+                    PostTime = DateTime.Now.AddDays(5),
                     Description = "برمجة وتصميم مواقع تعليمية",
                     MinBudget = 400,
                     MaxBudget = 1200,
@@ -350,7 +350,7 @@ namespace Shoghlana.EF.Configurations
                 {
                     Id = 23,
                     Title = "تصميم وبرمجة منصة للحجز الإلكتروني للفعاليات",
-                    PostTime = DateTime.Now,
+                    PostTime = DateTime.Now.AddDays(5),
                     Description = "تصميم وبرمجة تطبيقات الحجز الإلكتروني",
                     MinBudget = 600,
                     MaxBudget = 1800,
@@ -364,7 +364,7 @@ namespace Shoghlana.EF.Configurations
                 {
                     Id = 24,
                     Title = "تحسين محركات البحث (SEO) لموقع الويب",
-                    PostTime = DateTime.Now,
+                    PostTime = DateTime.Now.AddDays(5),
                     Description = "تحسين أداء محركات البحث للمواقع",
                     MinBudget = 200,
                     MaxBudget = 800,
@@ -378,7 +378,7 @@ namespace Shoghlana.EF.Configurations
                 {
                     Id = 25,
                     Title = "تطوير نظام لإدارة المخزون والمبيعات للشركات الصغيرة",
-                    PostTime = DateTime.Now,
+                    PostTime = DateTime.Now.AddDays(5),
                     Description = "برمجة نظم إدارة متكاملة",
                     MinBudget = 700,
                     MaxBudget = 2500,
@@ -392,7 +392,7 @@ namespace Shoghlana.EF.Configurations
                 {
                     Id = 26,
                     Title = "إعداد دراسة جدوى لمشروع سكني جديد",
-                    PostTime = DateTime.Now,
+                    PostTime = DateTime.Now.AddDays(5),
                     Description = "تحليل اقتصادي ومالي للمشاريع العقارية",
                     MinBudget = 1500,
                     MaxBudget = 5000,
@@ -406,7 +406,7 @@ namespace Shoghlana.EF.Configurations
                 {
                     Id = 27,
                     Title = "تصميم وتطوير تطبيق للمساعدة الشخصية عبر الإنترنت",
-                    PostTime = DateTime.Now,
+                    PostTime = DateTime.Now.AddDays(5),
                     Description = "برمجة تطبيقات المساعدة الشخصية",
                     MinBudget = 800,
                     MaxBudget = 3000,
@@ -420,7 +420,7 @@ namespace Shoghlana.EF.Configurations
                 {
                     Id = 28,
                     Title = "إنشاء وإدارة حملة تبرعات عبر الإنترنت",
-                    PostTime = DateTime.Now,
+                    PostTime = DateTime.Now.AddDays(5),
                     Description = "تسويق وجمع التبرعات",
                     MinBudget = 400,
                     MaxBudget = 1500,
@@ -434,7 +434,7 @@ namespace Shoghlana.EF.Configurations
                 {
                     Id = 29,
                     Title = "تطوير منصة تعليمية تفاعلية لتعليم الرياضيات",
-                    PostTime = DateTime.Now,
+                    PostTime = DateTime.Now.AddDays(5),
                     Description = "تصميم وبرمجة منصات تعليمية تفاعلية",
                     MinBudget = 600,
                     MaxBudget = 2000,
@@ -448,7 +448,7 @@ namespace Shoghlana.EF.Configurations
                 {
                     Id = 30,
                     Title = "تصميم وتطوير لعبة فيديو تعليمية للأطفال",
-                    PostTime = DateTime.Now,
+                    PostTime = DateTime.Now.AddDays(5),
                     Description = "برمجة وتصميم ألعاب تعليمية",
                     MinBudget = 300,
                     MaxBudget = 1200,
@@ -462,7 +462,7 @@ namespace Shoghlana.EF.Configurations
                 {
                     Id = 31,
                     Title = "إعداد تقرير بحثي عن السياسات العامة",
-                    PostTime = DateTime.Now,
+                    PostTime = DateTime.Now.AddDays(5),
                     Description = "تحليل سياسات وإعداد تقارير",
                     MinBudget = 200,
                     MaxBudget = 700,
@@ -476,7 +476,7 @@ namespace Shoghlana.EF.Configurations
                 {
                     Id = 32,
                     Title = "تصميم وبرمجة نظام إدارة المحتوى للمدونات",
-                    PostTime = DateTime.Now,
+                    PostTime = DateTime.Now.AddDays(5),
                     Description = "برمجة وتخصيص نظم إدارة المحتوى",
                     MinBudget = 400,
                     MaxBudget = 1500,
@@ -490,7 +490,7 @@ namespace Shoghlana.EF.Configurations
                 {
                     Id = 33,
                     Title = "إعداد وتنفيذ حملة تسويقية لمنتج جديد",
-                    PostTime = DateTime.Now,
+                    PostTime = DateTime.Now.AddDays(5),
                     Description = "تسويق وإعلان عن المنتجات",
                     MinBudget = 300,
                     MaxBudget = 1000,
@@ -504,7 +504,7 @@ namespace Shoghlana.EF.Configurations
                 {
                     Id = 34,
                     Title = "تصميم وبرمجة نظام لإدارة المشاريع الهندسية",
-                    PostTime = DateTime.Now,
+                    PostTime = DateTime.Now.AddDays(5),
                     Description = "برمجة نظم إدارة المشاريع",
                     MinBudget = 600,
                     MaxBudget = 2500,
@@ -518,7 +518,7 @@ namespace Shoghlana.EF.Configurations
                 {
                     Id = 35,
                     Title = "تصميم وتطوير تطبيق لتعليم لغات البرمجة",
-                    PostTime = DateTime.Now,
+                    PostTime = DateTime.Now.AddDays(5),
                     Description = "برمجة وتصميم تطبيقات تعليمية",
                     MinBudget = 500,
                     MaxBudget = 1800,

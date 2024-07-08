@@ -1,7 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Shoghlana.Core.Models;
-using System.Collections.Generic;
 
 namespace Shoghlana.EF.Configurations
 {
