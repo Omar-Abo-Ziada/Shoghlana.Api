@@ -89,7 +89,7 @@ namespace Shoghlana.EF.Repositories
             catch
             {
                 Rollback();
-                throw; // Re-throw exception to propagate it
+                //throw; // Re-throw exception to propagate it
             }
         }
 
@@ -98,7 +98,6 @@ namespace Shoghlana.EF.Repositories
             transaction?.Rollback();
             transaction = null;
         }
-
         
     }
 }

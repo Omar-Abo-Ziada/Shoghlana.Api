@@ -54,6 +54,8 @@ select * from AspNetRoles
 
 select * from Jobs
 
+--delete from RefreshToken
+--go
 --delete from AspNetUserRoles
 --go
 --delete from AspNetUsers

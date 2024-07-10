@@ -14,7 +14,7 @@ namespace Shoghlana.Api.Services.Implementaions
         // TODO I fixed the GetbyfreelancerID skills dto and getprojectDTO and tested it ,, Don't forget to check the others (get all , get by ID)
         private readonly IMapper mapper;
 
-        private readonly List<string> allowedExtensions = new List<string>() { ".jpg", ".png" , "jpeg" };
+        private readonly List<string> allowedExtensions = new List<string>() { ".jpg", ".png" , ".jpeg" };
 
         private readonly long maxAllowedImageSize = 1_048_576; // 1 MB
 
@@ -178,7 +178,7 @@ namespace Shoghlana.Api.Services.Implementaions
                 {
                     IsSuccess = false,
                     Status = 400,
-                    Message = "The allowed image extensions for poster are: jpg, png"
+                    Message = "The allowed image extensions for poster are: jpg, png, jpeg"
                 };
             }
 
