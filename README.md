@@ -1,6 +1,6 @@
 # Shoghlana 🎨
 
-Shoghlana is a freelancing platform where users can register as either freelancers or clients. This project serves as the graduation project for the ITI PWD intake 44 at Assiut branch. The platform provides functionalities for both clients and freelancers to manage their profiles, interact with each other, and handle job postings and proposals.
+Welcome to Shoghlana, a freelancing platform where you can register as either a freelancer or a client. This platform provides a range of features to help manage profiles, interact with others, and handle job postings and proposals seamlessly. Developed as a graduation project by ITI PWD intake 44 at the Assiut branch, Shoghlana showcases our skills and dedication.
 
 ## Table of Contents
 - [Features](#features)
