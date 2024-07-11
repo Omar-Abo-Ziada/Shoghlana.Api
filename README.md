@@ -1,4 +1,4 @@
-# Shoghlana
+# Shoghlana 🎨
 
 Shoghlana is a freelancing platform where users can register as either freelancers or clients. This project serves as the graduation project for the ITI PWD intake 44 at Assiut branch. The platform provides functionalities for both clients and freelancers to manage their profiles, interact with each other, and handle job postings and proposals.
 
@@ -15,26 +15,26 @@ Shoghlana is a freelancing platform where users can register as either freelance
 
 ## Features
 
-### Client Features
-- **Profile Management**: Edit personal information and profile picture.
-- **Freelancer Browsing**: View freelancer profiles, including their portfolios, work history, and skills.
-- **Job Management**: Post new jobs, browse existing jobs, and manage job proposals.
-- **Communication**: Accept or reject proposals, send messages, and chat with freelancers.
+### Client Features 🧑‍💼
+- **Profile Management**: Edit personal information and profile picture. 📝
+- **Freelancer Browsing**: View freelancer profiles, including their portfolios, work history, and skills. 🕵️‍♂️
+- **Job Management**: Post new jobs, browse existing jobs, and manage job proposals. 📋
+- **Communication**: Accept or reject proposals, send messages, and chat with freelancers. 💬
 
-### Freelancer Features
-- **Profile Management**: Edit personal information, add/edit/delete portfolio projects, and update skills.
-- **Job Browsing**: View available jobs with pagination and filters (budget, categories, job status).
-- **Proposal Management**: Submit proposals to open jobs, and view proposal status (accepted, rejected, waiting).
-- **Communication**: Participate in group chats with other freelancers using a unique group name as the ID.
-- **Work History**: Successfully completed jobs are added to the freelancer's work history.
-- **Image Validation**: Ensure profile and portfolio images meet the required extensions (jpg, jpeg, png) and size (max 1 MB).
+### Freelancer Features 👩‍💻
+- **Profile Management**: Edit personal information, add/edit/delete portfolio projects, and update skills. 📝
+- **Job Browsing**: View available jobs with pagination and filters (budget, categories, job status). 🔍
+- **Proposal Management**: Submit proposals to open jobs, and view proposal status (accepted, rejected, waiting). 📄
+- **Communication**: Participate in group chats with other freelancers using a unique group name as the ID. 🗣️
+- **Work History**: Successfully completed jobs are added to the freelancer's work history. 📜
+- **Image Validation**: Ensure profile and portfolio images meet the required extensions (jpg, jpeg, png) and size (max 1 MB). 🖼️
 
-## Technologies Used
+## Technologies Used 🚀
 - **Backend**: ASP.NET Core 8 Web API, MSSQL, C#, LINQ, EF Core, JWT, Refresh Token, DTO, External Login, Dependency Injection, AutoMapper, Pagination, Fluent API, Repository, Services, Unit of Work, Clean Architecture
 - **Frontend**: Angular
 - **Database**: Microsoft SQL Server
 
-## Installation
+## Installation 🛠️
 
 ### Backend
 1. Clone the repository:
@@ -69,7 +69,7 @@ Shoghlana is a freelancing platform where users can register as either freelance
    ```
 4. Open a browser and navigate to `http://localhost:4200`.
 
-## Team
+## Team 👥
 - Omar Ahmed
 - Saeed Mohamed
 - Mahmoud Maher
@@ -77,3 +77,9 @@ Shoghlana is a freelancing platform where users can register as either freelance
 - Asmaa Hassan
 - Reham Mostafa
 
+## License 📜
+This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
+
+---
+
+Feel free to reach out to any of the team members for more information or to contribute to the project. 🎉
