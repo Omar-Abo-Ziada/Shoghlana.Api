@@ -69,10 +69,9 @@ Welcome to Shoghlana, a freelancing platform where you can register as either a 
 4. Open a browser and navigate to `http://localhost:4200`.
 
 ## Team 👥
-- Omar Ahmed
-- Saeed Mohamed
-- Mahmoud Maher
-- Manar Mohamed
-- Asmaa Hassan
-- Reham Mostafa
-
+- [Omar Ahmed](https://github.com/Omar-Abo-Ziada) 🧑‍💻
+- [Saeed Mohamed](https://github.com/Saeed096) 🧑‍💻
+- [Mahmoud Maher](https://github.com/Mahmoud-Mohamed-Maher) 🧑‍💻
+- [Manar Mohamed](https://github.com/manarmahmoud15) 🧑‍💻
+- [Asmaa Hassan](https://github.com/Asmaa20000) 🧑‍💻
+- [Reham Mostafa](https://github.com/rell384) 🧑‍💻
