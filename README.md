@@ -11,7 +11,6 @@ Shoghlana is a freelancing platform where users can register as either freelance
   - [Backend](#backend)
   - [Frontend](#frontend)
 - [Team](#team)
-- [License](#license)
 
 ## Features
 
@@ -77,9 +76,3 @@ Shoghlana is a freelancing platform where users can register as either freelance
 - Asmaa Hassan
 - Reham Mostafa
 
-## License 📜
-This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
-
----
-
-Feel free to reach out to any of the team members for more information or to contribute to the project. 🎉
