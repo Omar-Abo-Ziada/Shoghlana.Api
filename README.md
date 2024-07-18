@@ -72,6 +72,6 @@ Welcome to Shoghlana, a freelancing platform where you can register as either a 
 - [Omar Ahmed](https://github.com/Omar-Abo-Ziada) 🧑‍💻
 - [Saeed Mohamed](https://github.com/Saeed096) 🧑‍💻
 - [Mahmoud Maher](https://github.com/Mahmoud-Mohamed-Maher) 🧑‍💻
-- [Manar Mohamed](https://github.com/manarmahmoud15) 🧑‍💻
+- [Manar Mahmoud](https://github.com/manarmahmoud15) 🧑‍💻
 - [Asmaa Hassan](https://github.com/Asmaa20000) 🧑‍💻
 - [Reham Mostafa](https://github.com/rell384) 🧑‍💻
